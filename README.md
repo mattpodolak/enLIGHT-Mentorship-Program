@@ -1,7 +1,6 @@
 
 - [Getting Started](#getting-started)
     - [Setting Up](#setting-up)
-    - [Install Packages](#install-packages)
     - [Running Your App](#running-your-app)
     - [Sending Mail](#sending-mail)
 - [Database](#database)
@@ -18,12 +17,6 @@ Make new venv
 > python -m venv mentorship-venv
 ```
 
-Activate venv
-```bash
-> mentorship-venv\Scripts\activate
-```
-
-## Install Packages
 Install required packages
 ```bash
 > pip install flask
@@ -33,10 +26,25 @@ Install required packages
 > pip install flask-login
 ```
 
+Initiate database (not sure if needed)
+```bash
+> flask db init
+```
+
 ## Running Your App
+Activate venv
+```bash
+> mentorship-venv\Scripts\activate
+```
+
 Set ENVIRONMENT variables
 ```bash
 > set FLASK_APP=mentorship.py
+```
+
+Update Database
+```bash
+> flask db upgrade
 ```
 
 Run app
