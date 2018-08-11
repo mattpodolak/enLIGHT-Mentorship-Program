@@ -5,7 +5,10 @@
     - [Running Your App](#running-your-app)
     - [Sending Mail](#sending-mail)
 - [Database](#database)
+    - [Initiate Database](#initiate-database)
+    - [Database Migration](#database-migration)
     - [Database Testing](#database-testing)
+- [Pages](#pages)
 
 # Getting Started
 
@@ -24,8 +27,8 @@ Activate venv
 Install required packages
 ```bash
 > pip install flask
-> pip install flask_sqlalchemy
-> pip install flask_migrate
+> pip install flask-sqlalchemy
+> pip install flask-migrate
 > pip install flask-wtf
 ```
 
@@ -49,6 +52,26 @@ Add these ENVIRONMENT variables along
 ```
 
 # Database 
+
+## Initiate Database
+```bash
+> flask db init
+```
+
+## Database Migration
+- Perform database migrations when adding/changing columns
+```bash
+> flask db migrate -m "message here"
+> flask db upgrade
+```
+- Undo a migration with:
+```bash
+> flask db downgrade
+```
+
+- If you delete a column: delete app.db and migrations folder and initiate database and run a migration
+
+If you delete a column delete migrations folder and run a migration
 
 ## Database Testing
 Run shell in diff terminal for db manipulation
