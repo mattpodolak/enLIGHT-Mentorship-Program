@@ -100,22 +100,36 @@ Now, delete migration scripts by hand and redo migration
 
 # Issue Management
 1. Pick an issue to address
-2. Create a new branch ```bash 
-> git branch branchname``` (Pick a branchname that reflects the issue)
-3. Checkout branch ```bash 
-> git checkout branchname```
+2. Create a new branch (Pick a branchname that reflects the issue)
+```bash 
+> git branch branchname
+``` 
+3. Checkout branch 
+```bash 
+> git checkout branchname
+```
 4. When issue is solved, 'comment and close' issue on GitHub
 5. Commit all changes on branchname using the Visual Studio Code Source Control
-6. Checkout master ```bash 
-> git checkout master```
-7. Ensure master is up-to-date ```bash 
-> git pull```
-8. Merge branchname with master ```bash 
-> git merge branchname``` (If any merge conflicts, resolve and commit)
-9. Push updated master to GitHub ```bash 
-> git push```
-10. Delete branchname ```bash 
-> git branch -d branchname```
+6. Checkout master 
+```bash 
+> git checkout master
+```
+7. Ensure master is up-to-date 
+```bash 
+> git pull
+```
+8. Merge branchname with master (If any merge conflicts, resolve and commit)
+```bash 
+> git merge branchname
+``` 
+9. Push updated master to GitHub 
+```bash 
+> git push
+```
+10. Delete branchname 
+```bash 
+> git branch -d branchname
+```
 
 Git command cheatsheet: https://gist.github.com/davfre/8313299
 Git branch & merge info: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
