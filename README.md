@@ -1,5 +1,6 @@
 
 - [Getting Started](#getting-started)
+    - [Creating Project](#creating-project)
     - [Setting Up](#setting-up)
     - [Running Your App](#running-your-app)
     - [Sending Mail](#sending-mail)
@@ -7,9 +8,15 @@
     - [Initiate Database](#initiate-database)
     - [Database Migration](#database-migration)
     - [Database Testing](#database-testing)
-- [Pages](#pages)
+- [Issue Management](#issue-management)
 
 # Getting Started
+
+## Creating Project
+```bash
+> git clone https://github.com/mattpodolak/enLIGHT-Mentorship-Program.git
+> git remote add origin https://github.com/mattpodolak/enLIGHT-Mentorship-Program.git
+```
 
 ## Setting Up
 Make new venv
@@ -91,7 +98,18 @@ Running into problems with db migration because u deleted a column? OR delete ap
 ```
 Now, delete migration scripts by hand and redo migration
 
-# Pages
-- Mentorship Profile page
-- Mentee Profile page
-- Dashboard to see list of potential mentors/mentees
+# Issue Management
+1. Pick an issue to address
+2. Create a new branch ```bash > git branch branchname``` (Pick a branchname that reflects the issue)
+3. Checkout branch ```bash > git checkout branchname```
+4. When issue is solved, 'comment and close' issue on GitHub
+5. Commit all changes on branchname using the Visual Studio Code Source Control
+6. Checkout master ```bash > git checkout master```
+7. Ensure master is up-to-date ```bash > git pull```
+8. Merge branchname with master ```bash > git merge branchname``` (If any merge conflicts, resolve and commit)
+9. Push updated master to GitHub ```bash > git push```
+10. Delete branchname ```bash git branch -d branchname```
+
+Git command cheatsheet: https://gist.github.com/davfre/8313299
+Git branch & merge info: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+
