@@ -26,7 +26,7 @@ Install required packages
 > pip install flask
 > pip install flask_sqlalchemy
 > pip install flask_migrate
-> pip install flask_wtf
+> pip install flask-wtf
 ```
 
 ## Running Your App
@@ -69,3 +69,8 @@ Recreate migration scripts
 > flask db migrate -m "message"
 > flask db upgrade
 ```
+
+# Pages
+- Mentorship Profile page
+- Mentee Profile page
+- Dashboard to see list of potential mentors/mentees
