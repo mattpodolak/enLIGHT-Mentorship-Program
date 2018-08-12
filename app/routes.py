@@ -53,20 +53,20 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@flapp.route('/user/<id>')
+@flapp.route('/user/<userId>')
 @login_required
-def user(id):
-    user = User.query.filter_by(id=id)
+def user(userId):
+    user = User.query.filter_by(id=userId).first()
     try:
         # check if user is defined
-        user.id #maybe this should be user.id
+        user.id
     except AttributeError:
-        print('USER NOT DEFINED', file=sys.stderr)
         # check if mentor is defined
-        mentor = Mentor.query.filter_by(id=id)
+        mentor = Mentor.query.filter_by(id=userId)
         try:
-            mentor.id #maybe this should be mentor.id
+            mentor.id
         except AttributeError:
+            print('USER NOT DEFINED', file=sys.stderr)
             # return 404 if not mentor or user
             return render_template('404.html')
         else:
