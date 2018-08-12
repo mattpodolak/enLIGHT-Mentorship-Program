@@ -51,3 +51,10 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
+@flapp.route('/user/<id>')
+@login_required
+def user(id):
+    user = User.query.filter_by(id=id).first_or_404()
+    print(user)
+    return render_template('user.html', user=user)
