@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if is_mentor %}
+        <h2>Mentor: {{user.first_name}} {{user.last_name}}</h2>
+        <p>{{user.about_me}}</p>
+    {% else %}
+        <h2>Mentee: {{user.first_name}} {{user.last_name}}</h2>
+        <p>{{user.about_me}}</p>
+    {% endif %}
+
+{% endblock %}

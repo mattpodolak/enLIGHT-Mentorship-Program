@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor
@@ -75,3 +75,23 @@ def user(userId):
     else:
         is_mentor = False
         return render_template('user.html', user=user, is_mentor=is_mentor)
+
+@flapp.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.email = form.email.data
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.first_name.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        form.email.data = current_user.email
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+        form.about_me.data = current_user.about_me
+    return render_template('edit_profile.html', title='Edit Profile',
+                           form=form)
