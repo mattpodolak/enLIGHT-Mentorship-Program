@@ -37,6 +37,24 @@ class Mentee(db.Model):
     def __repr__(self):
         return '<Mentee {}>'.format(self.email)
 
+class Application(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company = db.Column(db.String(100))
+    founder = db.Column(db.String(280))
+    email = db.Column(db.String(120), index=True, unique=True)
+    industry = db.Column(db.String(280))
+    skills = db.Column(db.String(280))
+    help_req = db.Column(db.String(280))
+    interest = db.Column(db.String(500))
+    gain = db.Column(db.String(500))
+    stage = db.Column(db.String(100))
+    relation = db.Column(db.String(280))
+    web = db.Column(db.String(280))
+    links = db.Column(db.String(380))
+
+    def __repr__(self):
+        return '<Application {}>'.format(self.email)
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
@@ -45,8 +63,19 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
+    access = db.Column(db.Integer)
     #in db.Fore... reference user.id user is database table name, referencing the id from this table
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentor.id'))
+
+    def is_admin(self):
+        if(self.access == 2):
+            return True
+        return False
+    
+    def is_mentor(self):
+        if(self.access == 1):
+            return True
+        return False
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

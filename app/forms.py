@@ -42,12 +42,12 @@ class ApplicationForm(FlaskForm):
     industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
     team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
     help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
-    interest = TextAreaField('Why are you interested?', validators=[DataRequired(), Length(min=0, max=280)])
-    gain = TextAreaField('What do you hope to gain?', validators=[DataRequired(), Length(min=0, max=280)])
-    stage = StringField('What stage is your startup at?', validators=[DataRequired(), Length(min=0, max=280)])
+    interest = TextAreaField('Why are you interested?', validators=[DataRequired(), Length(min=0, max=500)])
+    gain = TextAreaField('What do you hope to gain?', validators=[DataRequired(), Length(min=0, max=500)])
+    stage = StringField('What stage is your startup at?', validators=[DataRequired(), Length(min=0, max=100)])
     relation = StringField('What type of mentorship relationship are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
     website = StringField('Website (optional)', validators=[Length(min=0, max=280)])
-    business_docs = StringField('Please provide a link to any applicable business documents', validators=[DataRequired(), Length(min=0, max=280)]) 
+    business_docs = StringField('Please provide a link to any applicable business documents', validators=[DataRequired(), Length(min=0, max=380)]) 
     submit = SubmitField('Apply')
     
     def validate_email(self, email):
