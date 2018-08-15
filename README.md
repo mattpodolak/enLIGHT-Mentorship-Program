@@ -61,9 +61,10 @@ Run app
 ## Sending Mail
 Add these ENVIRONMENT variables along
 ```bash
+> set MAIL_SERVER=smtp.googlemail.com
 > set MAIL_PORT=587
 > set MAIL_USE_TLS=1
-> set MAIL_USERNAME=<your-gmail-username>
+> set MAIL_USERNAME=<pythonbugemail@gmail.com>
 > set MAIL_PASSWORD=<your-gmail-password>
 ```
 
@@ -134,3 +135,46 @@ Now, delete migration scripts by hand and redo migration
 Git command cheatsheet: https://gist.github.com/davfre/8313299
 Git branch & merge info: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
 
+# Website Info
+
+## Mentors
+
+### What we are looking for
+- Variety of industries and companies
+- Serious about the time committment 
+- Preferably people with experience working as a mentor or with startups
+
+### Profile Page
+- Name
+- One line description
+- Availability (hours/month)
+- Skillset
+- Industry
+- Company and Position (under name)
+- LinkedIn profile
+- Relevant experience (optional)
+
+## Mentees
+
+### What we are looking for
+- Pre-seed / seed stage startups
+
+### Onboarding
+- Apply first and make profile when accepted
+- Can see mentor list and can rank preferences
+- Fill out profile and will be matched with mentor within 7 days
+
+### Profile Page
+- Company name
+- Founder names
+- Industry
+- Founder skillsets
+- What type of help looking for
+
+### Application
+- Why are you interested?
+- What do you hope to gain?
+- What stage is your startup at
+- What type of mentorship relationship are you looking for? (answer a couple questions, formal advisor, etc)
+- Website (optional)
+- Please provide a link to any applicable business documents
