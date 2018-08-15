@@ -95,3 +95,14 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
+@flapp.route('/application', methods=['GET', 'POST'])
+def application():
+    form = ApplicationForm()
+    if form.validate_on_submit():
+        flash('You have applied successfully.')
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        flash('Preload info.')
+    return render_template('application.html', title='Mentee Application Form',
+                           form=form)
