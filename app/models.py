@@ -40,7 +40,7 @@ class Mentee(db.Model):
 class Type(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     account = db.Column(db.String(64))
-    users = db.relationship('User', backref='user', lazy='dynamic')
+    users = db.relationship('User', backref='type', lazy='dynamic')
 
 
     def __repr__(self):
