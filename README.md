@@ -26,11 +26,7 @@ Make new venv
 
 Install required packages
 ```bash
-> pip install flask
-> pip install flask-sqlalchemy
-> pip install flask-migrate
-> pip install flask-wtf
-> pip install flask-login
+> pip install -r requirements.txt
 ```
 
 Initiate database (not sure if needed)
