@@ -39,6 +39,7 @@ class Mentee(db.Model):
 
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    accept = db.Column(db.String(100))
     company = db.Column(db.String(100))
     founder = db.Column(db.String(280))
     email = db.Column(db.String(120), index=True, unique=True)

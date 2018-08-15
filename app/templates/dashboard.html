@@ -4,6 +4,13 @@
     <h1>DASHBOARD PAGE</h1>
     {% if apps %}
         {% for app in apps %}
+            <hr>
+            {% if app.accept %}
+                <li>Status: Accepted</li>
+            {% else %}
+                <a href="{{ url_for('acc_app', appId=app.id) }}">Accept</a>
+            {% endif %}
+            <a href="{{ url_for('del_app', appId=app.id) }}">Delete</a>
             <li>Company: {{app.company}}</li>
             <li>Founders: {{app.founder}}</li>
             <li>Contact: {{app.email}}</li>
@@ -16,7 +23,7 @@
             <li>Mentorship: {{app.relation}}</li>
             <li>Website: {{app.web}}</li>
             <li>Business docs: {{app.links}}</li>
-            <br>
+            <hr>
         {% endfor %}
     {% endif %}
 {% endblock %}
