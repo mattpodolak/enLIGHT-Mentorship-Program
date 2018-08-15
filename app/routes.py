@@ -70,7 +70,7 @@ def acc_app(appId):
     if current_user.is_admin:
         app = Application.query.filter_by(id=appId).first()
         db.session.delete(app)
-        app.accept = True
+        app.accept = "Accepted"
         db.session.add(app)
         db.session.commit()
         flash('You accepted the application for ' + app.company)
@@ -133,7 +133,7 @@ def application():
         return redirect(url_for('index'))
     form = ApplicationForm()
     if form.validate_on_submit():
-        apply = Application(accept=False, company=form.company_name.data, founder=form.founder_names.data, email=form.contact_email.data, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
+        apply = Application(accept="Pending", company=form.company_name.data, founder=form.founder_names.data, email=form.contact_email.data, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
         db.session.add(apply)
         db.session.commit()
         flash('Congratulations, you applied successfully!')
