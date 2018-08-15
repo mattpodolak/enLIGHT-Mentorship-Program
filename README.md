@@ -9,6 +9,9 @@
     - [Database Migration](#database-migration)
     - [Database Testing](#database-testing)
 - [Issue Management](#issue-management)
+- [Website Info](#website-info)
+    -[Mentors](#mentors)
+    -[Mentees](#mentees)
 
 # Getting Started
 
@@ -86,6 +89,7 @@ Undo a migration with:
 Run shell in diff terminal for db manipulation
 ```bash
 > flask shell
+> from app import db
 ```
 
 Running into problems with db migration because u deleted a column? 

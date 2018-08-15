@@ -2,4 +2,21 @@
 
 {% block content %}
     <h1>DASHBOARD PAGE</h1>
+    {% if apps %}
+        {% for app in apps %}
+            <li>Company: {{app.company}}</li>
+            <li>Founders: {{app.founder}}</li>
+            <li>Contact: {{app.email}}</li>
+            <li>Industry: {{app.industry}}</li>
+            <li>Team Skills: {{app.skills}}</li>
+            <li>Help Needed: {{app.help_req}}</li>
+            <li>Why interested: {{app.interest}}</li>
+            <li>Hope to gain: {{app.gain}}</li>
+            <li>Startup stage: {{app.stage}}</li>
+            <li>Mentorship: {{app.relation}}</li>
+            <li>Website: {{app.web}}</li>
+            <li>Business docs: {{app.links}}</li>
+            <br>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

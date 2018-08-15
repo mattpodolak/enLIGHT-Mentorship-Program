@@ -20,7 +20,7 @@
             <a href="{{ url_for('login') }}">Login</a>
             <a href="{{ url_for('application') }}">Apply Now</a>
             {% else %}
-            <a href="{{ url_for('index') }}">Dashboard</a>
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
             <a href="{{ url_for('user', userId=current_user.id) }}">Profile</a>
             <a href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
