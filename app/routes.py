@@ -2,7 +2,7 @@ from app import flapp, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, ApplicationForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Mentor
+from app.models import User, Mentor, Mentee, Application
 from werkzeug.urls import url_parse
 import sys
 
@@ -14,6 +14,9 @@ def index():
 @flapp.route('/dashboard')
 @login_required
 def dashboard():
+    if current_user.is_admin:
+        appList = Application.query.all()
+        return render_template('dashboard.html', title='Dashboard', apps=appList)
     return render_template('dashboard.html', title='Dashboard')
 
 @flapp.route('/login', methods=['GET', 'POST'])
@@ -22,7 +25,7 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
@@ -33,19 +36,21 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
-@flapp.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+@flapp.route('/register_user', methods=['GET', 'POST'])
+@login_required
+def register_user():
+    if current_user.is_admin:
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            user = User(email=form.email.data, access=0)
+            user.set_password(form.password.data)
+            db.session.add(user)
+            db.session.commit()
+            flash('Congratulations, you are now a registered user!')
+            return redirect(url_for('login'))
+        return render_template('register.html', title='Register', form=form)
+    else:
+        return render_template('404.html')
 
 @flapp.route('/logout')
 @login_required
@@ -98,10 +103,15 @@ def edit_profile():
 
 @flapp.route('/application', methods=['GET', 'POST'])
 def application():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
     form = ApplicationForm()
     if form.validate_on_submit():
-        flash('You have applied successfully.')
-        return redirect(url_for('edit_profile'))
+        apply = Application(company=form.company_name.data, founder=form.founder_names.data, email=form.contact_email.data, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
+        db.session.add(apply)
+        db.session.commit()
+        flash('Congratulations, you applied successfully!')
+        return redirect(url_for('index'))
     elif request.method == 'GET':
         flash('Preload info.')
     return render_template('application.html', title='Mentee Application Form',
