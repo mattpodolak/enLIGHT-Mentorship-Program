@@ -5,12 +5,13 @@
     {% if apps %}
         {% for app in apps %}
             <hr>
-            {% if app.accept %}
+            <a href="{{ url_for('del_app', appId=app.id) }}">Delete</a>
+            {% if app.accept == 1 %}
                 <li>Status: Accepted</li>
             {% else %}
                 <a href="{{ url_for('acc_app', appId=app.id) }}">Accept</a>
             {% endif %}
-            <a href="{{ url_for('del_app', appId=app.id) }}">Delete</a>
+            <li>Status: {{app.accept}}</li>
             <li>Company: {{app.company}}</li>
             <li>Founders: {{app.founder}}</li>
             <li>Contact: {{app.email}}</li>

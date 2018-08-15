@@ -59,7 +59,7 @@ def del_app(appId):
         app = Application.query.filter_by(id=appId).first()
         db.session.delete(app)
         db.session.commit()
-        flash('You deleted the application for ', str(app.company))
+        flash('You deleted the application for ' + app.company)
         return redirect(url_for('dashboard'))
     else:
         return render_template('404.html')
@@ -73,7 +73,7 @@ def acc_app(appId):
         app.accept = True
         db.session.add(app)
         db.session.commit()
-        flash('You accepted the application for ', str(app.company))
+        flash('You accepted the application for ' + app.company)
         return redirect(url_for('dashboard'))
     else:
         return render_template('404.html')
