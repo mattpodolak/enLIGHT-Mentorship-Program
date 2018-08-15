@@ -10,8 +10,8 @@
     - [Database Testing](#database-testing)
 - [Issue Management](#issue-management)
 - [Website Info](#website-info)
-    -[Mentors](#mentors)
-    -[Mentees](#mentees)
+    - [Mentors](#mentors)
+    - [Mentees](#mentees)
 
 # Getting Started
 
@@ -88,6 +88,7 @@ Undo a migration with:
 ## Database Testing
 Run shell in diff terminal for db manipulation
 ```bash
+> mentorship-venv\Scripts\activate
 > flask shell
 > from app import db
 ```
