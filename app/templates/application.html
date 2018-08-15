@@ -12,6 +12,13 @@
             {% endfor %}
         </p>
         <p>
+            {{ form.contact_email.label }}<br>
+            {{ form.contact_email(size=32) }}<br>
+            {% for error in form.contact_email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
             {{ form.founder_names.label }}<br>
             {{ form.founder_names(size=32) }}<br>
             {% for error in form.founder_names.errors %}
