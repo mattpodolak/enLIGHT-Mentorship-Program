@@ -92,7 +92,9 @@ Run shell in diff terminal for db manipulation
 > flask shell
 ```
 
-Running into problems with db migration because u deleted a column? OR delete app.db
+Running into problems with db migration because u deleted a column? 
+
+Do the following OR delete app.db
 ```bash
 > db.reflect()
 > db.drop_all()

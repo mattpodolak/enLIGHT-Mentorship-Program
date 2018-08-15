@@ -1,8 +1,8 @@
-"""users and mentors tables
+"""init db
 
-Revision ID: fb3e243e3383
+Revision ID: 7be31f35b250
 Revises: 
-Create Date: 2018-08-11 17:25:27.272789
+Create Date: 2018-08-14 22:04:12.588565
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'fb3e243e3383'
+revision = '7be31f35b250'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,6 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=64), nullable=True),
     sa.Column('last_name', sa.String(length=64), nullable=True),
+    sa.Column('about_me', sa.String(length=280), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -31,6 +32,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=64), nullable=True),
     sa.Column('last_name', sa.String(length=64), nullable=True),
+    sa.Column('about_me', sa.String(length=280), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.Column('mentor_id', sa.Integer(), nullable=True),

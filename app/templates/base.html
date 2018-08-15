@@ -18,7 +18,7 @@
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('application') }}">Apply Now</a>
             {% else %}
             <a href="{{ url_for('index') }}">Dashboard</a>
             <a href="{{ url_for('user', userId=current_user.id) }}">Profile</a>
