@@ -9,6 +9,8 @@ import sys
 @flapp.route('/')
 @flapp.route('/index')
 def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     return render_template('index.html', title='Home')
 
 @flapp.route('/dashboard')
@@ -44,7 +46,7 @@ def app_list():
 @flapp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -54,21 +56,27 @@ def login():
         login_user(user, remember=form.remember_me.data)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
+            next_page = url_for('dashboard')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
-@flapp.route('/register_user', methods=['GET', 'POST'])
+@flapp.route('/register_user/<userType>', methods=['GET', 'POST'])
 @login_required
-def register_user():
+def register_user(userType):
     if current_user.is_admin:
         form = RegistrationForm()
+        if (userType == "mentee"):
+            accessType = 0
+        elif (userType == "mentor"):
+            accessType = 1
+        else:
+            accessType = 0
         if form.validate_on_submit():
-            user = User(email=form.email.data, access=0)
+            user = User(email=form.email.data, access=accessType)
             user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
-            flash('Congratulations, you are now a registered user!')
+            flash('Congratulations, you have registered user!')
             return redirect(url_for('login'))
         return render_template('register.html', title='Register', form=form)
     else:
