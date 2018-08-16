@@ -14,10 +14,16 @@ def index():
 @flapp.route('/dashboard')
 @login_required
 def dashboard():
+    return render_template('dashboard.html', title='Dashboard')
+
+@flapp.route('/app_list')
+@login_required
+def app_list():
     if current_user.is_admin:
         appList = Application.query.all()
-        return render_template('dashboard.html', title='Dashboard', apps=appList)
-    return render_template('dashboard.html', title='Dashboard')
+        return render_template('applist.html', title='Application List', apps=appList)
+    else:
+        return render_template('404.html')
 
 @flapp.route('/login', methods=['GET', 'POST'])
 def login():
