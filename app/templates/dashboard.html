@@ -2,28 +2,13 @@
 
 {% block content %}
     <h1>DASHBOARD PAGE</h1>
-    {% if apps %}
-        {% for app in apps %}
-            <hr>
-            
-            {% if app.accept == "Pending" %}
-            <a href="{{ url_for('acc_app', appId=app.id) }}">Accept</a>
-            {% endif %}
-            <a href="{{ url_for('del_app', appId=app.id) }}">Delete</a>
-            <li><b>Status:</b> {{app.accept}}</li>
-            <li><b>Company:</b> {{app.company}}</li>
-            <li><b>Founders:</b> {{app.founder}}</li>
-            <li><b>Contact:</b> {{app.email}}</li>
-            <li><b>Industry:</b> {{app.industry}}</li>
-            <li><b>Team Skills:</b> {{app.skills}}</li>
-            <li><b>Help Needed:</b> {{app.help_req}}</li>
-            <li><b>Why interested:</b> {{app.interest}}</li>
-            <li><b>Hope to gain:</b> {{app.gain}}</li>
-            <li><b>Startup stage:</b> {{app.stage}}</li>
-            <li><b>Mentorship:</b> {{app.relation}}</li>
-            <li><b>Website (optional):</b> {{app.web}}</li>
-            <li><b>Business docs:</b> {{app.links}}</li>
-            <hr>
-        {% endfor %}
+    {% if current_user.is_admin %}
+        <div>        
+            <a href="{{ url_for('index') }}">App List</a>
+            <a href="{{ url_for('login') }}">Mentor List</a>
+            <a href="{{ url_for('application') }}">Mentee List</a>
+        </div>
+        {% block content2 %}{% endblock %}
     {% endif %}
+
 {% endblock %}
