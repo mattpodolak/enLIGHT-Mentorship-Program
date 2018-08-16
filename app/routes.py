@@ -14,7 +14,13 @@ def index():
 @flapp.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', title='Dashboard')
+    if current_user.is_admin:
+        return render_template('dashboard.html', title='Dashboard')
+    elif current_user.is_mentor:
+        return redirect(url_for('mentee_list'))
+    else:
+        return redirect(url_for('mentor_list'))
+
 
 @flapp.route('/mentor_list')
 @login_required
