@@ -18,12 +18,12 @@ def dashboard():
 
 @flapp.route('/mentor_list')
 @login_required
-def dashboard():
+def mentor_list():
     return render_template('mentorlist.html', title='Mentor List')
 
 @flapp.route('/mentee_list')
 @login_required
-def dashboard():
+def mentee_list():
     return render_template('menteelist.html', title='Mentee List')
 
 @flapp.route('/app_list')
