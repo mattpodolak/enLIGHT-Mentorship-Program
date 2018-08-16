@@ -16,6 +16,16 @@ def index():
 def dashboard():
     return render_template('dashboard.html', title='Dashboard')
 
+@flapp.route('/mentor_list')
+@login_required
+def dashboard():
+    return render_template('mentorlist.html', title='Mentor List')
+
+@flapp.route('/mentee_list')
+@login_required
+def dashboard():
+    return render_template('menteelist.html', title='Mentee List')
+
 @flapp.route('/app_list')
 @login_required
 def app_list():
