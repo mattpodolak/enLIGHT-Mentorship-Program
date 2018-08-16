@@ -65,9 +65,9 @@ def login():
 def register_user(userType):
     if current_user.is_admin:
         form = RegistrationForm()
-        if (userType == "mentee"):
+        if (userType == 0):
             accessType = 0
-        elif (userType == "mentor"):
+        elif (userType == 1):
             accessType = 1
         else:
             accessType = 0
@@ -78,7 +78,10 @@ def register_user(userType):
             db.session.commit()
             flash('Congratulations, you have registered user!')
             return redirect(url_for('login'))
-        return render_template('register.html', title='Register', form=form)
+        if accessType:
+            return render_template('register.html', title='Register Mentor', form=form)
+        else:
+            return render_template('register.html', title='Register Mentee', form=form)    
     else:
         return render_template('404.html')
 

@@ -6,7 +6,7 @@
             <a href="{{ url_for('app_list') }}">App List</a>
             <a href="{{ url_for('mentor_list') }}">Mentor List</a>
             <a href="{{ url_for('mentee_list') }}">Mentee List</a>
-            <a href="{{ url_for('register_user', userType=mentor) }}">Create Mentor Account</a>
+            <a href="{{ url_for('register_user', userType=1) }}">Create Mentor Account</a>
         </div>
     {% endif %}
     {% block content2 %}{% endblock %}
