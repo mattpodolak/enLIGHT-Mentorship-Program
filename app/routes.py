@@ -77,10 +77,13 @@ def register_user(userType):
         except:
             return render_template('404.html')
         if (userType == 0):
+            form = MenteeRegistrationForm()
             accessType = 0
         elif (userType == 1):
+            form = MentorRegistrationForm()
             accessType = 1
         else:
+            form = MenteeRegistrationForm()
             accessType = 0
         if form.validate_on_submit():
             user = User(email=form.email.data, access=accessType)
@@ -99,11 +102,9 @@ def register_user(userType):
             flash('Congratulations, you have registered user!')
             return redirect(url_for('login'))
         if accessType == 1:
-            form = MentorRegistrationForm()
             return render_template('register_mentor.html', title='Register Mentor', form=form)
         else:
-            form = MenteeRegistrationForm()
-            return render_template('register_mentee.html', title='Register Mentee', form=form)    
+            return render_template('register_mentor.html', title='Register Mentee', form=form)    
     else:
         return render_template('404.html')
 
