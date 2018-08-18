@@ -48,7 +48,7 @@ Set ENVIRONMENT variables
 > set FLASK_APP=mentorship.py
 ```
 
-Update Database
+Update Database (only if db changes made by someone else)
 ```bash
 > flask db upgrade
 ```

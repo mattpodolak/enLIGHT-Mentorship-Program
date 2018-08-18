@@ -27,12 +27,20 @@ def dashboard():
 @flapp.route('/mentor_list')
 @login_required
 def mentor_list():
-    return render_template('mentorlist.html', title='Mentor List')
+    if current_user.is_admin:
+        mentorList = Mentor.query.all()
+        return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
+    else:
+        return render_template('404.html')
 
 @flapp.route('/mentee_list')
 @login_required
 def mentee_list():
-    return render_template('menteelist.html', title='Mentee List')
+    if current_user.is_admin:
+        menteeList = Mentee.query.all()
+        return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
+    else:
+        return render_template('404.html')
 
 @flapp.route('/app_list')
 @login_required
@@ -64,6 +72,10 @@ def login():
 @login_required
 def register_user(userType):
     if current_user.is_admin:
+        try:
+            userType = int(userType)
+        except:
+            return render_template('404.html')
         form = RegistrationForm()
         if (userType == 0):
             accessType = 0
@@ -78,7 +90,7 @@ def register_user(userType):
             db.session.commit()
             flash('Congratulations, you have registered user!')
             return redirect(url_for('login'))
-        if accessType:
+        if accessType == 1:
             return render_template('register.html', title='Register Mentor', form=form)
         else:
             return render_template('register.html', title='Register Mentee', form=form)    
