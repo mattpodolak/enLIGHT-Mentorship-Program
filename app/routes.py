@@ -104,7 +104,7 @@ def register_user(userType):
         if accessType == 1:
             return render_template('register_mentor.html', title='Register Mentor', form=form)
         else:
-            return render_template('register_mentor.html', title='Register Mentee', form=form)    
+            return render_template('register_mentee.html', title='Register Mentee', form=form)    
     else:
         return render_template('404.html')
 
