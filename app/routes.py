@@ -104,6 +104,12 @@ def del_app(appId):
         app = Application.query.filter_by(id=appId).first()
         db.session.delete(app)
         db.session.commit()
+        # create User and Mentee accounts
+        user = User(email=app.email, access=0)
+        user.set_password(app.company)
+        db.session.add(user)
+        db.session.commit()
+        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
         flash('You deleted the application for ' + app.company)
         return redirect(url_for('dashboard'))
     else:
