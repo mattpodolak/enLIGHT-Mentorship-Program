@@ -100,10 +100,10 @@ def register_user(userType):
             return redirect(url_for('login'))
         if accessType == 1:
             form = MentorRegistrationForm()
-            return render_template('register.html', title='Register Mentor', form=form)
+            return render_template('register_mentor.html', title='Register Mentor', form=form)
         else:
             form = MenteeRegistrationForm()
-            return render_template('register.html', title='Register Mentee', form=form)    
+            return render_template('register_mentee.html', title='Register Mentee', form=form)    
     else:
         return render_template('404.html')
 
