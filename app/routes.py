@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, ApplicationForm
+from app.forms import LoginForm, MentorRegistrationForm, MenteeRegistrationForm, EditProfileForm, ApplicationForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application
@@ -76,7 +76,6 @@ def register_user(userType):
             userType = int(userType)
         except:
             return render_template('404.html')
-        form = RegistrationForm()
         if (userType == 0):
             accessType = 0
         elif (userType == 1):
@@ -88,11 +87,22 @@ def register_user(userType):
             user.set_password(form.password.data)
             db.session.add(user)
             db.session.commit()
+            # create mentor / mentee instance
+            if accessType == 1:
+                mentor = Mentor(email=form.email.data)
+                db.session.add(mentor)
+                db.session.commit()
+            else:
+                mentee = Mentee(email=form.email.data)
+                db.session.add(mentee)
+                db.session.commit()
             flash('Congratulations, you have registered user!')
             return redirect(url_for('login'))
         if accessType == 1:
+            form = MentorRegistrationForm()
             return render_template('register.html', title='Register Mentor', form=form)
         else:
+            form = MenteeRegistrationForm()
             return render_template('register.html', title='Register Mentee', form=form)    
     else:
         return render_template('404.html')
@@ -103,14 +113,6 @@ def del_app(appId):
     if current_user.is_admin:
         app = Application.query.filter_by(id=appId).first()
         db.session.delete(app)
-        db.session.commit()
-        # create User and Mentee accounts
-        user = User(email=app.email, access=0)
-        user.set_password(app.company)
-        db.session.add(user)
-        db.session.commit()
-        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
-        db.session.add(mentee)
         db.session.commit()
         flash('You deleted the application for ' + app.company)
         return redirect(url_for('dashboard'))
@@ -125,6 +127,14 @@ def acc_app(appId):
         db.session.delete(app)
         app.accept = "Accepted"
         db.session.add(app)
+        db.session.commit()
+        # create User and Mentee accounts
+        user = User(email=app.email, access=0)
+        user.set_password(app.company)
+        db.session.add(user)
+        db.session.commit()
+        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
+        db.session.add(mentee)
         db.session.commit()
         flash('You accepted the application for ' + app.company)
         return redirect(url_for('dashboard'))
@@ -191,7 +201,5 @@ def application():
         db.session.commit()
         flash('Congratulations, you applied successfully!')
         return redirect(url_for('index'))
-    elif request.method == 'GET':
-        flash('Preload info.')
     return render_template('application.html', title='Mentee Application Form',
                            form=form)
