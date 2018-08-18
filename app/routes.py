@@ -99,7 +99,7 @@ def register_user(userType):
                 mentee = Mentee(email=form.email.data)
                 db.session.add(mentee)
                 db.session.commit()
-            flash('Congratulations, you have registered user!')
+            flash('Congratulations, you have registered ' + form.email.data)
             return redirect(url_for('login'))
         if accessType == 1:
             return render_template('register_mentor.html', title='Register Mentor', form=form)
