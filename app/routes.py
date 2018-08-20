@@ -28,6 +28,10 @@ def dashboard():
 @login_required
 def mentor_list():
     mentorList = Mentor.query.all()
+    # clean the data a bit before passing to mentees
+    if current_user.access == 0:
+        for mentor in mentorList:
+            mentor.email = None
     return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
 
 
@@ -154,16 +158,24 @@ def user(userId):
         user.id
     except AttributeError:
         return render_template('404.html')
+    
+    if user == current_user:
+        if current_user.is_admin():
+            return render_template('404.html')
+        elif current_user.is_mentor():
+             info = Mentor.query.filter_by(email=user.email).first()
+        else:
+            info = Mentee.query.filter_by(email=user.email).first()
 
-    if current_user.is_admin():
+    elif current_user.is_admin():
         if user.is_admin():
             # dont load profile for
             return render_template('404.html')
         elif user.is_mentor():
-            return render_template('404.html')
+            info = Mentor.query.filter_by(email=user.email).first()
         else:
-            # current user = mentor, can only view mentees
-            return render_template('user.html', user=user)
+            info = Mentee.query.filter_by(email=user.email).first()
+            
     elif current_user.is_mentor():
         if user.is_admin():
             return render_template('404.html')
@@ -171,15 +183,20 @@ def user(userId):
             return render_template('404.html')
         else:
             # current user = mentor, can only view mentees
-            return render_template('user.html', user=user)
+            info = Mentee.query.filter_by(email=user.email).first()
     else:
         if user.is_admin():
             return render_template('404.html')
         elif user.is_mentor():
             # current user = mentee, can only view mentors
-            return render_template('user.html', user=user)
+            info = Mentor.query.filter_by(email=user.email).first()
+            # clean the data a bit before passing to mentees
+            info.email = None
+            user.email = None
         else:
             return render_template('404.html')
+    
+    return render_template('user.html', title='Profile', user=user, info=info)
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

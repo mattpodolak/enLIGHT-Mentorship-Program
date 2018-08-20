@@ -4,12 +4,21 @@
     {% if user == current_user %}
         <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
     {% endif %}
-    {% if is_mentor() %}
-        <h2>Mentor: {{user.first_name}} {{user.last_name}}</h2>
-        <p>{{user.about_me}}</p>
+    {% if user.is_mentor() %}
+        <h2>{{info.first_name}} {{info.last_name}}</h2>
+        <p>{{info.about_me}}</p>
+        <p>{{info.linked}}</p>
+        <br>
+        <p><b>Current Job: {{info.position}} @ {{info.company}}</b></p>
+        <p>Industry: {{info.industry}}</p>
+        <p>Skills: {{info.skill}}</p>
+        <p>Availability: {{info.avail}}</p>
     {% else %}
-        <h2>Mentee: {{user.first_name}} {{user.last_name}}</h2>
-        <p>{{user.about_me}}</p>
+        <h2>{{info.company}}</h2>
+        <h3>Founders: {{info.founder}}</h3>
+        <p>Help Required: {{info.help_req}}</p>
+        <p>Industry: {{info.industry}}</p>
+        <p>Team skillset: {{info.skills}}</p>
     {% endif %}
 
 {% endblock %}

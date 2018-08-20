@@ -18,7 +18,7 @@
                     </div>
                 </a>
             {% else %}
-                {% if company %}
+                {% if mentee.company %}
                     <a href="{{ url_for('user', userId=mentee.email_hash) }}">
                         <div class="col-md-8 col-md-offset-2">
                             <li><b>{{mentee.company}}</b></li>
