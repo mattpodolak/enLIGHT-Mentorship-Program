@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    {% if current_user.is_admin %}
+    {% if current_user.is_admin() %}
         <div> Admin Dashboard:         
             <a href="{{ url_for('app_list') }}">App List</a>
             <a href="{{ url_for('mentor_list') }}">Mentor List</a>
@@ -9,6 +9,6 @@
             <a href="{{ url_for('register_user', userType=1) }}">Create Mentor Account</a>
         </div>
     {% endif %}
-    {% block content2 %}{% endblock %}
+    {% block dash_content %}{% endblock %}
 
 {% endblock %}

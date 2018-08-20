@@ -16,9 +16,9 @@ def index():
 @flapp.route('/dashboard')
 @login_required
 def dashboard():
-    if current_user.is_admin:
+    if current_user.is_admin():
         return render_template('dashboard.html', title='Dashboard')
-    elif current_user.is_mentor:
+    elif current_user.is_mentor():
         return redirect(url_for('mentee_list'))
     else:
         return redirect(url_for('mentor_list'))
@@ -40,7 +40,7 @@ def mentee_list():
 @flapp.route('/app_list')
 @login_required
 def app_list():
-    if current_user.is_admin:
+    if current_user.is_admin():
         appList = Application.query.all()
         return render_template('applist.html', title='Application List', apps=appList)
     else:
@@ -66,7 +66,7 @@ def login():
 @flapp.route('/register_user/<userType>', methods=['GET', 'POST'])
 @login_required
 def register_user(userType):
-    if current_user.is_admin:
+    if current_user.is_admin():
         try:
             userType = int(userType)
         except:
@@ -107,7 +107,7 @@ def register_user(userType):
 @flapp.route('/del_app/<appId>')
 @login_required
 def del_app(appId):
-    if current_user.is_admin:
+    if current_user.is_admin():
         app = Application.query.filter_by(id=appId).first()
         db.session.delete(app)
         db.session.commit()
@@ -119,7 +119,7 @@ def del_app(appId):
 @flapp.route('/acc_app/<appId>')
 @login_required
 def acc_app(appId):
-    if current_user.is_admin:
+    if current_user.is_admin():
         app = Application.query.filter_by(id=appId).first()
         db.session.delete(app)
         app.accept = "Accepted"
@@ -155,27 +155,27 @@ def user(userId):
     except AttributeError:
         return render_template('404.html')
 
-    if current_user.is_admin:
-        if user.is_admin:
+    if current_user.is_admin():
+        if user.is_admin():
             # dont load profile for
             return render_template('404.html')
-        elif user.is_mentor:
+        elif user.is_mentor():
             return render_template('404.html')
         else:
             # current user = mentor, can only view mentees
             return render_template('user.html', user=user)
-    elif current_user.is_mentor:
-        if user.is_admin:
+    elif current_user.is_mentor():
+        if user.is_admin():
             return render_template('404.html')
-        elif user.is_mentor:
+        elif user.is_mentor():
             return render_template('404.html')
         else:
             # current user = mentor, can only view mentees
             return render_template('user.html', user=user)
     else:
-        if user.is_admin:
+        if user.is_admin():
             return render_template('404.html')
-        elif user.is_mentor:
+        elif user.is_mentor():
             # current user = mentee, can only view mentors
             return render_template('user.html', user=user)
         else:

@@ -1,28 +1,33 @@
 {% extends "dashboard.html" %}
-{% block content2 %}
+{% block dash_content %}
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
         <h1>MENTEE LIST</h1>
     </div>
     {% if mentees %}
         {% for mentee in mentees %}
-        
-            <a href="{{ url_for('user', userId=mentee.email_hash) }}">
-                <div class="col-md-8 col-md-offset-2">
-                    {% if current_user.is_admin %}
+            {% if current_user.is_admin() %}
+                <a href="{{ url_for('user', userId=mentee.email_hash) }}">
+                    <div class="col-md-8 col-md-offset-2">
                         <li><b>Company:</b> {{mentee.company}}</li>
                         <li><b>Founders:</b> {{mentee.founder}}</li>
                         <li><b>Contact:</b> {{mentee.email}}</li>
                         <li><b>Industry:</b> {{mentee.industry}}</li>
                         <li><b>Team Skills:</b> {{mentee.skills}}</li>
                         <li><b>Help Needed:</b> {{mentee.help_req}}</li>
-                    {% else %}
-                        <li><b>Company:</b> {{mentee.company}}</li>
-                        <li><b>Industry:</b> {{mentee.industry}}</li>
-                        <li><b>Help Needed:</b> {{mentee.help_req}}</li>
-                    {% endif %}
-                </div>
-            </a>
+                    </div>
+                </a>
+            {% else %}
+                {% if company %}
+                    <a href="{{ url_for('user', userId=mentee.email_hash) }}">
+                        <div class="col-md-8 col-md-offset-2">
+                            <li><b>{{mentee.company}}</b></li>
+                            <li><b>Industry:</b> {{mentee.industry}}</li>
+                            <li><b>Help Needed:</b> {{mentee.help_req}}</li>
+                        </div>
+                    </a>
+                {% endif %}
+            {% endif %}
         {% endfor %}
     {% endif %}
 </div>
