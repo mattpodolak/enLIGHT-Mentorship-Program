@@ -31,14 +31,21 @@ def mentor_list():
     # clean the data a bit before passing to mentees
     if current_user.access == 0:
         for mentor in mentorList:
+            user = User.query.filter_by(email=mentor.email).first()
             mentor.email = None
+            mentor.email_hash = user.email_hash
+            
     return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
 
 
 @flapp.route('/mentee_list')
 @login_required
-def mentee_list():
+def mentee_list():          
     menteeList = Mentee.query.all()
+    for mentee in menteeList:
+        user = User.query.filter_by(email=mentee.email).first()
+        mentee.email = None
+        mentee.email_hash = user.email_hash
     return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
 
 @flapp.route('/app_list')
@@ -209,6 +216,8 @@ def edit_profile():
         if form.validate_on_submit():
             db.session.delete(info)
             current_user.email = form.email.data
+            current_user.set_id()
+            info.email = form.email.data
             info.first_name = form.first_name.data
             info.last_name = form.last_name.data
             info.about_me = form.about_me.data
@@ -221,7 +230,7 @@ def edit_profile():
             db.session.add(info)
             db.session.commit()
             flash('Your changes have been saved.')
-            return redirect(url_for('edit_profile'))
+            return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
             form.email.data = current_user.email
             form.first_name.data = info.first_name
@@ -241,6 +250,8 @@ def edit_profile():
         if form.validate_on_submit():
             db.session.delete(info)
             current_user.email = form.email.data
+            current_user.set_id()
+            info.email = form.email.data
             info.company = form.company_name.data
             info.founder = form.founder_names.data
             info.industry = form.industry.data
@@ -249,7 +260,7 @@ def edit_profile():
             db.session.add(info)
             db.session.commit()
             flash('Your changes have been saved.')
-            return redirect(url_for('edit_profile'))
+            return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
             form.email.data = current_user.email
             form.company_name.data = info.company

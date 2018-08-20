@@ -56,7 +56,7 @@ class EditMentorProfileForm(FlaskForm):
     submit = SubmitField('Save Changes')
 
     def __init__(self, original_email, *args, **kwargs):
-        super(EditProfileForm, self).__init__(*args, **kwargs)
+        super(EditMentorProfileForm, self).__init__(*args, **kwargs)
         self.original_email = original_email
 
     def validate_email(self, email):
@@ -75,7 +75,7 @@ class EditMenteeProfileForm(FlaskForm):
     submit = SubmitField('Save Changes')
 
     def __init__(self, original_email, *args, **kwargs):
-        super(EditProfileForm, self).__init__(*args, **kwargs)
+        super(EditMenteeProfileForm, self).__init__(*args, **kwargs)
         self.original_email = original_email
 
     def validate_email(self, email):
