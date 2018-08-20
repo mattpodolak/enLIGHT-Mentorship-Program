@@ -19,9 +19,11 @@ def dashboard():
     if current_user.is_admin:
         return render_template('dashboard.html', title='Dashboard')
     elif current_user.is_mentor:
-        return redirect(url_for('mentee_list'))
+        menteeList = Mentee.query.all()
+        return render_template('menteelist2.html', title='Mentee List', mentees=menteeList)
     else:
-        return redirect(url_for('mentor_list'))
+        mentorList = Mentor.query.all()
+        return render_template('mentorlist2.html', title='Mentor List', mentors=mentorList)
 
 
 @flapp.route('/mentor_list')
@@ -92,7 +94,7 @@ def register_user(userType):
             db.session.commit()
             # create mentor / mentee instance
             if accessType == 1:
-                mentor = Mentor(email=form.email.data)
+                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me= form.about_me.data, avail= form.avail.data, skill=form.skill.data , industry=form.industry.data , company=form.company.data , position=form.position.data , linked=form.linked.data )
                 db.session.add(mentor)
                 db.session.commit()
             else:
