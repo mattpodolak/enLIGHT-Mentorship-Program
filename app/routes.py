@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import LoginForm, MentorRegistrationForm, MenteeRegistrationForm, EditProfileForm, ApplicationForm
+from app.forms import LoginForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application
@@ -201,22 +201,65 @@ def user(userId):
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = EditProfileForm(current_user.email)
-    if form.validate_on_submit():
-        current_user.email = form.email.data
-        current_user.first_name = form.first_name.data
-        current_user.last_name = form.first_name.data
-        current_user.about_me = form.about_me.data
-        db.session.commit()
-        flash('Your changes have been saved.')
-        return redirect(url_for('edit_profile'))
-    elif request.method == 'GET':
-        form.email.data = current_user.email
-        form.first_name.data = current_user.first_name
-        form.last_name.data = current_user.last_name
-        form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile',
-                           form=form)
+    if current_user.is_admin():
+        return render_template('404.html')
+    elif current_user.is_mentor():
+        form = EditMentorProfileForm(current_user.email)
+        info = Mentor.query.filter_by(email=current_user.email).first()
+        if form.validate_on_submit():
+            db.session.delete(info)
+            current_user.email = form.email.data
+            info.first_name = form.first_name.data
+            info.last_name = form.last_name.data
+            info.about_me = form.about_me.data
+            info.avail = form.avail.data
+            info.skill = form.skill.data
+            info.industry = form.industry.data
+            info.company = form.company.data
+            info.position = form.position.data
+            info.linked = form.linked.data
+            db.session.add(info)
+            db.session.commit()
+            flash('Your changes have been saved.')
+            return redirect(url_for('edit_profile'))
+        elif request.method == 'GET':
+            form.email.data = current_user.email
+            form.first_name.data = info.first_name
+            form.last_name.data = info.last_name
+            form.about_me.data = info.about_me
+            form.avail.data = info.avail
+            form.skill.data = info.skill
+            form.industry.data = info.industry
+            form.company.data = info.company
+            form.position.data = info.position
+            form.linked.data = info.linked
+        return render_template('edit_profile.html', title='Edit Profile',
+                            form=form)
+    else:
+        form = EditMenteeProfileForm(current_user.email)
+        info = Mentee.query.filter_by(email=current_user.email).first()
+        if form.validate_on_submit():
+            db.session.delete(info)
+            current_user.email = form.email.data
+            info.company = form.company_name.data
+            info.founder = form.founder_names.data
+            info.industry = form.industry.data
+            info.skills = form.team_skills.data
+            info.help_req = form.help_needed.data
+            db.session.add(info)
+            db.session.commit()
+            flash('Your changes have been saved.')
+            return redirect(url_for('edit_profile'))
+        elif request.method == 'GET':
+            form.email.data = current_user.email
+            form.company_name.data = info.company
+            form.founder_names.data = info.founder
+            form.industry.data = info.industry
+            form.team_skills.data = info.skills
+            form.help_needed.data = info.help_req
+        return render_template('edit_profile.html', title='Edit Profile',
+                            form=form)
+
 
 @flapp.route('/application', methods=['GET', 'POST'])
 def application():

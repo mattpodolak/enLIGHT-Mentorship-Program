@@ -42,12 +42,37 @@ class MentorRegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different email address.')
 
-class EditProfileForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
-    first_name = StringField('First Name', validators=[DataRequired()])
-    last_name = StringField('Last Name', validators=[DataRequired()])
-    about_me = TextAreaField('About me', validators=[Length(min=0, max=280)])
-    submit = SubmitField('Submit')
+class EditMentorProfileForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired(), Length(min=0, max=64)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(min=0, max=64)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    about_me = StringField('About', validators=[DataRequired(), Length(min=0, max=280)])
+    avail = StringField('Availability', validators=[DataRequired(), Length(min=0, max=64)])
+    skill = StringField('Skillset', validators=[DataRequired(), Length(min=0, max=164)])
+    industry = StringField('Industries', validators=[DataRequired(), Length(min=0, max=164)])
+    company = StringField('Current Company', validators=[DataRequired(), Length(min=0, max=164)])
+    position = StringField('Current Position', validators=[DataRequired(), Length(min=0, max=164)])
+    linked = StringField('LinkedIn Link', validators=[DataRequired(), Length(min=0, max=164)])
+    submit = SubmitField('Save Changes')
+
+    def __init__(self, original_email, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.original_email = original_email
+
+    def validate_email(self, email):
+        if email.data != self.original_email:
+            user = User.query.filter_by(email=self.email.data).first()
+            if user is not None:
+                raise ValidationError('Please use a different email address.')
+
+class EditMenteeProfileForm(FlaskForm):
+    company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])
+    email = StringField('Contact Email', validators=[DataRequired(), Email()])
+    founder_names = StringField('Names of Founders', validators=[DataRequired(), Length(min=0, max=280)])
+    industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
+    team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
+    help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
+    submit = SubmitField('Save Changes')
 
     def __init__(self, original_email, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
