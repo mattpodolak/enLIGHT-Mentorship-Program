@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 import logging
 from logging.handlers import SMTPHandler
+from flask_bootstrap import Bootstrap
 
 flapp = Flask(__name__)
 flapp.config.from_object(Config)
@@ -12,6 +13,7 @@ db = SQLAlchemy(flapp)
 migrate = Migrate(flapp, db)
 login = LoginManager(flapp)
 login.login_view = 'login'
+bootstrap = Bootstrap(flapp)
 
 # if not flapp.debug:
 #     if flapp.config['MAIL_SERVER']:
