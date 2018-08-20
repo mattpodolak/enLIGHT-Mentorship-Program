@@ -28,12 +28,12 @@ def dashboard():
 @login_required
 def mentor_list():
     mentorList = Mentor.query.all()
-    # clean the data a bit before passing to mentees
-    if current_user.access == 0:
-        for mentor in mentorList:
-            user = User.query.filter_by(email=mentor.email).first()
+    for mentor in mentorList:
+        user = User.query.filter_by(email=mentor.email).first()
+        # clean the data a bit before passing to mentees
+        if current_user.access == 0:
             mentor.email = None
-            mentor.email_hash = user.email_hash
+        mentor.email_hash = user.email_hash
             
     return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
 
@@ -44,7 +44,6 @@ def mentee_list():
     menteeList = Mentee.query.all()
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
-        mentee.email = None
         mentee.email_hash = user.email_hash
     return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
 
