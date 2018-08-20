@@ -1,16 +1,29 @@
 {% extends "dashboard.html" %}
 {% block content2 %}
-    <h1>MENTEE LIST</h1>
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <h1>MENTEE LIST</h1>
+    </div>
     {% if mentees %}
         {% for mentee in mentees %}
+        
             <a href="{{ url_for('user', userId=mentee.email_hash) }}">
-                <li><b>Company:</b> {{mentee.company}}</li>
-                <li><b>Founders:</b> {{mentee.founder}}</li>
-                <li><b>Contact:</b> {{mentee.email}}</li>
-                <li><b>Industry:</b> {{mentee.industry}}</li>
-                <li><b>Team Skills:</b> {{mentee.skills}}</li>
-                <li><b>Help Needed:</b> {{mentee.help_req}}</li>
+                <div class="col-md-8 col-md-offset-2">
+                    {% if current_user.is_admin %}
+                        <li><b>Company:</b> {{mentee.company}}</li>
+                        <li><b>Founders:</b> {{mentee.founder}}</li>
+                        <li><b>Contact:</b> {{mentee.email}}</li>
+                        <li><b>Industry:</b> {{mentee.industry}}</li>
+                        <li><b>Team Skills:</b> {{mentee.skills}}</li>
+                        <li><b>Help Needed:</b> {{mentee.help_req}}</li>
+                    {% else %}
+                        <li><b>Company:</b> {{mentee.company}}</li>
+                        <li><b>Industry:</b> {{mentee.industry}}</li>
+                        <li><b>Help Needed:</b> {{mentee.help_req}}</li>
+                    {% endif %}
+                </div>
             </a>
         {% endfor %}
     {% endif %}
+</div>
 {% endblock %}

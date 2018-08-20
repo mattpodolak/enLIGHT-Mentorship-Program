@@ -19,30 +19,23 @@ def dashboard():
     if current_user.is_admin:
         return render_template('dashboard.html', title='Dashboard')
     elif current_user.is_mentor:
-        menteeList = Mentee.query.all()
-        return render_template('menteelist2.html', title='Mentee List', mentees=menteeList)
+        return redirect(url_for('mentee_list'))
     else:
-        mentorList = Mentor.query.all()
-        return render_template('mentorlist2.html', title='Mentor List', mentors=mentorList)
+        return redirect(url_for('mentor_list'))
 
 
 @flapp.route('/mentor_list')
 @login_required
 def mentor_list():
-    if current_user.is_admin:
-        mentorList = Mentor.query.all()
-        return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
-    else:
-        return render_template('404.html')
+    mentorList = Mentor.query.all()
+    return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
+
 
 @flapp.route('/mentee_list')
 @login_required
 def mentee_list():
-    if current_user.is_admin:
-        menteeList = Mentee.query.all()
-        return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
-    else:
-        return render_template('404.html')
+    menteeList = Mentee.query.all()
+    return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
 
 @flapp.route('/app_list')
 @login_required
@@ -155,7 +148,7 @@ def logout():
 @flapp.route('/user/<userId>')
 @login_required
 def user(userId):
-    user = User.query.filter_by(id=userId).first()
+    user = User.query.filter_by(email_hash=userId).first()
     try:
         # check if user is defined
         user.id
