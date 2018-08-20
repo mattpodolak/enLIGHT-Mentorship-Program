@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block app_content %}
     {% if current_user.is_admin %}
         <div> Admin Dashboard:         
             <a href="{{ url_for('app_list') }}">App List</a>
