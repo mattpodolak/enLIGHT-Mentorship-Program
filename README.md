@@ -91,6 +91,12 @@ Run shell in diff terminal for db manipulation
 > mentorship-venv\Scripts\activate
 > flask shell
 > from app import db
+> from app.models import ModelName
+```
+
+Close shell
+```bash
+> Ctrl+Z and Enter
 ```
 
 Running into problems with db migration because u deleted a column? 

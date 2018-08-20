@@ -90,6 +90,7 @@ def register_user(userType):
         if form.validate_on_submit():
             user = User(email=form.email.data, access=accessType)
             user.set_password(form.password.data)
+            user.set_id()
             db.session.add(user)
             db.session.commit()
             # create mentor / mentee instance
@@ -134,6 +135,7 @@ def acc_app(appId):
         # create User and Mentee accounts
         user = User(email=app.email, access=0)
         user.set_password(app.company)
+        user.set_id()
         db.session.add(user)
         db.session.commit()
         mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)

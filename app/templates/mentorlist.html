@@ -3,14 +3,16 @@
     <h1>MENTOR LIST</h1>
     {% if mentors %}
         {% for mentor in mentors %}
-            <li><b>Name:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
-            <li><b>Contact:</b> {{mentor.email}}</li>
-            <li><b>About:</b> {{mentor.about_me}}</li>
-            <li><b>Availability:</b> {{mentor.avail}}</li>
-            <li><b>Skills:</b> {{mentor.skill}}</li>
-            <li><b>Industries:</b> {{mentor.industry}}</li>
-            <li><b>Current Job:</b> {{mentor.position}} @ {{mentor.company}}</li>
-            <li><b>LinkedIn:</b> {{mentor.linked}}</li>
+            <a href="{{ url_for('user', userId=mentor.email_hash) }}">
+                <li><b>Name:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
+                <li><b>Contact:</b> {{mentor.email}}</li>
+                <li><b>About:</b> {{mentor.about_me}}</li>
+                <li><b>Availability:</b> {{mentor.avail}}</li>
+                <li><b>Skills:</b> {{mentor.skill}}</li>
+                <li><b>Industries:</b> {{mentor.industry}}</li>
+                <li><b>Current Job:</b> {{mentor.position}} @ {{mentor.company}}</li>
+                <li><b>LinkedIn:</b> {{mentor.linked}}</li>
+            </a>
         {% endfor %}
     {% endif %}
 {% endblock %}

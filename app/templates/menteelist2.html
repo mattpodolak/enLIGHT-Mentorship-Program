@@ -3,9 +3,11 @@
     <h1>MENTEE LIST</h1>
     {% if mentees %}
         {% for mentee in mentees %}
-            <li><b>Company:</b> {{mentee.company}}</li>
-            <li><b>Industry:</b> {{mentee.industry}}</li>
-            <li><b>Help Needed:</b> {{mentee.help_req}}</li>
+            <a href="{{ url_for('user', userId=mentee.email_hash) }}">
+                <li><b>Company:</b> {{mentee.company}}</li>
+                <li><b>Industry:</b> {{mentee.industry}}</li>
+                <li><b>Help Needed:</b> {{mentee.help_req}}</li>
+            </a>
         {% endfor %}
     {% endif %}
 {% endblock %}
