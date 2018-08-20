@@ -158,20 +158,33 @@ def user(userId):
         # check if user is defined
         user.id
     except AttributeError:
-        # check if mentor is defined
-        mentor = Mentor.query.filter_by(id=userId)
-        try:
-            mentor.id
-        except AttributeError:
-            print('USER NOT DEFINED', file=sys.stderr)
-            # return 404 if not mentor or user
+        return render_template('404.html')
+
+    if current_user.is_admin:
+        if user.is_admin:
+            # dont load profile for
+            return render_template('404.html')
+        elif user.is_mentor:
             return render_template('404.html')
         else:
-            is_mentor = True
-            return render_template('user.html', user=mentor, is_mentor=is_mentor)
+            # current user = mentor, can only view mentees
+            return render_template('user.html', user=user)
+    elif current_user.is_mentor:
+        if user.is_admin:
+            return render_template('404.html')
+        elif user.is_mentor:
+            return render_template('404.html')
+        else:
+            # current user = mentor, can only view mentees
+            return render_template('user.html', user=user)
     else:
-        is_mentor = False
-        return render_template('user.html', user=user, is_mentor=is_mentor)
+        if user.is_admin:
+            return render_template('404.html')
+        elif user.is_mentor:
+            # current user = mentee, can only view mentors
+            return render_template('user.html', user=user)
+        else:
+            return render_template('404.html')
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

@@ -3,6 +3,7 @@ from app import db
 from app import login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+import hashlib
 
 class Mentor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -63,6 +64,7 @@ def load_user(id):
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    email_hash = db.Column(db.String(128))
     password_hash = db.Column(db.String(128))
     access = db.Column(db.Integer)
     #in db.Fore... reference user.id user is database table name, referencing the id from this table
@@ -77,6 +79,11 @@ class User(UserMixin, db.Model):
         if(self.access == 1):
             return True
         return False
+
+    def set_id(self):
+        encode_string = self.email + str(self.id)
+        hash_object = hashlib.md5(encode_string.encode())
+        self.email_hash = hash_object.hexdigest()
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
