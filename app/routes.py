@@ -302,7 +302,7 @@ def reset_password_request():
 @flapp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
-        user = current_user
+        return redirect(url_for('dashboard'))
     else:
         user = User.verify_reset_password_token(token)
         if not user:
@@ -316,4 +316,18 @@ def reset_password(token):
             return redirect(url_for('dashboard'))
         else:
             return redirect(url_for('login'))
+    return render_template('reset_password.html', form=form)
+
+@flapp.route('/reset_password', methods=['GET', 'POST'])
+def reset_pw():
+    if current_user.is_authenticated:
+        user = current_user
+    else:
+        return redirect(url_for('index'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been reset.')
+        return redirect(url_for('dashboard'))
     return render_template('reset_password.html', form=form)
