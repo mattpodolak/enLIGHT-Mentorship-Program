@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
+from app.forms import MenteeSelectForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application
@@ -331,3 +331,15 @@ def reset_pw():
         flash('Your password has been reset.')
         return redirect(url_for('dashboard'))
     return render_template('reset_password.html', form=form)
+
+@flapp.route('/update_mentor')
+@login_required
+def update_mentor():          
+    mentorList = Mentor.query.all()
+    mentorSelect = []
+    for mentee in menteeList:
+        user = User.query.filter_by(email=mentee.email).first()
+        try:
+            #check if mentor exists yet
+            user.mentor_id
+    return render_template('menteelist.html', title='Mentee List', mentees=menteeList)

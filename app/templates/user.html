@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    {% if user == current_user %}
-        <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-        <p><a href="{{ url_for('reset_pw') }}">Reset your password</a></p>
-    {% endif %}
     {% if user.is_mentor() %}
         <h2>{{info.first_name}} {{info.last_name}}</h2>
+        {% if user == current_user %}
+            <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+            <p><a href="{{ url_for('reset_pw') }}">Reset your password</a></p>
+        {% endif %}
         <p>{{info.about_me}}</p>
         <p>{{info.linked}}</p>
         <br>
@@ -16,6 +16,11 @@
         <p>Availability: {{info.avail}}</p>
     {% else %}
         <h2>{{info.company}}</h2>
+        {% if user == current_user %}
+            <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+            <p><a href="{{ url_for('reset_pw') }}">Reset your password</a></p>
+            <p><a href="{{ url_for('update_mentor') }}">Update Mentor Preferences</a></p>
+        {% endif %}
         <h3>Founders: {{info.founder}}</h3>
         <p>Help Required: {{info.help_req}}</p>
         <p>Industry: {{info.industry}}</p>

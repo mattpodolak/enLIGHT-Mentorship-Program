@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from app.models import User, Application
 
@@ -113,3 +113,13 @@ class ResetPasswordForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Request Password Reset')
+
+class MentorSelectForm(FlaskForm):
+    mentor1 = StringField('First Choice', validators=[DataRequired(), Length(min=0, max=128)])
+    mentor2 = StringField('Second Choice', validators=[DataRequired(), Length(min=0, max=128)])
+    mentor3 = StringField('Third Choice', validators=[DataRequired(), Length(min=0, max=128)])
+    submit = SubmitField('Save Preferences')
+
+class MenteeMatchForm(FlaskForm):
+    mentor = StringField('Mentor ID', validators=[DataRequired(), Length(min=0, max=128)])
+    submit = SubmitField('Save Preferences')
