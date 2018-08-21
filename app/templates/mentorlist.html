@@ -11,8 +11,9 @@
                         {% if current_user.is_admin() %}
                             <li><b>ID:</b> {{mentor.id}}</li>
                             {% if mentees %}
-                                <li><b>Mentees:</b>
+                                <li><b>Mentees: </b>
                                     {% for mentee in mentees %}
+                                        {{mentee.company}}, 
                                     {% endfor %}
                                 </li>
                             {% endif %}

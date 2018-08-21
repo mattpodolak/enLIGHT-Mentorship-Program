@@ -9,6 +9,9 @@
             {% if current_user.is_admin() %}
                 <a href="{{ url_for('user', userId=mentee.email_hash) }}">
                     <div class="col-md-8 col-md-offset-2">
+                        {% if mentor %}
+                            <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
+                        {% endif %}
                         <li><b>Company:</b> {{mentee.company}}</li>
                         <li><b>Founders:</b> {{mentee.founder}}</li>
                         <li><b>Contact:</b> {{mentee.email}}</li>
