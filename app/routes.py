@@ -1,10 +1,11 @@
 from app import flapp, db
-from app.forms import LoginForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
+from app.forms import LoginForm, ResetPasswordRequestForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application
 from werkzeug.urls import url_parse
 import sys
+from app.email import send_password_reset_email
 
 @flapp.route('/')
 @flapp.route('/index')
@@ -284,3 +285,19 @@ def application():
         return redirect(url_for('index'))
     return render_template('application.html', title='Mentee Application Form',
                            form=form)
+
+@app.route('/reset_password_request', methods=['GET', 'POST'])
+def reset_password_request():
+    form = ResetPasswordRequestForm()
+    if form.validate_on_submit():
+        if current_user.is_authenticated:
+            send_password_reset_email(current_user)
+            flash('Check your email for the instructions to reset your password')
+            return redirect(url_for('dashboard'))
+        else:
+            user = User.query.filter_by(email=form.email.data).first()
+            if user:
+                send_password_reset_email(user)
+            flash('Check your email for the instructions to reset your password')
+            return redirect(url_for('login'))
+    return render_template('reset.html', title='Reset Password', form=form)

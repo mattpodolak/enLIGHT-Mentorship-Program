@@ -48,6 +48,15 @@ Set ENVIRONMENT variables
 > set FLASK_APP=mentorship.py
 ```
 
+Add these ENVIRONMENT variables for Mail capabilities
+```bash
+> set MAIL_SERVER=smtp.googlemail.com
+> set MAIL_PORT=587
+> set MAIL_USE_TLS=1
+> set MAIL_USERNAME=pythonbugemail@gmail.com
+> set MAIL_PASSWORD=your-gmail-password
+```
+
 Update Database (only if db changes made by someone else)
 ```bash
 > flask db upgrade
@@ -56,15 +65,6 @@ Update Database (only if db changes made by someone else)
 Run app
 ```bash
 > flask run
-```
-## Sending Mail
-Add these ENVIRONMENT variables along
-```bash
-> set MAIL_SERVER=smtp.googlemail.com
-> set MAIL_PORT=587
-> set MAIL_USE_TLS=1
-> set MAIL_USERNAME=<pythonbugemail@gmail.com>
-> set MAIL_PASSWORD=<your-gmail-password>
 ```
 
 # Database 
@@ -107,6 +107,16 @@ Do the following OR delete app.db
 > db.drop_all()
 ```
 Now, delete migration scripts by hand and redo migration
+
+# Email
+## Email Testing
+Run shell in diff terminal for db manipulation
+```bash
+> mentorship-venv\Scripts\activate
+> flask shell
+> from flask_mail import Message
+> from app import mail
+```
 
 # Issue Management
 1. Pick an issue to address
