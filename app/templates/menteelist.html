@@ -7,21 +7,21 @@
     {% if mentees %}
         {% for mentee in mentees %}
             {% if current_user.is_admin() %}
-                <a href="{{ url_for('user', userId=mentee.email_hash) }}">
-                    <div class="col-md-8 col-md-offset-2">
-                        {% if mentor %}
-                            <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
-                        {% endif %}
-                        <a href="{{ url_for('add_mentor', menteeId=mentee.id) }}">Assign/Change Mentor</a>
+                <div class="col-md-8 col-md-offset-2">
+                    <a href="{{ url_for('add_mentor', menteeId=mentee.id) }}">Assign/Change Mentor</a>
+                    <a href="{{ url_for('user', userId=mentee.email_hash) }}">
                         <li><b>Company:</b> {{mentee.company}}</li>
                         <li><b>Mentor Preferences:</b> {{mentee.mentor1}}, {{mentee.mentor2}}, {{mentee.mentor3}}</li>
+                        {% if mentee.mentor %}
+                            <li><b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}</li>
+                        {% endif %}
                         <li><b>Founders:</b> {{mentee.founder}}</li>
                         <li><b>Contact:</b> {{mentee.email}}</li>
                         <li><b>Industry:</b> {{mentee.industry}}</li>
                         <li><b>Team Skills:</b> {{mentee.skills}}</li>
                         <li><b>Help Needed:</b> {{mentee.help_req}}</li>
-                    </div>
-                </a>
+                    </a>
+                </div>
             {% else %}
                 {% if mentee.company %}
                     <a href="{{ url_for('user', userId=mentee.email_hash) }}">

@@ -46,6 +46,7 @@ def mentee_list():
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
+        mentee.mentor = user.mentor
     return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
 
 @flapp.route('/app_list')
@@ -201,7 +202,7 @@ def user(userId):
         else:
             return render_template('404.html')
     
-    return render_template('user.html', title='Profile', user=user, info=info)
+    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor)
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -354,12 +355,15 @@ def add_mentor(menteeId):
         user = User.query.filter_by(email=mentee.email).first()
         form = MenteeMatchForm()
         if form.validate_on_submit():
-            # mentee.mentor1 = form.mentor.data
-            # db.session.commit()
+            mentorId = form.mentor.data
+            mentor = Mentor.query.filter_by(id=mentorId).first()
+            user.mentor = mentor
+            db.session.commit()
             flash('Your mentor preferences have been updated.')
             return redirect(url_for('dashboard'))
         elif request.method == 'GET':
-            # form.mentor.data = mentee.mentor1
-        return render_template('mentorprefs.html', title='Mentor Selection', form=form, mentee=mentee)
+            if user.mentor:
+                form.mentor.data = user.mentor.id
+        return render_template('menteematch.html', title='Update Mentor', form=form, mentee=mentee)
     else:
         return render_template('404.html')
