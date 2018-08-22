@@ -26,10 +26,10 @@
         {% if user == current_user %}
             <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
             <p><a href="{{ url_for('reset_pw') }}">Reset your password</a></p>
-            <p><a href="{{ url_for('update_mentor') }}">Update Mentor Preferences</a></p>
             {% if mentor %}
                 <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
             {% else %}
+                <p><a href="{{ url_for('update_mentor') }}">Update Mentor Preferences</a></p>
                 <li><b>Mentor Preferences:</b> {{info.mentor1}}, {{info.mentor2}}, {{info.mentor3}}</li>
             {% endif %}
         {% endif %}

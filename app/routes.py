@@ -35,6 +35,10 @@ def mentor_list():
         if current_user.access == 0:
             mentor.email = None
         mentor.email_hash = user.email_hash
+        mentor.mentee = []
+        for m in mentor.users:
+            mentee = Mentee.query.filter_by(email=m.email).first()
+            mentor.mentee.append(mentee)
             
     return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
 
@@ -164,12 +168,15 @@ def user(userId):
         user.id
     except AttributeError:
         return render_template('404.html')
-    
+    mentees = []
     if user == current_user:
         if current_user.is_admin():
             return render_template('404.html')
         elif current_user.is_mentor():
-             info = Mentor.query.filter_by(email=user.email).first()
+            info = Mentor.query.filter_by(email=user.email).first()
+            for m in info.users:
+                mentee = Mentee.query.filter_by(email=m.email).first()
+                mentees.append(mentee)
         else:
             info = Mentee.query.filter_by(email=user.email).first()
 
@@ -202,7 +209,7 @@ def user(userId):
         else:
             return render_template('404.html')
     
-    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor)
+    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees)
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

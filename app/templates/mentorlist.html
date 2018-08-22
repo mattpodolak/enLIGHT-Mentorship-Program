@@ -10,9 +10,9 @@
                     <div class="col-md-8 col-md-offset-2">
                         {% if current_user.is_admin() %}
                             <li><b>ID:</b> {{mentor.id}}</li>
-                            {% if mentees %}
+                            {% if mentor.mentee %}
                                 <li><b>Mentees: </b>
-                                    {% for mentee in mentees %}
+                                    {% for mentee in mentor.mentee %}
                                         {{mentee.company}}, 
                                     {% endfor %}
                                 </li>
