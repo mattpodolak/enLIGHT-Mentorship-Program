@@ -326,7 +326,7 @@ def reset_pw():
         return redirect(url_for('dashboard'))
     return render_template('reset_password.html', form=form)
 
-@flapp.route('/update_mentor')
+@flapp.route('/update_mentor', methods=['GET', 'POST'])
 @login_required
 def update_mentor():      
     mentee = Mentee.query.filter_by(email=current_user.email).first()
@@ -344,4 +344,22 @@ def update_mentor():
         form.mentor1.data = mentee.mentor1
         form.mentor2.data = mentee.mentor2
         form.mentor3.data = mentee.mentor3
-    return render_template('mentorprefs.html', title='Mentor Preferences')
+    return render_template('mentorprefs.html', title='Mentor Preferences', form=form)
+
+@flapp.route('/add_mentor/<menteeId>', methods=['GET', 'POST'])
+@login_required
+def add_mentor(menteeId):
+    if current_user.is_admin():
+        mentee = Mentee.query.filter_by(id=menteeId).first()
+        user = User.query.filter_by(email=mentee.email).first()
+        form = MenteeMatchForm()
+        if form.validate_on_submit():
+            # mentee.mentor1 = form.mentor.data
+            # db.session.commit()
+            flash('Your mentor preferences have been updated.')
+            return redirect(url_for('dashboard'))
+        elif request.method == 'GET':
+            # form.mentor.data = mentee.mentor1
+        return render_template('mentorprefs.html', title='Mentor Selection', form=form, mentee=mentee)
+    else:
+        return render_template('404.html')

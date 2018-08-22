@@ -12,6 +12,7 @@
                         {% if mentor %}
                             <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
                         {% endif %}
+                        <a href="{{ url_for('add_mentor', menteeId=mentee.id) }}">Assign/Change Mentor</a>
                         <li><b>Company:</b> {{mentee.company}}</li>
                         <li><b>Mentor Preferences:</b> {{mentee.mentor1}}, {{mentee.mentor2}}, {{mentee.mentor3}}</li>
                         <li><b>Founders:</b> {{mentee.founder}}</li>
