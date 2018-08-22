@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
-from app.models import User, Application
+from app.models import User, Application, Mentor
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
@@ -123,3 +123,8 @@ class MentorSelectForm(FlaskForm):
 class MenteeMatchForm(FlaskForm):
     mentor = StringField('Mentor ID', validators=[DataRequired(), Length(min=0, max=128)])
     submit = SubmitField('Save Preferences')
+
+    def validate_mentor(self, mentor):
+        user = Mentor.query.filter_by(id=mentor.data).first()
+        if user is None:
+            raise ValidationError('Invalid mentor ID.')

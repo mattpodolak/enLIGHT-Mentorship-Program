@@ -38,6 +38,9 @@ class Mentee(db.Model):
     industry = db.Column(db.String(280))
     skills = db.Column(db.String(280))
     help_req = db.Column(db.String(280))
+    mentor1 = db.Column(db.String(128))
+    mentor2 = db.Column(db.String(128))
+    mentor3 = db.Column(db.String(128))
 
     def __repr__(self):
         return '<Mentee {}>'.format(self.email)

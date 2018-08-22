@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import MenteeSelectForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
+from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application
@@ -132,9 +132,7 @@ def del_app(appId):
 def acc_app(appId):
     if current_user.is_admin():
         app = Application.query.filter_by(id=appId).first()
-        db.session.delete(app)
         app.accept = "Accepted"
-        db.session.add(app)
         db.session.commit()
         # create User and Mentee accounts
         user = User(email=app.email, access=0)
@@ -214,7 +212,6 @@ def edit_profile():
         form = EditMentorProfileForm(current_user.email)
         info = Mentor.query.filter_by(email=current_user.email).first()
         if form.validate_on_submit():
-            db.session.delete(info)
             current_user.email = form.email.data
             current_user.set_id()
             info.email = form.email.data
@@ -227,7 +224,6 @@ def edit_profile():
             info.company = form.company.data
             info.position = form.position.data
             info.linked = form.linked.data
-            db.session.add(info)
             db.session.commit()
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
@@ -248,7 +244,6 @@ def edit_profile():
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
         if form.validate_on_submit():
-            db.session.delete(info)
             current_user.email = form.email.data
             current_user.set_id()
             info.email = form.email.data
@@ -257,7 +252,6 @@ def edit_profile():
             info.industry = form.industry.data
             info.skills = form.team_skills.data
             info.help_req = form.help_needed.data
-            db.session.add(info)
             db.session.commit()
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
@@ -334,12 +328,20 @@ def reset_pw():
 
 @flapp.route('/update_mentor')
 @login_required
-def update_mentor():          
-    mentorList = Mentor.query.all()
-    mentorSelect = []
-    for mentee in menteeList:
-        user = User.query.filter_by(email=mentee.email).first()
-        try:
-            #check if mentor exists yet
-            user.mentor_id
-    return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
+def update_mentor():      
+    mentee = Mentee.query.filter_by(email=current_user.email).first()
+    if mentee is None:
+         return redirect(url_for('dashboard'))   
+    form = MentorSelectForm()
+    if form.validate_on_submit():
+        mentee.mentor1 = form.mentor1.data
+        mentee.mentor2 = form.mentor2.data
+        mentee.mentor3 = form.mentor3.data
+        db.session.commit()
+        flash('Your mentor preferences have been updated.')
+        return redirect(url_for('dashboard'))
+    elif request.method == 'GET':
+        form.mentor1.data = mentee.mentor1
+        form.mentor2.data = mentee.mentor2
+        form.mentor3.data = mentee.mentor3
+    return render_template('mentorprefs.html', title='Mentor Preferences')
