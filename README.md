@@ -27,6 +27,12 @@ Make new venv
 > python -m venv mentorship-venv
 ```
 
+Activate venv
+```bash
+> mentorship-venv\Scripts\activate
+> source mentorship-venv/bin/activate // for Mac users
+```
+
 Install required packages
 ```bash
 > pip install -r requirements.txt
@@ -41,16 +47,17 @@ Initiate database (not sure if needed)
 Activate venv
 ```bash
 > mentorship-venv\Scripts\activate
+> source mentorship-venv/bin/activate // for Mac users
 ```
 
 Set ENVIRONMENT variables
 ```bash
-> set FLASK_APP=mentorship.py
+> set FLASK_APP=mentorship.py //use export if on Mac
 ```
 
 Add these ENVIRONMENT variables for Mail capabilities
 ```bash
-> set MAIL_SERVER=smtp.googlemail.com
+> set MAIL_SERVER=smtp.googlemail.com //use export if on Mac
 > set MAIL_PORT=587
 > set MAIL_USE_TLS=1
 > set MAIL_USERNAME=pythonbugemail@gmail.com
@@ -89,6 +96,7 @@ Undo a migration with:
 Run shell in diff terminal for db manipulation
 ```bash
 > mentorship-venv\Scripts\activate
+> source mentorship-venv/bin/activate // for Mac users
 > flask shell
 > from app import db
 > from app.models import ModelName
