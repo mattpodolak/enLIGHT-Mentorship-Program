@@ -6,3 +6,28 @@
     margin-top: 10px;
     font-size: 18px;
 }
+
+.btn-default{
+    background-color: #3c3; 
+    color: #ffffff;
+    border: none;
+}
+
+.form-new-user{
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+
+.login-border{
+    padding: 25px;
+    border: 1px solid #dddfe2;
+    background-color: #ffffff;
+}
+
+body{
+    background-color: #e9ebee;
+}
+
+a {
+    color: #3c3;
+}
