@@ -35,7 +35,6 @@ def accept_applicant(user, app):
                                          user=user, token=token, app=app))
 
 def match_mentee(user, mentee):
-    token = user.get_reset_password_token()
     send_email("[enLIGHT Mentorship] You have a match!",
                sender=flapp.config['ADMINS'][0],
                recipients=[user.email],

@@ -2,6 +2,13 @@
 <h2>YOU'VE BEEN MATCHED!</h2>
 
 <p>You have successfully been matched with a mentor, more information is provided on your profile, your mentor will be in contact with you shortly.</p>
-
+<p>
+    View your profile
+    <a href="{{ url_for('user', userId=user.email_hash, _external=True) }}">
+        click here
+    </a>.
+</p>
+<p>Alternatively, you can paste the following link in your browser's address bar:</p>
+<p>{{ url_for('user', userId=user.email_hash, _external=True) }}</p>
 <p>Sincerely,</p>
 <p>The enLIGHT Team</p>

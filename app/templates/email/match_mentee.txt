@@ -3,6 +3,9 @@ Dear {{mentee.company}},
 You've been matched!!!! 
 You have successfully been matched with a mentor, more information is provided on your profile, your mentor will be in contact with you shortly. 
 
+View your profile:
+{{ url_for('user', userId=user.email_hash, _external=True) }}
+
 Sincerely,
 
 The enLIGHT Team

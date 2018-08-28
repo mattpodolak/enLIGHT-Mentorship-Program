@@ -367,8 +367,8 @@ def add_mentor(menteeId):
             mentor = Mentor.query.filter_by(id=mentorId).first()
             user.mentor = mentor
             db.session.commit()
-            flash('Your mentor preferences have been updated.')
-            match_mentee()
+            flash(mentee.company + 'mentor has been updated.')
+            match_mentee(user, mentee)
             return redirect(url_for('dashboard'))
         elif request.method == 'GET':
             if user.mentor:
