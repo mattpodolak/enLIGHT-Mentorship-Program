@@ -23,3 +23,23 @@ def send_password_reset_email(user):
                                          user=user, token=token),
                html_body=render_template('email/reset_password.html',
                                          user=user, token=token))
+
+def accept_applicant(user, app):
+    token = user.get_reset_password_token()
+    send_email("[enLIGHT Mentorship] Congratulations!",
+               sender=flapp.config['ADMINS'][0],
+               recipients=[user.email],
+               text_body=render_template('email/accept_applicant.txt',
+                                         user=user, token=token, app=app),
+               html_body=render_template('email/accept_applicant.html',
+                                         user=user, token=token, app=app))
+
+def match_mentee(user, mentee):
+    token = user.get_reset_password_token()
+    send_email("[enLIGHT Mentorship] You have a match!",
+               sender=flapp.config['ADMINS'][0],
+               recipients=[user.email],
+               text_body=render_template('email/match_mentee.txt',
+                                         user=user, mentee=mentee),
+               html_body=render_template('email/match_mentee.html',
+                                         user=user, mentee=mentee))

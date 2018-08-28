@@ -5,7 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application
 from werkzeug.urls import url_parse
 import sys
-from app.email import send_password_reset_email
+from app.email import send_password_reset_email, accept_applicant, match_mentee
 
 @flapp.route('/')
 @flapp.route('/index')
@@ -149,6 +149,7 @@ def acc_app(appId):
         db.session.add(mentee)
         db.session.commit()
         flash('You accepted the application for ' + app.company)
+        accept_applicant(user, app)
         return redirect(url_for('dashboard'))
     else:
         return render_template('404.html')
@@ -367,6 +368,7 @@ def add_mentor(menteeId):
             user.mentor = mentor
             db.session.commit()
             flash('Your mentor preferences have been updated.')
+            match_mentee()
             return redirect(url_for('dashboard'))
         elif request.method == 'GET':
             if user.mentor:
