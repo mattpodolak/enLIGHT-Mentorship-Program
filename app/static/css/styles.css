@@ -37,3 +37,17 @@ a {
     border: 1px solid #dddfe2;
     background-color: #ffffff;
 }
+
+.page-footer{
+    background-color: #dddfe2;
+    margin-top: 50px;
+}
+
+.footer-copyright{
+    color: #e9ebee;
+}
+
+.footer-link{
+    margin-left: 3px;
+    margin-right: 3px;
+}
