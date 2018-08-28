@@ -367,7 +367,7 @@ def add_mentor(menteeId):
             mentor = Mentor.query.filter_by(id=mentorId).first()
             user.mentor = mentor
             db.session.commit()
-            flash(mentee.company + 'mentor has been updated.')
+            flash(mentee.company + ' mentor has been updated.')
             match_mentee(user, mentee)
             return redirect(url_for('dashboard'))
         elif request.method == 'GET':
@@ -376,3 +376,11 @@ def add_mentor(menteeId):
         return render_template('menteematch.html', title='Update Mentor', form=form, mentee=mentee)
     else:
         return render_template('404.html')
+
+@flapp.route('/privacy')
+def privacy():
+    return render_template('privacy.html', title='Privacy Policy')
+
+@flapp.route('/terms')
+def terms():
+    return render_template('terms.html', title='Terms of Service')
