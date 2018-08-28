@@ -39,15 +39,25 @@ a {
 }
 
 .page-footer{
-    background-color: #dddfe2;
+    background-color: #e9ebee;
+    border-top: 1px solid #dbdee2;
     margin-top: 50px;
+    padding-top: 10px;
+    padding-bottom: 30px;
 }
 
 .footer-copyright{
-    color: #e9ebee;
+    color: #555;
+    padding-top: 20px;
 }
 
 .footer-link{
     margin-left: 3px;
     margin-right: 3px;
+    color: #555;
+}
+
+a:hover {
+    color: #666;
+    text-decoration: underline;
 }
