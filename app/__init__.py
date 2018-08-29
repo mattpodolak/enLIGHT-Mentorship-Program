@@ -7,6 +7,7 @@ import logging
 from logging.handlers import SMTPHandler
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
+from flask_sslify import SSLify
 
 flapp = Flask(__name__)
 flapp.config.from_object(Config)
@@ -16,6 +17,7 @@ login = LoginManager(flapp)
 login.login_view = 'login'
 bootstrap = Bootstrap(flapp)
 mail = Mail(flapp)
+sslify = SSLify(flapp, permanent=True)
 
 if not flapp.debug:
     if flapp.config['MAIL_SERVER']:
