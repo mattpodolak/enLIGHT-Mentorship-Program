@@ -3,9 +3,9 @@
 
 {% block app_content %}
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <h1>Update Mentor Preferences</h1>
-            <h3>Enter full name for mentors (example: Jane Doe)</h3>
+        <div class="col-md-4 col-md-offset-4 prefs-border">
+            <h1 class="form-header">Update Mentor Preferences</h1>
+            <h3 class="form-subheader">Enter full name for mentors (example: Jane Doe)</h3>
             {{ wtf.quick_form(form)}}
         </div>
     </div>

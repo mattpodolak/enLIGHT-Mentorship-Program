@@ -4,7 +4,7 @@
 {% block app_content %}
     <div class="row">
         <div class="col-md-4 col-md-offset-4 login-border">
-            <h1>Login</h1>
+            <h1 class="form-header">Login</h1>
             {{ wtf.quick_form(form)}}
             <p class="form-new-user">New User? <a href="{{ url_for('application') }}">Click to Apply!</a></p>
             <p>

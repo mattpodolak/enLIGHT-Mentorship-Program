@@ -24,6 +24,24 @@
     background-color: #ffffff;
 }
 
+.reset-border{
+    padding: 25px;
+    border: 1px solid #dddfe2;
+    background-color: #ffffff;
+}
+
+.prefs-border{
+    padding: 25px;
+    border: 1px solid #dddfe2;
+    background-color: #ffffff;
+}
+
+.edit-border{
+    padding: 25px;
+    border: 1px solid #dddfe2;
+    background-color: #ffffff;
+}
+
 body{
     background-color: #e9ebee;
 }
@@ -36,6 +54,7 @@ a {
     padding: 25px;
     border: 1px solid #dddfe2;
     background-color: #ffffff;
+    padding-left: 50px;
 }
 
 .page-footer{
@@ -60,4 +79,12 @@ a {
 a:hover {
     color: #666;
     text-decoration: underline;
+}
+
+.form-group{
+    max-width: 400px;
+}
+
+.form-header{
+    margin-top: 10px;
 }
