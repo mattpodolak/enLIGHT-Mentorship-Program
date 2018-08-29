@@ -1,13 +1,12 @@
 {% extends "dashboard.html" %}
 {% block dash_content %}
 <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-6 col-md-offset-3">
         <h1>Mentee List</h1>
-    </div>
     {% if mentees %}
         {% for mentee in mentees %}
             {% if current_user.is_admin() %}
-                <div class="col-md-8 col-md-offset-2">
+                <div class="list-border">
                     <a href="{{ url_for('add_mentor', menteeId=mentee.id) }}">Assign/Change Mentor</a>
                     <a href="{{ url_for('user', userId=mentee.email_hash) }}">
                         <li><b>Company:</b> {{mentee.company}}</li>
@@ -24,13 +23,13 @@
                 </div>
             {% else %}
                 {% if mentee.company %}
-                    <a href="{{ url_for('user', userId=mentee.email_hash) }}">
-                        <div class="col-md-8 col-md-offset-2">
-                            <li><b>{{mentee.company}}</b></li>
-                            <li><b>Industry:</b> {{mentee.industry}}</li>
-                            <li><b>Help Needed:</b> {{mentee.help_req}}</li>
-                        </div>
-                    </a>
+                    <div class="list-border">
+                        <a class="a-profile" href="{{ url_for('user', userId=mentee.email_hash) }}">
+                            <h3 class="mentor-h3"><b>{{mentee.company}}</b></h3>
+                            <b>Industry:</b> {{mentee.industry}}<br>
+                            <b>Help Needed:</b> {{mentee.help_req}}
+                        </a>
+                    </div>
                 {% endif %}
             {% endif %}
         {% endfor %}
