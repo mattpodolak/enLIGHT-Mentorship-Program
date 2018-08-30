@@ -55,6 +55,12 @@
     background-color: #ffffff;
 }
 
+.reset-border{
+    padding: 25px;
+    border: 1px solid #dddfe2;
+    background-color: #ffffff;
+}
+
 .list-border:hover{
     -webkit-box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.33);
     -moz-box-shadow: 1px 1px 4px 0px rgba(0,0,0,0.33);
@@ -116,4 +122,11 @@ a:hover {
 .mentor-h3{
     margin-top: 5px;
     margin-bottom: 5px; 
+}
+
+.nav-link{
+    border-bottom: 1px solid #e7e7e7;
+}
+.nav-link:hover{
+    border-bottom: 1px solid #3c3;
 }
