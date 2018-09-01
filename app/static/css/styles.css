@@ -130,3 +130,17 @@ a:hover {
 .nav-link:hover{
     border-bottom: 1px solid #3c3;
 }
+
+.profile-header{
+    background-color: #3c3;
+    color: #ececec;
+}
+
+.profile-about{
+    color: rgb(233, 233, 233);
+    font-size: 17px;
+}
+
+.profile-h1{
+    margin-bottom: 5px;
+}
