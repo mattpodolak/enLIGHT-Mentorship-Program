@@ -2,7 +2,7 @@ from app import flapp, db
 from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Mentor, Mentee, Application
+from app.models import User, Mentor, Mentee, Application, Cohort
 from werkzeug.urls import url_parse
 import sys
 from app.email import send_password_reset_email, accept_applicant, match_mentee
@@ -23,7 +23,6 @@ def dashboard():
         return redirect(url_for('mentee_list'))
     else:
         return redirect(url_for('mentor_list'))
-
 
 @flapp.route('/mentor_list')
 @login_required
@@ -93,6 +92,9 @@ def register_user(userType):
         elif (userType == 1):
             form = MentorRegistrationForm()
             accessType = 1
+        elif (userType == 3):
+            form = MenteeRegistrationForm()
+            accessType = 3
         else:
             form = MenteeRegistrationForm()
             accessType = 0
@@ -107,6 +109,10 @@ def register_user(userType):
                 mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me= form.about_me.data, avail= form.avail.data, skill=form.skill.data , industry=form.industry.data , company=form.company.data , position=form.position.data , linked=form.linked.data )
                 db.session.add(mentor)
                 db.session.commit()
+            elif accessType == 3:
+                cohort = Cohort(email=form.email.data)
+                db.session.add(cohort)
+                db.session.commit()
             else:
                 mentee = Mentee(email=form.email.data)
                 db.session.add(mentee)
@@ -115,6 +121,8 @@ def register_user(userType):
             return redirect(url_for('login'))
         if accessType == 1:
             return render_template('register_mentor.html', title='Register Mentor', form=form)
+        elif accessType == 1:
+            return render_template('register_mentee.html', title='Register Cohort', form=form)
         else:
             return render_template('register_mentee.html', title='Register Mentee', form=form)    
     else:
