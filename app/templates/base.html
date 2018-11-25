@@ -31,6 +31,7 @@
                     <li><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
                     <!--<li><a class="nav-link" href="{{ url_for('application') }}">Apply Now</a></li>-->
                     {% else %}
+                    <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
                     <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
                     {% endif %}
                 </ul>
