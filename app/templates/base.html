@@ -29,7 +29,7 @@
                 <ul class="nav navbar-nav">
                     {% if current_user.is_anonymous %}
                     <li><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
-                    <li><a class="nav-link" href="{{ url_for('application') }}">Apply Now</a></li>
+                    <!--<li><a class="nav-link" href="{{ url_for('application') }}">Apply Now</a></li>-->
                     {% else %}
                     <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
                     {% endif %}
