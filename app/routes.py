@@ -17,7 +17,14 @@ def index():
 @flapp.route('/homepage')
 @login_required
 def homepage():
-        return render_template('homepage.html', title='Homepage')
+    if current_user.is_admin():
+        return render_template('home_mentor.html', title='Home')
+    elif current_user.is_mentor():
+        return render_template('home_mentor.html', title='Home')
+    elif current_user.is_cohort():
+        return render_template('home_cohort.html', title='Home')
+    else:
+        return render_template('home_gm.html', title='Home')
 
 
 @flapp.route('/dashboard')
