@@ -315,9 +315,8 @@ def edit_profile():
 
 
 @flapp.route('/application', methods=['GET', 'POST'])
+@login_required
 def application():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     form = ApplicationForm()
     if form.validate_on_submit():
         apply = Application(accept="Pending", company=form.company_name.data, founder=form.founder_names.data, email=form.contact_email.data, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
@@ -325,7 +324,7 @@ def application():
         db.session.commit()
         flash('Congratulations, you applied successfully!')
         return redirect(url_for('index'))
-    return render_template('application.html', title='Mentee Application Form',
+    return render_template('application.html', title='Cohort Application Form',
                            form=form)
 
 @flapp.route('/reset_password_request', methods=['GET', 'POST'])
