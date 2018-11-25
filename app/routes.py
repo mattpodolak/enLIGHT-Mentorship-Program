@@ -11,8 +11,14 @@ from app.email import send_password_reset_email, accept_applicant, match_mentee
 @flapp.route('/index')
 def index():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('homepage'))
     return render_template('index.html', title='Home')
+
+@flapp.route('/homepage')
+@login_required
+def homepage():
+        return render_template('homepage.html', title='Homepage')
+
 
 @flapp.route('/dashboard')
 @login_required
@@ -64,7 +70,7 @@ def app_list():
 @flapp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('homepage'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -77,6 +83,24 @@ def login():
             next_page = url_for('dashboard')
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+
+@flapp.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('homepage'))
+    form = MenteeRegistrationForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data, access=0)
+        user.set_password(form.password.data)
+        user.set_id()
+        db.session.add(user)
+        db.session.commit()
+        mentee = Mentee(email=form.email.data)
+        db.session.add(mentee)
+        db.session.commit()
+        flash('Congratulations, you have registered ' + form.email.data)
+        return redirect(url_for('login'))
+    return render_template('register_mentee.html', title='Sign Up', form=form)    
 
 @flapp.route('/register_user/<userType>', methods=['GET', 'POST'])
 @login_required
@@ -121,7 +145,7 @@ def register_user(userType):
             return redirect(url_for('login'))
         if accessType == 1:
             return render_template('register_mentor.html', title='Register Mentor', form=form)
-        elif accessType == 1:
+        elif accessType == 3:
             return render_template('register_mentee.html', title='Register Cohort', form=form)
         else:
             return render_template('register_mentee.html', title='Register Mentee', form=form)    

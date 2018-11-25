@@ -102,6 +102,11 @@ class User(UserMixin, db.Model):
             return True
         return False
 
+    def is_cohort(self):
+        if(self.access == 3):
+            return True
+        return False
+
     def set_id(self):
         encode_string = self.email + str(self.id)
         hash_object = hashlib.md5(encode_string.encode())
