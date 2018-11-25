@@ -100,7 +100,7 @@ def signup():
         db.session.commit()
         flash('Congratulations, you have registered ' + form.email.data)
         return redirect(url_for('login'))
-    return render_template('register_mentee.html', title='Sign Up', form=form)    
+    return render_template('signup.html', title='Sign Up', form=form)    
 
 @flapp.route('/register_user/<userType>', methods=['GET', 'POST'])
 @login_required
