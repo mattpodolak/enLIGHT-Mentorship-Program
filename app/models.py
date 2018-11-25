@@ -45,6 +45,21 @@ class Mentee(db.Model):
     def __repr__(self):
         return '<Mentee {}>'.format(self.email)
 
+class Cohort(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    company = db.Column(db.String(100))
+    founder = db.Column(db.String(280))
+    email = db.Column(db.String(120), index=True, unique=True)
+    industry = db.Column(db.String(280))
+    skills = db.Column(db.String(280))
+    help_req = db.Column(db.String(280))
+    mentor1 = db.Column(db.String(128))
+    mentor2 = db.Column(db.String(128))
+    mentor3 = db.Column(db.String(128))
+
+    def __repr__(self):
+        return '<Cohort {}>'.format(self.email)
+
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     accept = db.Column(db.String(100))
