@@ -1,5 +1,25 @@
 {% extends "dashboard.html" %}
 {% block dash_content %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+    $(function() {
+        $(".expand-card").click(function () {
+            $header = $(this);
+            //getting the next element
+            $content = $header.next();
+            //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+            $content.slideToggle(500, function () {
+                //execute this after slideToggle is done
+                //change text of header based on visibility of content div
+                /*$header.text(function () {
+                    //change text based on condition
+                    return $content.is(":visible") ? "Collapse" : "Click for Details";
+                });*/
+            });
+
+        });  
+    });
+</script>
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <h1>Mentee List</h1>
@@ -8,7 +28,7 @@
             {% if current_user.is_admin() %}
                 <div class="list-border">
                     <a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">Assign/Change Mentor</a>
-                    <a class="a-profile" href="{{ url_for('user', userId=mentee.email_hash) }}">
+                    <!--<a class="a-profile" href="{{ url_for('user', userId=mentee.email_hash) }}">-->
                         <li><b>Company:</b> {{mentee.company}}</li>
                         <li><b>Mentor Preferences:</b> {{mentee.mentor1}}, {{mentee.mentor2}}, {{mentee.mentor3}}</li>
                         {% if mentee.mentor %}
@@ -19,16 +39,23 @@
                         <li><b>Industry:</b> {{mentee.industry}}</li>
                         <li><b>Team Skills:</b> {{mentee.skills}}</li>
                         <li><b>Help Needed:</b> {{mentee.help_req}}</li>
-                    </a>
+                    <!--</a>-->
                 </div>
             {% else %}
                 {% if mentee.company %}
                     <div class="list-border">
-                        <a class="a-profile" href="{{ url_for('user', userId=mentee.email_hash) }}">
+                        <!--<a class="a-profile" href="{{ url_for('user', userId=mentee.email_hash) }}">-->
+                        <div class="expand-card">
                             <h3 class="mentor-h3"><b>{{mentee.company}}</b></h3>
                             <b>Industry:</b> {{mentee.industry}}<br>
                             <b>Help Needed:</b> {{mentee.help_req}}
-                        </a>
+                        </div>
+                        <div class="expand-content" style="display: none;">
+                            <li><b>Founders:</b> {{mentee.founder}}</li>
+                            <li><b>Industry:</b> {{mentee.industry}}</li>
+                            <li><b>Team Skills:</b> {{mentee.skills}}</li>
+                        </div>
+                        <!--</a>-->
                     </div>
                 {% endif %}
             {% endif %}
