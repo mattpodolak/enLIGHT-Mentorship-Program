@@ -14,6 +14,14 @@ def index():
         return redirect(url_for('homepage'))
     return render_template('index.html', title='Home')
 
+@flapp.route('/cohort_faq')
+@login_required
+def cohort_faq():
+    if current_user.is_cohort():
+        return render_template('faq.html', title='FAQ')
+    else:
+        return render_template('404.html')
+
 @flapp.route('/homepage')
 @login_required
 def homepage():
