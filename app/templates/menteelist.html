@@ -29,16 +29,16 @@
                 <div class="list-border">
                     <a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">Assign/Change Mentor</a>
                     <!--<a class="a-profile" href="{{ url_for('user', userId=mentee.email_hash) }}">-->
-                        <li><b>Company:</b> {{mentee.company}}</li>
-                        <li><b>Mentor Preferences:</b> {{mentee.mentor1}}, {{mentee.mentor2}}, {{mentee.mentor3}}</li>
+                        <b>Company:</b> {{mentee.company}}
+                        <b>Mentor Preferences:</b> {{mentee.mentor1}}, {{mentee.mentor2}}, {{mentee.mentor3}}
                         {% if mentee.mentor %}
-                            <li><b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}</li>
+                            <b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}
                         {% endif %}
-                        <li><b>Founders:</b> {{mentee.founder}}</li>
-                        <li><b>Contact:</b> {{mentee.email}}</li>
-                        <li><b>Industry:</b> {{mentee.industry}}</li>
-                        <li><b>Team Skills:</b> {{mentee.skills}}</li>
-                        <li><b>Help Needed:</b> {{mentee.help_req}}</li>
+                        <b>Founders:</b> {{mentee.founder}}
+                        <b>Contact:</b> {{mentee.email}}
+                        <b>Industry:</b> {{mentee.industry}}
+                        <b>Team Skills:</b> {{mentee.skills}}
+                        <b>Help Needed:</b> {{mentee.help_req}}
                     <!--</a>-->
                 </div>
             {% else %}
@@ -51,9 +51,8 @@
                             <b>Help Needed:</b> {{mentee.help_req}}
                         </div>
                         <div class="expand-content" style="display: none;">
-                            <li><b>Founders:</b> {{mentee.founder}}</li>
-                            <li><b>Industry:</b> {{mentee.industry}}</li>
-                            <li><b>Team Skills:</b> {{mentee.skills}}</li>
+                            <b>Founders:</b> {{mentee.founder}}<br>
+                            <b>Team Skills:</b> {{mentee.skills}}
                         </div>
                         <!--</a>-->
                     </div>
