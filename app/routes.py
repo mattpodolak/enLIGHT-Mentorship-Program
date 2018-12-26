@@ -62,6 +62,23 @@ def mentor_list():
             
     return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
 
+@flapp.route('/mentor_shortlist')
+@login_required
+def mentor_list():
+    mentorList = Mentor.query.all()
+    for mentor in mentorList:
+        user = User.query.filter_by(email=mentor.email).first()
+        # clean the data a bit before passing to mentees
+        if current_user.access == 0:
+            mentor.email = None
+        mentor.email_hash = user.email_hash
+        mentor.mentee = []
+        for m in mentor.users:
+            mentee = Mentee.query.filter_by(email=m.email).first()
+            mentor.mentee.append(mentee)
+            
+    return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
+
 
 @flapp.route('/mentee_list')
 @login_required
