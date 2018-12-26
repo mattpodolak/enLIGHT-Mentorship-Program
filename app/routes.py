@@ -55,10 +55,10 @@ def mentor_list():
         if current_user.access == 0:
             mentor.email = None
         mentor.email_hash = user.email_hash
-        mentor.mentee = []
+        mentor.mentees = []
         for m in mentor.users:
             mentee = Mentee.query.filter_by(email=m.email).first()
-            mentor.mentee.append(mentee)
+            mentor.mentees.append(mentee)
             
     return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
 
@@ -77,7 +77,8 @@ def mentor_list():
 @flapp.route('/acc_mentorpref/<mentorId>')
 @login_required
 def acc_mentorpref(mentorId):
-    mentor = Mentor.query.filter_by(id=mentorId).first()
+    user = User.query.filter_by(email_hash=mentorId).first()
+    mentor = Mentor.query.filter_by(email=user.email).first()
     if current_user.is_cohort():
         cohort = Cohort.query.filter_by(email=current_user.email).first()
         mentor.cohort = cohort
@@ -94,31 +95,31 @@ def acc_mentorpref(mentorId):
         flash('Shortlist has been updated.')
     return redirect(url_for('mentor_list'))
 
-@flapp.route('/mentor_shortlist')
-@login_required
-def mentor_shortlist():
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
-        mentorList = Mentor.query.filter_by(cohort=cohort)
-    elif current_user.is_admin():
-        mentorList = []
-    elif current_user.is_mentor():
-        mentorList = []
-    else:
-        mentee = Mentee.query.filter_by(email=current_user.email).first()
-        mentorList = Mentor.query.filter_by(mentee=mentee)
-    for mentor in mentorList:
-        user = User.query.filter_by(email=mentor.email).first()
-        # clean the data a bit before passing to mentees
-        if current_user.access == 0:
-            mentor.email = None
-        mentor.email_hash = user.email_hash
-        mentor.mentee = []
-        for m in mentor.users:
-            mentee = Mentee.query.filter_by(email=m.email).first()
-            mentor.mentee.append(mentee)
+# @flapp.route('/mentor_shortlist')
+# @login_required
+# def mentor_shortlist():
+#     if current_user.is_cohort():
+#         cohort = Cohort.query.filter_by(email=current_user.email).first()
+#         mentorList = Mentor.query.filter_by(cohort=cohort)
+#     elif current_user.is_admin():
+#         mentorList = None
+#     elif current_user.is_mentor():
+#         mentorList = None
+#     else:
+#         mentee = Mentee.query.filter_by(email=current_user.email).first()
+#         mentorList = Mentor.query.filter_by(mentee=mentee)
+#     for mentor in mentorList:
+#         user = User.query.filter_by(email=mentor.email).first()
+#         # clean the data a bit before passing to mentees
+#         if current_user.access == 0:
+#             mentor.email = None
+#         mentor.email_hash = user.email_hash
+#         mentor.mentee = []
+#         for m in mentor.users:
+#             mentee = Mentee.query.filter_by(email=m.email).first()
+#             mentor.mentee.append(mentee)
             
-    return render_template('mentorshortlist.html', title='Mentor Shortlist', mentors=mentorList)
+#     return render_template('mentorshortlist.html', title='Mentor Shortlist', mentors=mentorList)
 
 
 @flapp.route('/mentee_list')

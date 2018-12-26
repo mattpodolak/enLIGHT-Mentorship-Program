@@ -30,9 +30,9 @@
                     <div class="expand-card">
                         {% if current_user.is_admin() %}
                             <b>ID:</b> {{mentor.id}} <br>
-                            {% if mentor.mentee %}
+                            {% if mentor.mentees %}
                                 <b>Mentees: </b>
-                                    {% for mentee in mentor.mentee %}
+                                    {% for mentee in mentor.mentees %}
                                         {{mentee.company}}, 
                                     {% endfor %}
                                 <br>
@@ -47,7 +47,7 @@
                             <b>LinkedIn:</b> {{mentor.linked}}<br>
                         {% else %}
                             <!--insert star/heart icon instead of shortlist text that changes to filled if shortlisted-->
-                            <a href="{{ url_for('acc_app', appId=app.id) }}">Shortlist</a>
+                            <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
                             <h3 class="mentor-h3">{{mentor.first_name}} {{mentor.last_name}}</h3>
                             {{mentor.about_me}}<br>
                             {{mentor.position}} @ {{mentor.company}}
