@@ -77,29 +77,36 @@ def mentor_list():
 @flapp.route('/acc_mentorpref/<mentorId>')
 @login_required
 def acc_mentorpref(mentorId):
-    if current_user.is_admin():
-        app = Application.query.filter_by(id=appId).first()
-        app.accept = "Accepted"
+    mentor = Mentor.query.filter_by(id=mentorId).first()
+    if current_user.is_cohort():
+        cohort = Cohort.query.filter_by(email=current_user.email).first()
+        mentor.cohort = cohort
         db.session.commit()
-        # create User and Mentee accounts
-        user = User(email=app.email, access=0)
-        user.set_password(app.company)
-        user.set_id()
-        db.session.add(user)
-        db.session.commit()
-        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
-        db.session.add(mentee)
-        db.session.commit()
-        flash('You accepted the application for ' + app.company)
-        accept_applicant(user, app)
-        return redirect(url_for('dashboard'))
+        flash('Shortlist has been updated.')
+    elif current_user.is_admin():
+        flash('Feature not available.')
+    elif current_user.is_mentor():
+        flash('Feature not available.')
     else:
-        return render_template('404.html')
+        mentee = Mentee.query.filter_by(email=current_user.email).first()
+        mentor.mentee = mentee
+        db.session.commit()
+        flash('Shortlist has been updated.')
+    return redirect(url_for('mentor_list'))
 
 @flapp.route('/mentor_shortlist')
 @login_required
 def mentor_shortlist():
-    mentorList = Mentor.query.all()
+    if current_user.is_cohort():
+        cohort = Cohort.query.filter_by(email=current_user.email).first()
+        mentorList = Mentor.query.filter_by(cohort=cohort)
+    elif current_user.is_admin():
+        mentorList = []
+    elif current_user.is_mentor():
+        mentorList = []
+    else:
+        mentee = Mentee.query.filter_by(email=current_user.email).first()
+        mentorList = Mentor.query.filter_by(mentee=mentee)
     for mentor in mentorList:
         user = User.query.filter_by(email=mentor.email).first()
         # clean the data a bit before passing to mentees
@@ -111,7 +118,7 @@ def mentor_shortlist():
             mentee = Mentee.query.filter_by(email=m.email).first()
             mentor.mentee.append(mentee)
             
-    return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
+    return render_template('mentorshortlist.html', title='Mentor Shortlist', mentors=mentorList)
 
 
 @flapp.route('/mentee_list')
