@@ -62,9 +62,43 @@ def mentor_list():
             
     return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
 
+# @flapp.route('/del_mentorpref/<mentorId>')
+# @login_required
+# def del_mentorpref(mentorId):
+#     if current_user.is_admin():
+#         app = Application.query.filter_by(id=appId).first()
+#         db.session.delete(app)
+#         db.session.commit()
+#         flash('You deleted the application for ' + app.company)
+#         return redirect(url_for('dashboard'))
+#     else:
+#         return render_template('404.html')
+
+@flapp.route('/acc_mentorpref/<mentorId>')
+@login_required
+def acc_mentorpref(mentorId):
+    if current_user.is_admin():
+        app = Application.query.filter_by(id=appId).first()
+        app.accept = "Accepted"
+        db.session.commit()
+        # create User and Mentee accounts
+        user = User(email=app.email, access=0)
+        user.set_password(app.company)
+        user.set_id()
+        db.session.add(user)
+        db.session.commit()
+        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
+        db.session.add(mentee)
+        db.session.commit()
+        flash('You accepted the application for ' + app.company)
+        accept_applicant(user, app)
+        return redirect(url_for('dashboard'))
+    else:
+        return render_template('404.html')
+
 @flapp.route('/mentor_shortlist')
 @login_required
-def mentor_list():
+def mentor_shortlist():
     mentorList = Mentor.query.all()
     for mentor in mentorList:
         user = User.query.filter_by(email=mentor.email).first()

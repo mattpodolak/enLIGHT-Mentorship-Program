@@ -26,6 +26,8 @@ class Mentor(db.Model):
     #backref defines name of field for the "many" objs
     #lazy defines database query for relationship
     users = db.relationship('User', backref='mentor', lazy='dynamic')
+    mentee_pref_id = db.Column(db.Integer, db.ForeignKey('mentee.id'))
+    cohort_pref_id = db.Column(db.Integer, db.ForeignKey('cohort.id'))
 
     def __repr__(self):
         return '<Mentor {}>'.format(self.email)
@@ -42,6 +44,8 @@ class Mentee(db.Model):
     mentor2 = db.Column(db.String(128))
     mentor3 = db.Column(db.String(128))
 
+    prefs = db.relationship('Mentor', backref='mentee', lazy='dynamic')
+
     def __repr__(self):
         return '<Mentee {}>'.format(self.email)
 
@@ -56,6 +60,8 @@ class Cohort(db.Model):
     mentor1 = db.Column(db.String(128))
     mentor2 = db.Column(db.String(128))
     mentor3 = db.Column(db.String(128))
+
+    prefs = db.relationship('Mentor', backref='cohort', lazy='dynamic')
 
     def __repr__(self):
         return '<Cohort {}>'.format(self.email)

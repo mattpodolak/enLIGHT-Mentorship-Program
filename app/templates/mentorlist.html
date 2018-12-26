@@ -46,6 +46,8 @@
                             <b>Current Job:</b> {{mentor.position}} @ {{mentor.company}}<br>
                             <b>LinkedIn:</b> {{mentor.linked}}<br>
                         {% else %}
+                            <!--insert star/heart icon instead of shortlist text that changes to filled if shortlisted-->
+                            <a href="{{ url_for('acc_app', appId=app.id) }}">Shortlist</a>
                             <h3 class="mentor-h3">{{mentor.first_name}} {{mentor.last_name}}</h3>
                             {{mentor.about_me}}<br>
                             {{mentor.position}} @ {{mentor.company}}
