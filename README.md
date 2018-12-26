@@ -205,3 +205,13 @@ Git branch & merge info: https://git-scm.com/book/en/v2/Git-Branching-Basic-Bran
 - What type of mentorship relationship are you looking for? (answer a couple questions, formal advisor, etc)
 - Website (optional)
 - Please provide a link to any applicable business documents
+
+### TO DO
+- add removal from shortlist
+- add conditional link for shortlist on mentor list (based on if shortlisted or not) - Shortlist link appears if not on shortlist, Remove from Shortlist if on shortlist
+- add Remove from Shortlist to mentor_shortlist
+- repeat all of the above for mentee shortlist
+
+- check what email work needs to be done
+- link application acceptance to cohort accounts
+- review what else needs to be done
