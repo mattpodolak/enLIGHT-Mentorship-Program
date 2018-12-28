@@ -102,6 +102,21 @@ Run shell in diff terminal for db manipulation
 > from app.models import ModelName
 ```
 
+Create admin account
+Run shell in diff terminal for db manipulation
+```bash
+> mentorship-venv\Scripts\activate
+> source mentorship-venv/bin/activate // for Mac users
+> flask shell
+> from app import db
+> from app.models import User
+> user = User(email="email", access=2)
+> user.set_password("password")
+> user.set_id()
+> db.session.add(user)
+> db.session.commit()
+```
+
 Close shell
 ```bash
 > Ctrl+Z and Enter
