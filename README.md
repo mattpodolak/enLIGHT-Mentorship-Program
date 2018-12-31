@@ -38,9 +38,19 @@ Install required packages
 > pip install -r requirements.txt
 ```
 
-Initiate database (not sure if needed)
+Initiate database (not needed)
 ```bash
 > flask db init
+```
+
+Update database
+```bash
+> flask db upgrade
+```
+
+Change to debug mode
+```bash
+> set FLASK_ENV=development // export for Mac users
 ```
 
 ## Running Your App
