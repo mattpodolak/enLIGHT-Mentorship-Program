@@ -21,6 +21,8 @@
 > git remote add origin https://github.com/mattpodolak/enLIGHT-Mentorship-Program.git
 ```
 
+Make sure you are inside the folder before you continue, you can do this with the cd command
+
 ## Setting Up
 Make new venv
 ```bash
@@ -36,6 +38,11 @@ Activate venv
 Install required packages
 ```bash
 > pip install -r requirements.txt
+```
+
+Set environment variable
+```bash
+> set FLASK_APP=mentorship.py // export for Mac
 ```
 
 Initiate database (not needed)
