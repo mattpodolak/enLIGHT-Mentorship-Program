@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block navbar %}
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" style="margin: 0">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -61,7 +61,8 @@
         {% endwith %}
 
         {% block app_content %}{% endblock %}
-        <footer class="page-footer font-small">
+
+        <footer class="page-footer font-small" style="margin: 0; position: fixed; bottom: 0; width:100%; left: 0">
             <div class="footer-copyright text-center py-3">© 2018 Copyright:
                 <a class="footer-link" href="https://enlightme.ca/"> enLIGHT</a>
                 <a class="footer-link" href="{{ url_for('terms') }}"> Terms of Service</a>
