@@ -154,11 +154,16 @@ def mentor_shortlist():
 @login_required
 def mentee_list():          
     menteeList = Mentee.query.all()
+    cohortList = Cohort.query.all()
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
         mentee.mentor = user.mentor
-    return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
+    for cohort in cohortList:
+        user = User.query.filter_by(email=cohort.email).first()
+        cohort.email_hash = user.email_hash
+        cohort.mentor = user.mentor
+    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList)
 
 @flapp.route('/app_list')
 @login_required
