@@ -76,17 +76,26 @@ def mentor_list():
             
     return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
 
-# @flapp.route('/del_mentorpref/<mentorId>')
-# @login_required
-# def del_mentorpref(mentorId):
-#     if current_user.is_admin():
-#         app = Application.query.filter_by(id=appId).first()
-#         db.session.delete(app)
-#         db.session.commit()
-#         flash('You deleted the application for ' + app.company)
-#         return redirect(url_for('dashboard'))
-#     else:
-#         return render_template('404.html')
+@flapp.route('/del_mentorpref/<mentorId>')
+@login_required
+def del_mentorpref(mentorId):
+    user = User.query.filter_by(email_hash=mentorId).first()
+    mentor = Mentor.query.filter_by(email=user.email).first()
+    if current_user.is_cohort():
+        cohort = Cohort.query.filter_by(email=current_user.email).first()
+        mentor.cohort = None
+        db.session.commit()
+        flash('Shortlist has been updated.')
+    elif current_user.is_admin():
+        flash('Feature not available.')
+    elif current_user.is_mentor():
+        flash('Feature not available.')
+    else:
+        mentee = Mentee.query.filter_by(email=current_user.email).first()
+        mentor.mentee = None
+        db.session.commit()
+        flash('Shortlist has been updated.')
+    return redirect(url_for('mentor_list'))
 
 @flapp.route('/acc_mentorpref/<mentorId>')
 @login_required
