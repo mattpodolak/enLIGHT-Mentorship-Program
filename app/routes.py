@@ -63,6 +63,8 @@ def shortlist():
 @login_required
 def mentor_list():
     mentorList = Mentor.query.all()
+    cohort = None
+    mentee = None
     for mentor in mentorList:
         user = User.query.filter_by(email=mentor.email).first()
         # clean the data a bit before passing to mentees
@@ -73,8 +75,15 @@ def mentor_list():
         for m in mentor.users:
             mentee = Mentee.query.filter_by(email=m.email).first()
             mentor.mentees.append(mentee)
-            
-    return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
+    if current_user.is_cohort():
+        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    elif current_user.is_admin():
+        print('no data to grab')
+    elif current_user.is_mentor():
+        print('no data to grab')
+    else:
+        mentee = Mentee.query.filter_by(email=current_user.email).first()        
+    return render_template('mentorlist.html', title='Mentor List', mentors=mentorList, menteeInfo=mentee, cohortInfo=cohort)
 
 @flapp.route('/del_mentorpref/<mentorId>')
 @login_required
