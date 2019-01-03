@@ -94,11 +94,11 @@ def del_mentorpref(mentorId):
         cohort = Cohort.query.filter_by(email=current_user.email).first()
         mentor.cohort = None
         db.session.commit()
-        flash('Shortlist has been updated.')
+        flash('Removed from shortlist.')
     elif current_user.is_admin():
         flash('Feature not available.')
     elif current_user.is_mentor():
-        flash('Feature not available.')
+        flash('Removed from shortlist.')
     else:
         mentee = Mentee.query.filter_by(email=current_user.email).first()
         mentor.mentee = None
