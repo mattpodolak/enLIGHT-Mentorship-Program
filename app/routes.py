@@ -317,6 +317,8 @@ def user(userId):
             for m in info.users:
                 mentee = Mentee.query.filter_by(email=m.email).first()
                 mentees.append(mentee)
+        elif current_user.is_cohort():
+            info = Cohort.query.filter_by(email=user.email).first()
         else:
             info = Mentee.query.filter_by(email=user.email).first()
 
