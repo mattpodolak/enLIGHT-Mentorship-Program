@@ -23,6 +23,43 @@
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <h1>Mentee List</h1>
+        {% if cohorts %}
+        {% for cohort in cohorts %}
+            {% if current_user.is_admin() %}
+                <div class="list-border">
+                    <a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.id) }}">Assign/Change Mentor</a>
+                    <!--<a class="a-profile" href="{{ url_for('user', userId=cohort.email_hash) }}">-->
+                        <b>Company:</b> {{cohort.company}}
+                        <b>Mentor Preferences:</b> {{cohort.mentor1}}, {{cohort.mentor2}}, {{cohort.mentor3}}
+                        {% if cohort.mentor %}
+                            <b>Mentor:</b> {{cohort.mentor.first_name}} {{cohort.mentor.last_name}}
+                        {% endif %}
+                        <b>Founders:</b> {{cohort.founder}}
+                        <b>Contact:</b> {{cohort.email}}
+                        <b>Industry:</b> {{cohort.industry}}
+                        <b>Team Skills:</b> {{cohort.skills}}
+                        <b>Help Needed:</b> {{cohort.help_req}}
+                    <!--</a>-->
+                </div>
+            {% else %}
+                {% if cohort.company %}
+                    <div class="list-border">
+                        <!--<a class="a-profile" href="{{ url_for('user', userId=cohort.email_hash) }}">-->
+                        <div class="expand-card">
+                            <h3 class="mentor-h3"><b>{{cohort.company}}</b></h3>
+                            <b>Industry:</b> {{cohort.industry}}<br>
+                            <b>Help Needed:</b> {{cohort.help_req}}
+                        </div>
+                        <div class="expand-content" style="display: none;">
+                            <b>Founders:</b> {{cohort.founder}}<br>
+                            <b>Team Skills:</b> {{cohort.skills}}
+                        </div>
+                        <!--</a>-->
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     {% if mentees %}
         {% for mentee in mentees %}
             {% if current_user.is_admin() %}
