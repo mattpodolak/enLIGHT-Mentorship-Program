@@ -49,15 +49,15 @@
                             <!--insert star/heart icon instead of shortlist text that changes to filled if shortlisted-->
                             {% if menteeInfo %}
                                 {% if mentor.mentee == menteeInfo %}
-                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
+                                    <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
                                 {% else %}
-                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist M</a>
+                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
                                 {% endif %}
                             {% elif cohortInfo %}
                                 {% if mentor.cohort == cohortInfo %}
-                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
+                                    <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
                                 {% else %}
-                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist C</a>
+                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
                                 {% endif %}
                             {% else %}
                                     
