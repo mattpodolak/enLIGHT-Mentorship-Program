@@ -20,48 +20,54 @@
             });  
         });
     </script>
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <h1>Mentor List</h1>
-        {% if mentors %}
-            {% for mentor in mentors %}
-                <div class="list-border">
-                <!--<a class="a-profile" href="{{ url_for('user', userId=mentor.email_hash) }}">-->
-                    <div class="expand-card">
-                        {% if current_user.is_admin() %}
-                            <b>ID:</b> {{mentor.id}} <br>
-                            {% if mentor.mentees %}
-                                <b>Mentees: </b>
-                                    {% for mentee in mentor.mentees %}
-                                        {{mentee.company}}, 
-                                    {% endfor %}
-                                <br>
-                            {% endif %}
-                            <b>Name:</b> {{mentor.first_name}} {{mentor.last_name}}<br>
-                            <b>Contact:</b> {{mentor.email}}<br>
-                            <b>About:</b> {{mentor.about_me}}<br>
-                            <b>Availability:</b> {{mentor.avail}}<br>
-                            <b>Skills:</b> {{mentor.skill}}<br>
-                            <b>Industries:</b> {{mentor.industry}}<br>
-                            <b>Current Job:</b> {{mentor.position}} @ {{mentor.company}}<br>
-                            <b>LinkedIn:</b> {{mentor.linked}}<br>
-                        {% else %}
-                            <!--insert star/heart icon instead of shortlist text that changes to filled if shortlisted-->
-                            <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
-                            <h3 class="mentor-h3">{{mentor.first_name}} {{mentor.last_name}}</h3>
-                            {{mentor.about_me}}<br>
-                            {{mentor.position}} @ {{mentor.company}}
-                        {% endif %} 
-                    </div>
-                    <div class="expand-content" style="display: none;">
-                        <b>Availability:</b> {{mentor.avail}}<br>
-                        <b>Skills:</b> {{mentor.skill}}<br>
-                        <b>Industries:</b> {{mentor.industry}}<br>
-                        <b>LinkedIn:</b> {{mentor.linked}}<br>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
+
+
+    <div class="mentor_intro_content">
+        <div class="mentor_intro">
+            <h1>Learn from the best Mentors</h1>
+            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eros magna, iaculis non porta eu, dapibus ut tellus. Sed eget venenatis eros. Nam nec efficitur urna. Praesent aliquam tristique suscipit. Mauris porttitor, arcu vitae tincidunt fringilla, tortor diam facilisis enim, ac volutpat lacus tellus eget metus. Sed elementum sapien est, sed ornare ex dapibus eu. Ut id auctor lacus. Curabitur aliquet molestie purus, ut viverra neque aliquam eget. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse luctus, dui at convallis efficitur, nisl nulla bibendum est, in molestie ligula metus a ligula. Fusce eros ex, varius in nibh eget, accumsan bibendum arcu.</h2>
+        </div>
     </div>
-    </div>  
+
+    <div class="mentor_list_container">
+        <table class="mentor_rtable">
+                {% if mentors %}
+                <thead>
+                    {% if current_user.is_admin() %}
+                        <th>ID</th>
+                        <th>Mentees</th>
+                    {% endif %}
+                        <th>NAME</th>
+                        <th>Work Title</th>
+                        <th>Email</th>
+                        <th>Availability</th>
+                        <th>Skillset</th>
+                        <th>Favourite</th>
+                    </thead>
+                    <tbody>
+                    {% for mentor in mentors %}
+                        <tr>
+                            {% if current_user.is_admin() %}
+                                <td>{{mentor.id}}</td>
+                                {% if mentor.mentees %}
+                                    <td>{% for mentee in mentor.mentees %}
+                                            {{mentee.company}},
+                                        {% endfor %}
+                                    </td>
+                                {% else %}
+                                    <td>NONE</td>
+                                {% endif %}
+                            {% endif %}
+                            <td>{{mentor.first_name}} {{mentor.last_name}}</td>
+                            <td>{{mentor.position}} @ {{mentor.company}}</td>
+                            <td>{{mentor.email}}</td>
+                            <td>{{mentor.avail}}</td>
+                            <td>{{mentor.skill}}</td>
+                            <td><3</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
