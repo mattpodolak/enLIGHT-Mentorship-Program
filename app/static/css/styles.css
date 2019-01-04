@@ -89,15 +89,22 @@ a {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-evenly;
+    justify-content: center;
     padding: 20px;
-    width: 100%;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     overflow: flow;
 }
 
 .footer_item{
     color: #ffffff;
     max-width: 25%;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .footer_item p, .footer_item a{
@@ -129,7 +136,8 @@ a {
 .mentor_intro_content{
     display: flex;
     justify-content: center;
-    padding-top: 100px;    
+    padding-top: 100px;  
+    width: 100%;
 }
 
 .mentor_intro{
@@ -168,9 +176,10 @@ a {
 .mentor_list_container{
     display: flex;
     justify-content: center;
-    max-width: 100%;
     margin-top: 60px;   
+    width: 100%;
 }
+
 
 .mentor_rtable{
     flex-wrap: wrap;
