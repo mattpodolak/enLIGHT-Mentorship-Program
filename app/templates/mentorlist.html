@@ -48,7 +48,22 @@
                             <td>{{mentor.email}}</td>
                             <td>{{mentor.avail}}</td>
                             <td>{{mentor.skill}}</td>
-                            <td><a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a></td>
+                            <td>
+                                <!--insert star/heart icon instead of shortlist text that changes to filled if shortlisted-->
+                                {% if menteeInfo %}
+                                    {% if mentor.mentee == menteeInfo %}
+                                        <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
+                                    {% else %}
+                                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
+                                    {% endif %}
+                                {% elif cohortInfo %}
+                                    {% if mentor.cohort == cohortInfo %}
+                                        <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
+                                    {% else %}
+                                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
+                                    {% endif %}
+                                {% else %}
+                            </td>
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             <td></td>
