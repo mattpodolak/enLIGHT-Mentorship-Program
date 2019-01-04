@@ -21,10 +21,10 @@
                 {% if current_user.is_admin() %}
                     <th>ID</th>
                     <th>Mentees</th>
+                    <th>Email</th>
                 {% endif %}
                     <th>NAME</th>
                     <th>Work Title</th>
-                    <th>Email</th>
                     <th>Availability</th>
                     <th>Skillset</th>
                     <th>Favourite</th>
@@ -42,10 +42,10 @@
                             {% else %}
                                 <td>NONE</td>
                             {% endif %}
+                            <td>{{mentor.email}}</td>
                         {% endif %}
                         <td>{{mentor.first_name}} {{mentor.last_name}}</td>
                         <td>{{mentor.position}} @ {{mentor.company}}</td>
-                        <td>{{mentor.email}}</td>
                         <td>{{mentor.avail}}</td>
                         <td>{{mentor.skill}}</td>
                         <td>
