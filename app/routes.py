@@ -63,6 +63,8 @@ def shortlist():
 @login_required
 def mentor_list():
     mentorList = Mentor.query.all()
+    cohort = None
+    mentee = None
     for mentor in mentorList:
         user = User.query.filter_by(email=mentor.email).first()
         # clean the data a bit before passing to mentees
@@ -73,20 +75,36 @@ def mentor_list():
         for m in mentor.users:
             mentee = Mentee.query.filter_by(email=m.email).first()
             mentor.mentees.append(mentee)
-            
-    return render_template('mentorlist.html', title='Mentor List', mentors=mentorList)
+    if current_user.is_cohort():
+        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    elif current_user.is_admin():
+        print('no data to grab')
+    elif current_user.is_mentor():
+        print('no data to grab')
+    else:
+        mentee = Mentee.query.filter_by(email=current_user.email).first()        
+    return render_template('mentorlist.html', title='Mentor List', mentors=mentorList, menteeInfo=mentee, cohortInfo=cohort)
 
-# @flapp.route('/del_mentorpref/<mentorId>')
-# @login_required
-# def del_mentorpref(mentorId):
-#     if current_user.is_admin():
-#         app = Application.query.filter_by(id=appId).first()
-#         db.session.delete(app)
-#         db.session.commit()
-#         flash('You deleted the application for ' + app.company)
-#         return redirect(url_for('dashboard'))
-#     else:
-#         return render_template('404.html')
+@flapp.route('/del_mentorpref/<mentorId>')
+@login_required
+def del_mentorpref(mentorId):
+    user = User.query.filter_by(email_hash=mentorId).first()
+    mentor = Mentor.query.filter_by(email=user.email).first()
+    if current_user.is_cohort():
+        cohort = Cohort.query.filter_by(email=current_user.email).first()
+        mentor.cohort = None
+        db.session.commit()
+        flash('Removed from shortlist.')
+    elif current_user.is_admin():
+        flash('Feature not available.')
+    elif current_user.is_mentor():
+        flash('Removed from shortlist.')
+    else:
+        mentee = Mentee.query.filter_by(email=current_user.email).first()
+        mentor.mentee = None
+        db.session.commit()
+        flash('Shortlist has been updated.')
+    return redirect(url_for('mentor_list'))
 
 @flapp.route('/acc_mentorpref/<mentorId>')
 @login_required
@@ -136,11 +154,16 @@ def mentor_shortlist():
 @login_required
 def mentee_list():          
     menteeList = Mentee.query.all()
+    cohortList = Cohort.query.all()
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
         mentee.mentor = user.mentor
-    return render_template('menteelist.html', title='Mentee List', mentees=menteeList)
+    for cohort in cohortList:
+        user = User.query.filter_by(email=cohort.email).first()
+        cohort.email_hash = user.email_hash
+        cohort.mentor = user.mentor
+    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList)
 
 @flapp.route('/app_list')
 @login_required
@@ -294,6 +317,8 @@ def user(userId):
             for m in info.users:
                 mentee = Mentee.query.filter_by(email=m.email).first()
                 mentees.append(mentee)
+        elif current_user.is_cohort():
+            info = Cohort.query.filter_by(email=user.email).first()
         else:
             info = Mentee.query.filter_by(email=user.email).first()
 
@@ -367,7 +392,11 @@ def edit_profile():
                             form=form)
     else:
         form = EditMenteeProfileForm(current_user.email)
-        info = Mentee.query.filter_by(email=current_user.email).first()
+        if current_user.is_cohort():
+            info = Cohort.query.filter_by(email=current_user.email).first()
+        else:
+            info = Mentee.query.filter_by(email=current_user.email).first()
+        
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
