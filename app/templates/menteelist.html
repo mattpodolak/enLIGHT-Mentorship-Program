@@ -1,74 +1,72 @@
 {% extends "dashboard.html" %}
 {% block dash_content %}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type=text/javascript>
-    $(function() {
-        $(".expand-card").click(function () {
-            $header = $(this);
-            //getting the next element
-            $content = $header.next();
-            //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-            $content.slideToggle(500, function () {
-                //execute this after slideToggle is done
-                //change text of header based on visibility of content div
-                /*$header.text(function () {
-                    //change text based on condition
-                    return $content.is(":visible") ? "Collapse" : "Click for Details";
-                });*/
-            });
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+        $(function() {
+            $(".expand-row").click(function () {
+                $(this).next("tr").slideToggle(1000);
+            });  
+        });
+    </script>
 
-        });  
-    });
-</script>
-
-<div class="mentor_intro_content">
-    <div class="mentor_intro">
-        <h1>Innovators of today</h1>
-        <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eros magna, iaculis non porta eu, dapibus ut tellus. Sed eget venenatis eros. Nam nec efficitur urna. Praesent aliquam tristique suscipit. Mauris porttitor, arcu vitae tincidunt fringilla, tortor diam facilisis enim, ac volutpat lacus tellus eget metus. Sed elementum sapien est, sed ornare ex dapibus eu. Ut id auctor lacus. Curabitur aliquet molestie purus, ut viverra neque aliquam eget. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse luctus, dui at convallis efficitur, nisl nulla bibendum est, in molestie ligula metus a ligula. Fusce eros ex, varius in nibh eget, accumsan bibendum arcu.</h2>
+    <div class="mentor_intro_content">
+        <div class="mentor_intro">
+            <h1>Innovators of today</h1>
+            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eros magna, iaculis non porta eu, dapibus ut tellus. Sed eget venenatis eros. Nam nec efficitur urna. Praesent aliquam tristique suscipit. Mauris porttitor, arcu vitae tincidunt fringilla, tortor diam facilisis enim, ac volutpat lacus tellus eget metus. Sed elementum sapien est, sed ornare ex dapibus eu. Ut id auctor lacus. Curabitur aliquet molestie purus, ut viverra neque aliquam eget. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse luctus, dui at convallis efficitur, nisl nulla bibendum est, in molestie ligula metus a ligula. Fusce eros ex, varius in nibh eget, accumsan bibendum arcu.</h2>
+        </div>
     </div>
-</div>
 
 
-<div class="row">
-    <div class="col-md-6 col-md-offset-3">
-        <h1>Mentee List</h1>
-    {% if mentees %}
-        {% for mentee in mentees %}
-            {% if current_user.is_admin() %}
-                <div class="list-border">
-                    <a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">Assign/Change Mentor</a>
-                    <!--<a class="a-profile" href="{{ url_for('user', userId=mentee.email_hash) }}">-->
-                        <b>Company:</b> {{mentee.company}}
-                        <b>Mentor Preferences:</b> {{mentee.mentor1}}, {{mentee.mentor2}}, {{mentee.mentor3}}
-                        {% if mentee.mentor %}
-                            <b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}
-                        {% endif %}
-                        <b>Founders:</b> {{mentee.founder}}
-                        <b>Contact:</b> {{mentee.email}}
-                        <b>Industry:</b> {{mentee.industry}}
-                        <b>Team Skills:</b> {{mentee.skills}}
-                        <b>Help Needed:</b> {{mentee.help_req}}
-                    <!--</a>-->
-                </div>
-            {% else %}
-                {% if mentee.company %}
-                    <div class="list-border">
-                        <!--<a class="a-profile" href="{{ url_for('user', userId=mentee.email_hash) }}">-->
-                        <div class="expand-card">
-                            <h3 class="mentor-h3"><b>{{mentee.company}}</b></h3>
-                            <b>Industry:</b> {{mentee.industry}}<br>
-                            <b>Help Needed:</b> {{mentee.help_req}}
-                        </div>
-                        <div class="expand-content" style="display: none;">
-                            <b>Founders:</b> {{mentee.founder}}<br>
-                            <b>Team Skills:</b> {{mentee.skills}}
-                        </div>
-                        <!--</a>-->
-                    </div>
+    <div class="mentor_list_container">
+        <table class="mentor_rtable">
+                {% if mentees %}
+                <thead>
+                    {% if current_user.is_admin() %}
+                        <th>MODIFY</th>
+                        <th>Contact</th>
+                        <th>Preferences</th>
+                    {% endif %}
+                        <th>Company</th>
+                        <th>Industry</th>
+                    </thead>
+                    <tbody>
+                    {% for mentee in mentees %}
+                        <tr class="expand-row">
+                            {% if current_user.is_admin() %}
+                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">CHANGE</a></td>
+                                <td>{{mentee.email}}</td>
+                                <td>{{mentee.mentor1}}<br> 
+                                    {{mentee.mentor2}}<br> 
+                                    {{mentee.mentor3}}
+                                </td>
+                            {% endif %}
+                            <td>{{mentee.company}}</td>
+                            <td>{{mentee.industry}}</td>
+                        </tr>
+                        <tr style="display: none; background-color: #F4F7F9" >
+                            {% if current_user.is_admin() %}
+                                <td></td>
+                                <td colspan="3">
+                                    <h2><p>{{mentee.company}}</p>
+                                        <p>Founders: {{mentee.founder}}</p>
+                                        <p>Team Skills: {{mentee.skills}}</p>
+                                    </h2>
+                                    <h3>{{mentee.help_req}}</h3>
+                                </td>
+                                <td></td>
+                            {% else %}
+                                <td colspan="2">
+                                    <h2><p>{{mentee.company}}</p>
+                                        <p>Founders: {{mentee.founder}}</p>
+                                        <p>Team Skills: {{mentee.skills}}</p>
+                                    </h2>
+                                    <h3>{{mentee.help_req}}</h3>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
                 {% endif %}
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-</div>
-</div>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

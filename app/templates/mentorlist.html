@@ -56,7 +56,11 @@
                                 <h2>{{mentor.first_name}} {{mentor.last_name}}</h2><br>
                                 {{mentor.about_me}}
                             </td>
-                            <td colspan="3"></td>
+                            {% if current_user.is_admin() %}
+                                <td colspan="3"></td>
+                            {% else %}
+                                <td colspan="1"></td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 {% endif %}
