@@ -16,70 +16,72 @@
     </div>
     <div class="mentor_list_container">
         <table class="mentor_rtable">
-                {% if mentors %}
+            {% if mentors %}
                 <thead>
-                    {% if current_user.is_admin() %}
-                        <th>ID</th>
-                        <th>Mentees</th>
-                    {% endif %}
-                        <th>NAME</th>
-                        <th>Work Title</th>
-                        <th>Email</th>
-                        <th>Availability</th>
-                        <th>Skillset</th>
-                        <th>Favourite</th>
-                    </thead>
-                    <tbody>
-                    {% for mentor in mentors %}
-                        <tr class="expand-row">
-                            {% if current_user.is_admin() %}
-                                <td>{{mentor.id}}</td>
-                                {% if mentor.mentees %}
-                                    <td>{% for mentee in mentor.mentees %}
-                                            {{mentee.company}},
-                                        {% endfor %}
-                                    </td>
-                                {% else %}
-                                    <td>NONE</td>
-                                {% endif %}
-                            {% endif %}
-                            <td>{{mentor.first_name}} {{mentor.last_name}}</td>
-                            <td>{{mentor.position}} @ {{mentor.company}}</td>
-                            <td>{{mentor.email}}</td>
-                            <td>{{mentor.avail}}</td>
-                            <td>{{mentor.skill}}</td>
-                            <td>
-                                <!--insert star/heart icon instead of shortlist text that changes to filled if shortlisted-->
-                                {% if menteeInfo %}
-                                    {% if mentor.mentee == menteeInfo %}
-                                        <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
-                                    {% else %}
-                                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
-                                    {% endif %}
-                                {% elif cohortInfo %}
-                                    {% if mentor.cohort == cohortInfo %}
-                                        <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
-                                    {% else %}
-                                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
-                                    {% endif %}
-                                {% else %}
-                            </td>
-                        </tr>
-                        <tr style="display: none; background-color: #F4F7F9" >
-                            <td></td>
-                            <td colspan="4">
-                                <h2>{{mentor.first_name}} {{mentor.last_name}}</h2><br>
-                                {{mentor.about_me}}
-                            </td>
-                            {% if current_user.is_admin() %}
-                                <td colspan="3"></td>
-                            {% else %}
-                                <td colspan="1"></td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
+                {% if current_user.is_admin() %}
+                    <th>ID</th>
+                    <th>Mentees</th>
                 {% endif %}
+                    <th>NAME</th>
+                    <th>Work Title</th>
+                    <th>Email</th>
+                    <th>Availability</th>
+                    <th>Skillset</th>
+                    <th>Favourite</th>
+                </thead>
+                <tbody>
+                {% for mentor in mentors %}
+                    <tr class="expand-row">
+                        {% if current_user.is_admin() %}
+                            <td>{{mentor.id}}</td>
+                            {% if mentor.mentees %}
+                                <td>{% for mentee in mentor.mentees %}
+                                        {{mentee.company}},
+                                    {% endfor %}
+                                </td>
+                            {% else %}
+                                <td>NONE</td>
+                            {% endif %}
+                        {% endif %}
+                        <td>{{mentor.first_name}} {{mentor.last_name}}</td>
+                        <td>{{mentor.position}} @ {{mentor.company}}</td>
+                        <td>{{mentor.email}}</td>
+                        <td>{{mentor.avail}}</td>
+                        <td>{{mentor.skill}}</td>
+                        <td>
+                            <!--insert star/heart icon instead of shortlist text that changes to filled if shortlisted-->
+                            {% if menteeInfo %}
+                                {% if mentor.mentee == menteeInfo %}
+                                    <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
+                                {% else %}
+                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
+                                {% endif %}
+                            {% elif cohortInfo %}
+                                {% if mentor.cohort == cohortInfo %}
+                                    <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
+                                {% else %}
+                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr style="display: none; background-color: #F4F7F9" >
+                        <td></td>
+                        <td colspan="4">
+                            <h2>{{mentor.first_name}} {{mentor.last_name}}</h2><br>
+                            {{mentor.about_me}}
+                        </td>
+                        {% if current_user.is_admin() %}
+                            <td colspan="3"></td>
+                        {% else %}
+                            <td colspan="1"></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
             </tbody>
+            {% endif %}
         </table>
     </div>
 {% endblock %}
