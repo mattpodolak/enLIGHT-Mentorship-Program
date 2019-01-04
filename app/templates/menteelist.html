@@ -18,18 +18,18 @@
 
     <div class="mentor_list_container">
         <table class="mentor_rtable">               
-                <thead>
-                    {% if current_user.is_admin() %}
-                        <th>MODIFY</th>
-                        <th>Mentor</th>
-                        <th>Contact</th>
-                        <th>Preferences</th>
-                    {% endif %}
-                        <th>Company</th>
-                        <th>Industry</th>
-                    </thead>
-                    <tbody>
-                   {% if cohorts %}
+            <thead>
+                {% if current_user.is_admin() %}
+                    <th>MODIFY</th>
+                    <th>Mentor</th>
+                    <th>Contact</th>
+                    <th>Preferences</th>
+                {% endif %}
+                    <th>Company</th>
+                    <th>Industry</th>
+            </thead>
+            <tbody>
+                {% if cohorts %}
                     {% for cohort in cohorts %}
                         <tr class="expand-row">
                             {% if current_user.is_admin() %}
@@ -70,7 +70,8 @@
                             {% endif %}
                         </tr>
                     {% endfor %}
-                   {% if mentees %}
+                {% endif %}
+                {% if mentees %}
                     {% for mentee in mentees %}
                         <tr class="expand-row">
                             {% if current_user.is_admin() %}
