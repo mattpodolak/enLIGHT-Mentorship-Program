@@ -52,8 +52,9 @@ class EditMentorProfileForm(FlaskForm):
     industry = StringField('Industries', validators=[DataRequired(), Length(min=0, max=164)])
     company = StringField('Current Company', validators=[DataRequired(), Length(min=0, max=164)])
     position = StringField('Current Position', validators=[DataRequired(), Length(min=0, max=164)])
-    linked = StringField('LinkedIn Link', validators=[DataRequired(), Length(min=0, max=164)])
-    submit = SubmitField('Save Changes')
+    linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
+    twitter = StringField('Twitter', validators=[DataRequired(), Length(min=0, max=164)])
+    submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
         super(EditMentorProfileForm, self).__init__(*args, **kwargs)
@@ -72,7 +73,9 @@ class EditMenteeProfileForm(FlaskForm):
     industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
     team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
     help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
-    submit = SubmitField('Save Changes')
+    linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
+    twitter = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
+    submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
         super(EditMenteeProfileForm, self).__init__(*args, **kwargs)

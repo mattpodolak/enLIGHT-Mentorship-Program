@@ -349,6 +349,7 @@ def edit_profile():
             info.company = form.company.data
             info.position = form.position.data
             info.linked = form.linked.data
+            info.twitter = form.twitter.data
             db.session.commit()
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
@@ -363,6 +364,7 @@ def edit_profile():
             form.company.data = info.company
             form.position.data = info.position
             form.linked.data = info.linked
+            # form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile',
                             form=form)
     else:

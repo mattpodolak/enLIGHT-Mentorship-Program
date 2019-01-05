@@ -1,0 +1,192 @@
+html {
+    overflow-x: hidden;
+}
+
+.background-container{
+    background-color: #13253b;
+    overflow-x: hidden;
+    width: 100vw;
+    /*height: 175vh;*/
+    min-height: 215vh;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+.title-text{
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+    width: 100%;
+    font-family: Segoe UI;
+    font-size: 3.75vw;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ffffff;
+}
+
+.profile-container{
+    display: flex;
+    position: absolute;
+    overflow-x: hidden;
+    left: 20%;
+    margin: auto;
+    padding: 0 !important;
+    width: 60%;
+    min-height:150vh;
+}
+
+.profile-left-container{
+    margin: 0;
+    float: left;
+    width: 30%;
+    text-align: center;
+    background-color: #f5f6f7;
+}
+
+.profile-right-container{
+    position: relative;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    float: right;
+    width: 70%;
+    /*background-color:red;*/
+}
+
+.profile-right-top-container{
+    padding-top: 4vh;
+}
+
+.profile-right-middle-container{
+}
+
+.profile-right-bottom-container{
+}
+
+.profile-pic{
+    margin-top: 13.5vh;
+    max-width: 70%;
+    zoom: 0.6;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.divider{
+    margin-top: 6vh;
+    width: 100%;
+    height: 5px;
+    background-color: #f5f6f7;
+}
+
+.text{
+    font-family: Segoe UI;
+    font-size: 1.15vw;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #707070;
+}
+
+.link-text{
+    text-align: center;
+}
+
+.linkedin{
+    margin-top: 5vh;
+}
+
+.edit-bottom{
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 2.5vh;
+    margin-left: 6vw;
+}
+
+.name-text{
+    margin-top: 3vh;
+    font-size: 2.1vw;
+    line-height: 1.19;
+}
+
+.label-text{
+    margin-top: 4vh;
+    opacity: 0.5;
+}
+
+.change-picture-text{
+    margin-top: 2vh;
+    opacity: 0.5;
+    line-height: 1.22;
+    font-size: 12px;
+    text-align: center;
+}
+
+.social-media-text{
+    opacity: 0.5;
+    margin-top: 1vh;
+}
+
+.profile-pic-text{
+    font-size: 1.5vw;
+    margin-top: 4vh;
+    margin-bottom: 4vh;
+}
+
+.input-profile{
+    width: 100%;
+}
+
+.input-contact{
+    width: 80%;
+    text-align:center;
+}
+
+.save-button{
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 3.8vh;
+    margin-left: -3.5vw;
+    border-radius: 20px;
+    max-width: 70%;
+    background-color: #33cc33;
+}
+
+.save-button-text{
+    max-width: 70%;
+    color: #ffffff;
+}
+
+.skills-bubble{
+    display: inline-block;
+    padding: 2%;
+    border-radius: 20px;
+    background-color: #e5e9f1;
+}
+
+.mentor-container{
+    display: flex;
+    padding-top: 2vh;
+    width: 100%;
+}
+
+.mentor-container > div{
+    text-align: center;
+    width: 33%;
+    flex: 1;
+}
+
+.mentor-profile-pic{
+    zoom: 0.5;
+    border-radius: 50%;
+    max-width: 80%;
+    /*box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);*/
+}
+
