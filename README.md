@@ -205,6 +205,13 @@ Change to debug mode
 ```
 - Still having a "bad request 400" issue? Try running in incognito or clearing your browser cache or browser history
 
+## sqlalchemy.excOperationError
+Restart environment and then upgrade database
+```bash
+> flask db upgrade
+```
+- Make sure non-admin accounts are created through the environment and NOT through shell
+
 # Website Info
 
 ## Mentors
