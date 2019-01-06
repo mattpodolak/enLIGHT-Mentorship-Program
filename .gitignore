@@ -8,6 +8,10 @@ app.db
 /__pycache__
 /app/__pycache__
 /migrations/__pycache__
+/migrations/versions/
 
 # info
 .flaskenv
+
+# idea
+.idea

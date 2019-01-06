@@ -52,8 +52,9 @@ class EditMentorProfileForm(FlaskForm):
     industry = StringField('Industries', validators=[DataRequired(), Length(min=0, max=164)])
     company = StringField('Current Company', validators=[DataRequired(), Length(min=0, max=164)])
     position = StringField('Current Position', validators=[DataRequired(), Length(min=0, max=164)])
-    linked = StringField('LinkedIn Link', validators=[DataRequired(), Length(min=0, max=164)])
-    submit = SubmitField('Save Changes')
+    linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
+    twitter = StringField('Twitter', validators=[DataRequired(), Length(min=0, max=164)])
+    submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
         super(EditMentorProfileForm, self).__init__(*args, **kwargs)
@@ -72,7 +73,8 @@ class EditMenteeProfileForm(FlaskForm):
     industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
     team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
     help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
-    submit = SubmitField('Save Changes')
+    linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
+    submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
         super(EditMenteeProfileForm, self).__init__(*args, **kwargs)
@@ -83,6 +85,28 @@ class EditMenteeProfileForm(FlaskForm):
             user = User.query.filter_by(email=self.email.data).first()
             if user is not None:
                 raise ValidationError('Please use a different email address.')
+
+class EditCohortProfileForm(FlaskForm):
+    company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])
+    email = StringField('Contact Email', validators=[DataRequired(), Email()])
+    founder_names = StringField('Names of Founders', validators=[DataRequired(), Length(min=0, max=280)])
+    industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
+    team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
+    help_needed = StringField('What type of help are you looking for?',
+                              validators=[DataRequired(), Length(min=0, max=280)])
+    linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
+    submit = SubmitField('Save Profile')
+
+    def __init__(self, original_email, *args, **kwargs):
+        super(EditCohortProfileForm, self).__init__(*args, **kwargs)
+        self.original_email = original_email
+
+    def validate_email(self, email):
+        if email.data != self.original_email:
+            user = User.query.filter_by(email=self.email.data).first()
+            if user is not None:
+                raise ValidationError('Please use a different email address.')
+
 
 class ApplicationForm(FlaskForm):
     company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])
