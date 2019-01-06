@@ -85,7 +85,7 @@ a {
 .page-footer{
     color: white;
     background-color: #13253b;
-    margin-top: 100px;
+    /*margin-top: 100px;*/
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;

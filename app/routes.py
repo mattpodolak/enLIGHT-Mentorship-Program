@@ -528,3 +528,7 @@ def privacy():
 @flapp.route('/terms')
 def terms():
     return render_template('terms.html', title='Terms of Service')
+
+@flapp.route('/contact')
+def contact():
+    return render_template('contact.html', title='Contact')
