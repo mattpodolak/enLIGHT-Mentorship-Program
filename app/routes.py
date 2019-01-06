@@ -130,23 +130,20 @@ def acc_mentorpref(mentorId):
 @flapp.route('/acc_menteepref/<menteeId>')
 @login_required
 def acc_menteepref(menteeId):
-    user = User.query.filter_by(email_hash=mentorId).first()
-    mentor = Mentor.query.filter_by(email=user.email).first()
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
-        mentor.cohort = cohort
+    user = User.query.filter_by(email_hash=menteeId).first()   
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+        if user.is_cohort():
+            cohort = Cohort.query.filter_by(email=user.email)
+            cohort.mentorpref = mentor
+        else:
+            mentee = Mentee.query.filter_by(email=user.email).first()
+            mentee.mentorpref = mentor
         db.session.commit()
         flash('Shortlist has been updated.')
-    elif current_user.is_admin():
-        flash('Feature not available.')
-    elif current_user.is_mentor():
-        flash('Feature not available.')
     else:
-        mentee = Mentee.query.filter_by(email=current_user.email).first()
-        mentor.mentee = mentee
-        db.session.commit()
-        flash('Shortlist has been updated.')
-    return redirect(url_for('mentor_list'))
+        flash('Feature not available.')
+    return redirect(url_for('mentee_list'))
 
 @flapp.route('/mentor_shortlist')
 @login_required
@@ -174,9 +171,9 @@ def mentor_shortlist():
 @login_required
 def mentee_shortlist():
     if current_user.is_mentor():
-        mentor = Mentor.query.filter_by(email=current_user.email).first()
-        menteeList = Mentee.query.filter_by(user=mentor)
-        cohortList = Cohort.query.filter_by(user=mentor)
+        user = User.query.filter_by(email=current_user.email).first()
+        menteeList = Mentee.query.filter_by(mentorpref=user)
+        cohortList = Cohort.query.filter_by(mentorpref=user)
     else:
         menteeList = None
         cohortList = None            
