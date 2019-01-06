@@ -7,7 +7,7 @@ html {
     overflow-x: hidden;
     width: 100vw;
     /*height: 175vh;*/
-    min-height: 215vh;
+    /*min-height: 215vh;*/
     position: relative;
     left: 50%;
     right: 50%;
@@ -15,12 +15,19 @@ html {
     margin-right: -50vw;
 }
 
+.user{
+    min-height: 175vh;
+}
+
+.edit-profile{
+    min-height: 190vh;
+}
+
 .title-text{
     margin-top: 10vh;
     margin-bottom: 5vh;
     width: 100%;
     font-family: Segoe UI;
-    font-size: 3.75vw;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
@@ -38,7 +45,7 @@ html {
     margin: auto;
     padding: 0 !important;
     width: 60%;
-    min-height:150vh;
+    min-height: 150vh;
 }
 
 .profile-left-container{
@@ -70,6 +77,7 @@ html {
 
 .profile-pic{
     margin-top: 13.5vh;
+    margin-bottom: 2vh;
     max-width: 70%;
     zoom: 0.6;
     text-align: center;
@@ -85,7 +93,6 @@ html {
 
 .text{
     font-family: Segoe UI;
-    font-size: 1.15vw;
     font-weight: normal;
     font-style: normal;
     font-stretch: normal;
@@ -106,13 +113,12 @@ html {
 .edit-bottom{
     position: absolute;
     bottom: 0;
-    margin-bottom: 2.5vh;
+    margin-bottom: 6.5vh;
     margin-left: 6vw;
 }
 
 .name-text{
     margin-top: 3vh;
-    font-size: 2.1vw;
     line-height: 1.19;
 }
 
@@ -122,10 +128,8 @@ html {
 }
 
 .change-picture-text{
-    margin-top: 2vh;
     opacity: 0.5;
     line-height: 1.22;
-    font-size: 12px;
     text-align: center;
 }
 
@@ -135,9 +139,9 @@ html {
 }
 
 .profile-pic-text{
-    font-size: 1.5vw;
     margin-top: 4vh;
     margin-bottom: 4vh;
+    text-align: center;
 }
 
 .input-profile{
@@ -149,12 +153,18 @@ html {
     text-align:center;
 }
 
+.mentee-edit-button{
+    text-align: center;
+}
+
 .save-button{
     position: absolute;
     bottom: 0;
     margin-bottom: 3.8vh;
     margin-left: -3.5vw;
     border-radius: 20px;
+    border: none;
+    outline: none;
     max-width: 70%;
     background-color: #33cc33;
 }
