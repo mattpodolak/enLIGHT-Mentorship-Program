@@ -9,6 +9,7 @@
     - [Database Migration](#database-migration)
     - [Database Testing](#database-testing)
 - [Issue Management](#issue-management)
+- [Troubleshooting](#troubleshooting)
 - [Website Info](#website-info)
     - [Mentors](#mentors)
     - [Mentees](#mentees)
@@ -55,7 +56,7 @@ Update database
 > flask db upgrade
 ```
 
-Change to debug mode
+Change to debug/development mode
 ```bash
 > set FLASK_ENV=development // export for Mac users
 ```
@@ -193,6 +194,16 @@ Run shell in diff terminal for db manipulation
 
 Git command cheatsheet: https://gist.github.com/davfre/8313299
 Git branch & merge info: https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+
+# Troubleshooting
+
+## Bad Request 400
+- First check to see if you are running in development mode, if not set the following environment variable:
+Change to debug mode
+```bash
+> set FLASK_ENV=development // export for Mac users
+```
+- Still having a "bad request 400" issue? Try running in incognito or clearing your browser cache or browser history
 
 # Website Info
 
