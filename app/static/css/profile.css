@@ -20,7 +20,7 @@ html {
 }
 
 .edit-profile{
-    min-height: 190vh;
+    min-height: 195vh;
 }
 
 .title-text{
@@ -144,10 +144,12 @@ html {
 }
 
 .input-profile{
+    padding: 1.5%;
     width: 100%;
 }
 
 .input-contact{
+    padding: 1.5%;
     width: 80%;
     text-align:center;
 }
