@@ -102,13 +102,15 @@ a {
     justify-content: center;
     padding: 20px;
     width: 100vw;
-    position: absolute;
-    bottom: -20%;
+    position: relative;
+    /*position: absolute;*/
+    /*bottom: -20%;*/
     left: 50%;
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    margin-top: 300px;
+    /*margin-top: 300px;*/
+    min-height: 250px;
 
 }
 
