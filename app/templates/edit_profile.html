@@ -5,6 +5,7 @@
     <div class="row background-container edit-profile">
         <h1 class="title-text">My Profile</h1>
         <form action="" method="post">
+            {{ form.hidden_tag() }}
             <div class="col-md-4 col-md-offset-4 edit-border profile-container">
                 <div class="profile-left-container">
                     <img src="../static/test.png" class="profile-pic"/>
@@ -15,11 +16,8 @@
                     {{ form.linked(class="input-contact text") }} <br>
                     {{ form.twitter.label(class="text label-text") }} <br>
                     {{ form.twitter(class="input-contact text") }}
-                    <div class="mentee-edit-button">
-    {#                    {{ form.submit(class="save-button text save-button-text") }}#}
-                        <button type="submit" class="btn btn-primary save-button">
-                            {{ form.submit }}
-                        </button>
+                    <div class="edit-action-buttons">
+                        {{ form.submit(class="save-button") }}
                     </div>
                 </div>
                 <div class="profile-right-container">
@@ -70,19 +68,19 @@
                     <div class="profile-right-middle-container">
                         <h2 class="text name-text">Skillset</h2>
                         {% if current_user.is_mentor() %}
-                            <div class="skills-bubble">
-                                {{ form.skill.label }}
-                            </div>
+{#                            <div class="skills-bubble">#}
+{#                                {{ form.skill.label }}#}
+{#                            </div>#}
                             {{ form.skill(class="input-profile text") }}
                         {% elif current_user.is_cohort() %}
-                            <div class="skills-bubble">
-        {#                            {{ form.team_skills.dat/(class="text label-text") }}#}
-                            </div>
+{#                            <div class="skills-bubble">#}
+{#                                    {{ form.team_skills.dat/(class="text label-text") }}#}
+{#                            </div>#}
                             {{ form.team_skills(class="input-profile text") }}
                         {% else %}
-                            <div class="skills-bubble">
-    {#                            {{ form.team_skills.dat/(class="text label-text") }}#}
-                            </div>
+{#                            <div class="skills-bubble">#}
+{#                                {{ form.team_skills.dat/(class="text label-text") }}#}
+{#                            </div>#}
                             {{ form.team_skills(class="input-profile text") }}
                         {% endif %}
                     </div>

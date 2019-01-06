@@ -62,7 +62,6 @@ html {
     padding-right: 3vw;
     float: right;
     width: 70%;
-    /*background-color:red;*/
 }
 
 .profile-right-top-container{
@@ -114,7 +113,7 @@ html {
     position: absolute;
     bottom: 0;
     margin-bottom: 6.5vh;
-    margin-left: 6vw;
+    margin-left: 6.5vw;
 }
 
 .name-text{
@@ -153,7 +152,7 @@ html {
     text-align:center;
 }
 
-.mentee-edit-button{
+.edit-action-buttons{
     text-align: center;
 }
 
@@ -161,16 +160,12 @@ html {
     position: absolute;
     bottom: 0;
     margin-bottom: 3.8vh;
-    margin-left: -3.5vw;
+    margin-left: -3.4vw;
     border-radius: 20px;
-    border: none;
-    outline: none;
+    /*border: none;*/
+    /*outline: none;*/
     max-width: 70%;
     background-color: #33cc33;
-}
-
-.save-button-text{
-    max-width: 70%;
     color: #ffffff;
 }
 
