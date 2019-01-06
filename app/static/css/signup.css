@@ -1,1 +1,95 @@
 /* This it the css file for the sign up page */
+
+input[type=text], input[type=password] {
+
+    width: 100%;
+    padding: 25px;
+    display: inline-block;
+    border: none;
+    background: #ffffff;
+}
+
+button {
+    background-color: #3c3; 
+    color: #ffffff;
+    border: none;
+}    
+
+.button-text {
+    width: 86px;
+    height: 38px;
+    font-family: Segoe UI;
+    font-size: 24px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ffffff;
+  }
+
+.Create-your-account {
+    width: 324px;
+    height: 36px;
+    font-family: Segoe UI;
+    font-size: 36px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.19;
+    letter-spacing: normal;
+    text-align: center;
+    color: #707070;
+  }
+
+  .welcome-text {
+    width: 590px;
+    height: 67px;
+    font-family: Segoe UI;
+    font-size: 24px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #707070;
+  }
+
+.Sign-in-instead {
+    width: 158px;
+    height: 24px;
+    font-family: Segoe UI;
+    font-size: 24px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: center;
+    color: #ffffff;
+  }
+
+.background-container {
+    width: 1664px;
+    height: 960px;
+    background-color: #13253b;
+  }
+
+.info-box {
+    width: 800px;
+    height: 737px;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+  }
+
+  .new-lightbulb {
+    width: 77px;
+    height: 77px;
+  }
+
+  .text-field-style > input{
+
+    padding: 5px;
+  }
