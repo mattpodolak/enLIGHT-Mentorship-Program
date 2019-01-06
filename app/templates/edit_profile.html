@@ -16,7 +16,10 @@
                 {{ form.twitter.label(class="text label-text") }}
                 {{ form.twitter(class="input-contact text") }}
                 <div class="mentee-edit-buttom">
-                    {{ form.submit(class="save-button text save-button-text") }}
+{#                    {{ form.submit(class="save-button text save-button-text") }}#}
+                    <button type="submit" class="btn btn-primary save-button text save-button-text">
+                        {{ form.submit }}
+                    </button>
                 </div>
             </div>
             <div class="profile-right-container">
