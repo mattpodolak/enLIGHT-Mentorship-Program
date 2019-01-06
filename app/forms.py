@@ -74,7 +74,6 @@ class EditMenteeProfileForm(FlaskForm):
     team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
     help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
     linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
-    twitter = StringField('Twitter', validators=[DataRequired(), Length(min=0, max=164)])
     submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
@@ -96,7 +95,6 @@ class EditCohortProfileForm(FlaskForm):
     help_needed = StringField('What type of help are you looking for?',
                               validators=[DataRequired(), Length(min=0, max=280)])
     linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
-    twitter = StringField('Twitter', validators=[DataRequired(), Length(min=0, max=164)])
     submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):

@@ -395,6 +395,7 @@ def edit_profile():
     elif current_user.is_cohort():
         form = EditCohortProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()
+
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
@@ -418,10 +419,7 @@ def edit_profile():
                                form=form)
     else:
         form = EditMenteeProfileForm(current_user.email)
-        if current_user.is_cohort():
-            info = Cohort.query.filter_by(email=current_user.email).first()
-        else:
-            info = Mentee.query.filter_by(email=current_user.email).first()
+        info = Mentee.query.filter_by(email=current_user.email).first()
         
         if form.validate_on_submit():
             current_user.email = form.email.data

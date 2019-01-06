@@ -12,10 +12,12 @@
                     <a>
                         <p><small class="text change-picture-text">Change picture</small></p>
                     </a>
-                    {{ form.linked.label(class="text label-text") }} <br>
-                    {{ form.linked(class="input-contact text") }} <br>
-                    {{ form.twitter.label(class="text label-text") }} <br>
-                    {{ form.twitter(class="input-contact text") }}
+                    {% if current_user.is_mentor() %}
+                        {{ form.linked.label(class="text label-text") }} <br>
+                        {{ form.linked(class="input-contact text") }} <br>
+                        {{ form.twitter.label(class="text label-text") }} <br>
+                        {{ form.twitter(class="input-contact text") }}
+                    {% endif %}
                     <div class="edit-action-buttons">
                         {{ form.submit(class="save-button") }}
                     </div>
