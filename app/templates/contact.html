@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+    <div id="contact-page-container">
+        <h1 align="center" class="contact-page-title">Contact Us</h1>
+
+        <p align="center">
+            Reach out to us if you have questions regarding our cohort program or partnership opportunities.
+        </p>
+
+        <div align="center" id="contact-form-container">
+            <form>
+                <div class="form-group">
+                    <input type="text" class="form-control bottom-margin text-input-style" placeholder="Name">
+                    <input type="text" class="form-control bottom-margin text-input-style" placeholder="Email Address">
+                    <input type="text" class="form-control bottom-margin text-input-style" placeholder="Subject">
+                    <textarea class="form-control bottom-margin text-input-style" rows="6" placeholder="Message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary top-margin submit-button send-button-style">Send</button>
+            </form>
+        </div>
+
+    </div>
+
+{% endblock %}

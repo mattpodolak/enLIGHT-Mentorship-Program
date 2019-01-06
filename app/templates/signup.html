@@ -2,10 +2,40 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4 login-border">
-            <h1 class="form-header">{{title}}</h1>
-            {{ wtf.quick_form(form)}}
+    <div id="signup-page-container">
+        <div id="signup-form-container" class="login-border">
+
+            <h1 class="form-header title-bottom-margin signup-page-font">Create Your Account</h1>
+            <p class="signup-page-font">
+                Join the enLIGHT community. Create your account and find out how you can grow and inspire others in return.
+            </p>
+            <form id="text-input-container" action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    <span class="text-field-style">{{ form.email(size=32, placeholder="Email") }} </span><br>
+                    {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    <span class="text-field-style"> {{ form.password(size=32, placeholder="Password") }}</span><br>
+                    {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>
+                    <span class="text-field-style"> {{ form.password2(size=32, placeholder="Confirm Password") }}</span><br>
+                    {% for error in form.password2.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+{#                <p class="submit-button-top-margin submit-button send-button-style">{{ form.submit() }}</p>#}
+                <button type="submit" class="btn btn-primary submit-button-top-margin signup-button signup-button-style">Sign Up</button>
+            </form>
+
         </div>
     </div>
 {% endblock %}
+
+<div></div>
+<div></div>

@@ -1,0 +1,66 @@
+#contact-page-container{
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background-color: white;
+    padding-top: 7%;
+    padding-bottom: 4%;
+}
+
+.contact-page-title{
+    color: #707070;
+    margin-bottom: 3%;
+}
+
+#contact-form-container{
+    margin: 4%;
+}
+
+textarea {
+   resize: none;
+}
+
+.text-input-style{
+    padding: 4%;
+    border-radius: 0;
+    border-color: #D3D3D3;
+}
+
+.form-control::-webkit-input-placeholder { color: #C0C0C0; }  /* WebKit, Blink, Edge */
+.form-control:-moz-placeholder { color: #C0C0C0; }  /* Mozilla Firefox 4 to 18 */
+.form-control::-moz-placeholder { color: #C0C0C0; }  /* Mozilla Firefox 19+ */
+.form-control:-ms-input-placeholder { color: #C0C0C0; }  /* Internet Explorer 10-11 */
+.form-control::-ms-input-placeholder { color: #C0C0C0; }  /* Microsoft Edge */
+
+.bottom-margin{
+    margin-bottom: 4%;
+}
+
+.top-margin{
+    margin-top: 2%;
+}
+
+.submit-button{
+    background-color: #33CC33;
+    border-color: #33CC33;
+}
+
+.submit-button:hover{
+    background-color: #33CC33;
+    border-color: #33CC33;
+}
+
+.submit-button.active.focus, .submit-button.active:focus, .submit-button.focus, .submit-button:active.focus,
+.submit-button:active:focus, .submit-button:focus {
+    background-color: #33CC33;
+    border-color: #33CC33;
+    outline: None;
+}
+
+.send-button-style{
+    border-radius: 20px;
+    padding: 0.5% 2.5%;
+}
