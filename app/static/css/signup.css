@@ -1,95 +1,75 @@
 /* This it the css file for the sign up page */
 
-input[type=text], input[type=password] {
-
-    width: 100%;
-    padding: 25px;
-    display: inline-block;
-    border: none;
-    background: #ffffff;
+#signup-page-container{
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background-color: #13253b;
+    padding-top: 10%;
+    padding-bottom: 10%;
 }
 
-button {
-    background-color: #3c3; 
-    color: #ffffff;
-    border: none;
-}    
-
-.button-text {
-    width: 86px;
-    height: 38px;
-    font-family: Segoe UI;
-    font-size: 24px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.21;
-    letter-spacing: normal;
+#signup-form-container{
+    width: 40%;
+    margin: 0 auto;
     text-align: center;
-    color: #ffffff;
-  }
+    padding: 2% 5%;
+}
 
-.Create-your-account {
-    width: 324px;
-    height: 36px;
-    font-family: Segoe UI;
-    font-size: 36px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.19;
-    letter-spacing: normal;
-    text-align: center;
+@media (max-width:700px) {
+
+    #signup-form-container{
+        width: 50%;
+        margin: 0 auto;
+        text-align: center;
+        padding: 2% 5%;
+    }
+
+}
+
+.signup-page-font{
     color: #707070;
-  }
+}
 
-  .welcome-text {
-    width: 590px;
-    height: 67px;
-    font-family: Segoe UI;
-    font-size: 24px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.21;
-    letter-spacing: normal;
-    text-align: left;
-    color: #707070;
-  }
+.text-field-style > input{
+    padding: 2% 3%;
+    width: 80%;
+    margin: 1% 0;
+}
 
-.Sign-in-instead {
-    width: 158px;
-    height: 24px;
-    font-family: Segoe UI;
-    font-size: 24px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.21;
-    letter-spacing: normal;
-    text-align: center;
-    color: #ffffff;
-  }
+#text-input-container{
+    margin: 10% 0;
+}
 
-.background-container {
-    width: 1664px;
-    height: 960px;
-    background-color: #13253b;
-  }
+.submit-button-top-margin{
+    margin-top: 8%;
+}
 
-.info-box {
-    width: 800px;
-    height: 737px;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-    background-color: #ffffff;
-  }
+.title-bottom-margin{
+    margin-bottom: 4%;
+}
 
-  .new-lightbulb {
-    width: 77px;
-    height: 77px;
-  }
+.signup-button{
+    background-color: #33CC33;
+    border-color: #33CC33;
+}
 
-  .text-field-style > input{
+.signup-button:hover{
+    background-color: #33CC33;
+    border-color: #33CC33;
+}
 
-    padding: 5px;
-  }
+.signup-button.active.focus, signup-button.active:focus, signup-button.focus, signup-button:active.focus,
+signup-button:active:focus, signup-button:focus {
+    background-color: #33CC33;
+    border-color: #33CC33;
+    outline: None;
+}
+
+.signup-button-style{
+    border-radius: 15px;
+    padding: 2% 7%;
+}
