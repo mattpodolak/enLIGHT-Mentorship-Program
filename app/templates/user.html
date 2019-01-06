@@ -15,11 +15,19 @@
                         </a>
                     {% endif %}
                     {% if user == current_user %}
-                        <div class="edit-bottom edit-bottom-user">
-                            <a href="{{ url_for('edit_profile') }}">
-                                <p class="text link-text">Edit profile</p>
-                            </a>
-                        </div>
+                        {% if user.is_mentor() %}
+                            <div class="edit-bottom">
+                                <a href="{{ url_for('edit_profile') }}">
+                                    <p class="text link-text">Edit profile</p>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="edit-bottom edit-bottom-mentee">
+                                <a href="{{ url_for('edit_profile') }}">
+                                    <p class="text link-text">Edit profile</p>
+                                </a>
+                            </div>
+                        {% endif %}
 {#                        <a href="{{ url_for('reset_pw') }}">#}
 {#                            <p class="text link-text">Reset password</p>#}
 {#                        </a>#}
