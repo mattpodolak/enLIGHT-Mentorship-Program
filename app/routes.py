@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm
+from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application, Cohort
@@ -367,6 +367,30 @@ def edit_profile():
             # form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile',
                             form=form)
+    elif current_user.is_cohort():
+        form = EditCohortProfileForm(current_user.email)
+        info = Cohort.query.filter_by(email=current_user.email).first()
+        if form.validate_on_submit():
+            current_user.email = form.email.data
+            current_user.set_id()
+            info.email = form.email.data
+            info.company = form.company_name.data
+            info.founder = form.founder_names.data
+            info.industry = form.industry.data
+            info.skills = form.team_skills.data
+            info.help_req = form.help_needed.data
+            db.session.commit()
+            flash('Your changes have been saved.')
+            return redirect(url_for('user', userId=current_user.email_hash))
+        elif request.method == 'GET':
+            form.email.data = current_user.email
+            form.company_name.data = info.company
+            form.founder_names.data = info.founder
+            form.industry.data = info.industry
+            form.team_skills.data = info.skills
+            form.help_needed.data = info.help_req
+        return render_template('edit_profile.html', title='Edit Profile',
+                               form=form)
     else:
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
