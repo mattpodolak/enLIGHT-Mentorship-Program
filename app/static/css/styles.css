@@ -74,7 +74,7 @@ html{
 
  
 body{
-    background-color: #e9ebee;
+    background-color: #ffffff;
 }
 
 a {
@@ -91,6 +91,131 @@ a {
 .fillter_content{
     min-height: 100%;
 }
+
+
+.welcome_message{
+    display: flex;
+    justify-content: flex-start;
+    background-color: #13253b;
+    min-height: 400px;
+    flex-direction: column;
+    padding: 80px;
+}
+
+.welcome_content{ 
+    max-width: 40%;  
+    margin-top: 12px;
+}
+
+.mission_statement{
+    background-color: #4cc56c;
+    min-height: 500px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;   
+    padding: 80px; 
+}
+
+.mission_img{
+    background-color: #707070;
+    flex: 1;
+    max-width: 20%;
+}
+
+.mission_info{
+    margin: 0 60px;
+    padding: 0 60px;
+    flex: 1;  
+    max-width: 20%;    
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.cohort_program{
+    margin: auto;
+    background-color: #ffffff;
+    display: flex;   
+    flex-direction: column;
+    justify-content: center;
+    max-width: 80%;
+    min-height: 400px;
+    padding: 20px 0;
+}
+
+.cohort_step{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px;
+}
+
+.cohort_info{
+    flex: 3;
+    margin: 0 30px;
+}
+
+.cohort_img{
+    flex: 1;
+    background-color: #33cc33;
+    border-radius: 50%;
+    font-size: 124px;
+    top: -10px;
+    left: -10px;
+}
+
+
+.cohort_program h1{
+    font-size: 34px;
+    color: #707070;
+    text-align: center;
+}
+
+.cohort_info h1{
+    text-align: left;
+}
+
+.mission_info h1,
+.welcome_message h1,
+.cohort_step h1{
+    font-size: 24px;
+    font-family: Segoe UI;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    color: #ffffff;
+}
+
+.mission_info h1{
+    text-align: center;
+}
+
+.mission_info h2,
+.welcome_content h2,
+.cohort_step h2{
+    font-size: 14px;
+    font-family: Segoe UI;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #ffffff;
+}
+
+
+.cohort_step h1,
+.cohort_step h2{
+    color: #707070;
+}
+
 
 .page-footer{
     color: white;
@@ -113,6 +238,9 @@ a {
     min-height: 250px;
 
 }
+
+
+
 
 .footer_item{
     color: #ffffff;
