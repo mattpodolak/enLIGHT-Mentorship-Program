@@ -2,15 +2,34 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <div class="row">
-        <div class="col-md-4 col-md-offset-4 login-border">
-            <h1 class="form-header">Login</h1>
-            {{ wtf.quick_form(form)}}
-            <p class="form-new-user">New User? <a href="{{ url_for('signup') }}">Click to Sign Up!</a></p>
-            <p>
-                Forgot Your Password?
-                <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
-            </p>
-        </div>        
+    <div id="login-page-container">
+        <div class="row">
+            <div id="login-form-container" class="login-border">
+                <h1 class="form-header">Login</h1>
+{#                {{ wtf.quick_form(form)}}#}
+                <form id="text-input-container" action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <p>
+                        <span class="text-field-style">{{ form.email(size=32, placeholder="Email") }} </span><br>
+                        {% for error in form.email.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>
+                        <span class="text-field-style"> {{ form.password(size=32, placeholder="Password") }}</span><br>
+                        {% for error in form.password.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+    {#                <p class="submit-button-top-margin submit-button send-button-style">{{ form.submit() }}</p>#}
+                    <button type="submit" class="btn btn-primary submit-button-top-margin signup-button signup-button-style">Sign In</button>
+                </form>
+                <p class="form-new-user">New User? <a href="{{ url_for('signup') }}">Click to Sign Up!</a></p>
+                <p>
+                    Forgot Your Password?
+                    <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
+                </p>
+            </div>
+        </div>
     </div>
 {% endblock %}
