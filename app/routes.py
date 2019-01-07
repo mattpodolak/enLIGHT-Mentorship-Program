@@ -237,7 +237,7 @@ def register_user(userType):
             db.session.commit()
             # create mentor / mentee instance
             if accessType == 1:
-                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me= form.about_me.data, avail= form.avail.data, skill=form.skill.data , industry=form.industry.data , company=form.company.data , position=form.position.data , linked=form.linked.data )
+                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me=form.about_me.data, avail=form.avail.data, skill=form.skill.data , industry=form.industry.data, company=form.company.data, position=form.position.data, linked=form.linked.data, twitter=form.twitter.data)
                 db.session.add(mentor)
                 db.session.commit()
             elif accessType == 3:
@@ -389,7 +389,7 @@ def edit_profile():
             form.company.data = info.company
             form.position.data = info.position
             form.linked.data = info.linked
-            # form.twitter.data = info.twitter
+            form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile',
                             form=form)
     elif current_user.is_cohort():

@@ -21,7 +21,7 @@ class Mentor(db.Model):
     company = db.Column(db.String(164))
     position = db.Column(db.String(164))
     linked = db.Column(db.String(164))
-    # twitter = db.Column(db.String(164))
+    twitter = db.Column(db.String(164))
     #in db.relat... referenced by model class ie: Post
     #posts is not a db field, defined one the "one" side of one-to-many relation
     #backref defines name of field for the "many" objs

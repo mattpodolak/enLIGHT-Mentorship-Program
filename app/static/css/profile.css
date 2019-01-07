@@ -16,14 +16,15 @@ html {
 }
 
 .user{
-    min-height: 175vh;
+    min-height: 165vh;
 }
 
 .edit-profile{
-    min-height: 195vh;
+    min-height: 200vh;
 }
 
 .title-text{
+    position: relative;
     margin-top: 10vh;
     margin-bottom: 5vh;
     width: 100%;

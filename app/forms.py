@@ -32,6 +32,7 @@ class MentorRegistrationForm(FlaskForm):
     company = StringField('Current Company', validators=[Length(min=0, max=164)])
     position = StringField('Current Position', validators=[Length(min=0, max=164)])
     linked = StringField('LinkedIn Link', validators=[Length(min=0, max=164)])
+    twitter = StringField('Twitter Link', validators=[Length(min=0, max=164)])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
