@@ -1,32 +1,21 @@
-html {
-    overflow-x: hidden;
-}
-
 .background-container{
     background-color: #13253b;
-    overflow-x: hidden;
     width: 100vw;
     /*height: 175vh;*/
-    /*min-height: 215vh;*/
     position: relative;
     left: 50%;
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-}
-
-.user{
-    min-height: 165vh;
-}
-
-.edit-profile{
-    min-height: 200vh;
+    padding-bottom: 7vh;
+    min-height: calc(100vh - 250px);
 }
 
 .title-text{
     position: relative;
-    margin-top: 10vh;
-    margin-bottom: 5vh;
+    margin-top: 0;
+    padding-top: 10vh;
+    padding-bottom: 7vh;
     width: 100%;
     font-family: Segoe UI;
     font-weight: normal;
@@ -40,7 +29,7 @@ html {
 
 .profile-container{
     display: flex;
-    position: absolute;
+    /*position: absolute;*/
     overflow-x: hidden;
     left: 20%;
     margin: auto;
@@ -50,6 +39,7 @@ html {
 
 .profile-left-container{
     margin: 0;
+    position: relative;
     float: left;
     width: 30%;
     text-align: center;
@@ -109,15 +99,11 @@ html {
     margin-top: 5vh;
 }
 
-.edit-bottom{
+.edit-profile-text{
     position: absolute;
     bottom: 0;
     margin-bottom: 3vh;
     margin-left: 6.5vw;
-}
-
-.edit-bottom-mentee{
-    margin-bottom: 2.6vh;
 }
 
 .name-text{
