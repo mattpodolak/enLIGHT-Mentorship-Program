@@ -484,3 +484,14 @@ a:hover {
 .profile-h1{
     margin-bottom: 5px;
 }
+
+.navbar-brand {
+    padding: 0px; /* firefox bug fix */
+    margin-right: 15px;
+}
+.navbar-brand>img {
+    height: 100%;
+    padding: 5px; /* firefox bug fix */
+    width: 55px;
+    border-radius: 50%;
+}
