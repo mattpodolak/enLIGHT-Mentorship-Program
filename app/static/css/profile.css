@@ -34,7 +34,7 @@
     left: 20%;
     margin: auto;
     padding: 0 !important;
-    width: 60%;
+    width: 55%;
 }
 
 .profile-left-container{
@@ -135,7 +135,8 @@
 
 .input-profile{
     padding: 1.5%;
-    width: 100%;
+    width: 87%;
+    margin-right: 13%;
 }
 
 .input-contact{

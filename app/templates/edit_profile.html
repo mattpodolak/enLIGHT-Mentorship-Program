@@ -10,9 +10,7 @@
                 <div class="profile-left-container">
                     <img src="../static/test.png" class="profile-pic"/>
 
-{#                    <a href="./edit_picture.html" class="li-modal">#}
-{#                    <a href="edit_picture.html" data-target="#myModal" data-toggle="modal">#}
-                    <a data-target="#myModal" data-toggle="modal">
+                    <a href="../static/components/edit_picture_modal.html" data-target="#myModal" data-toggle="modal">
                         <p><small class="text change-picture-text">Change picture</small></p>
                     </a>
 
@@ -20,26 +18,9 @@
                     <div id="myModal" class="modal fade text-center">
                       <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Change Profile Picture</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>Test</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
                         </div>
                       </div>
                     </div>
-
-{#                    <script>#}
-{#                        $('.li-modal').on('click', function(e){#}
-{#                            e.preventDefault();#}
-{#                            $('#myModal').modal('show').find('.modal-content').load($(this).attr('href'));#}
-{#                        });#}
-{#                    </script>#}
 
                     {% if current_user.is_mentor() %}
                         {{ form.linked.label(class="text label-text") }} <br>
