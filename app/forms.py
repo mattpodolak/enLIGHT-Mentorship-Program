@@ -32,6 +32,7 @@ class MentorRegistrationForm(FlaskForm):
     company = StringField('Current Company', validators=[Length(min=0, max=164)])
     position = StringField('Current Position', validators=[Length(min=0, max=164)])
     linked = StringField('LinkedIn Link', validators=[Length(min=0, max=164)])
+    twitter = StringField('Twitter Link', validators=[Length(min=0, max=164)])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
@@ -52,8 +53,8 @@ class EditMentorProfileForm(FlaskForm):
     industry = StringField('Industries', validators=[DataRequired(), Length(min=0, max=164)])
     company = StringField('Current Company', validators=[DataRequired(), Length(min=0, max=164)])
     position = StringField('Current Position', validators=[DataRequired(), Length(min=0, max=164)])
-    linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
-    twitter = StringField('Twitter', validators=[DataRequired(), Length(min=0, max=164)])
+    linked = StringField('LinkedIn Link', validators=[DataRequired(), Length(min=0, max=164)])
+    twitter = StringField('Twitter Link', validators=[DataRequired(), Length(min=0, max=164)])
     submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
