@@ -38,11 +38,16 @@
                     {% if current_user.is_anonymous %}
                     <li><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
                     <!--<li><a class="nav-link" href="{{ url_for('application') }}">Apply Now</a></li>-->
-                    {% else %}
+                    {% elif current_user.is_cohort %}
                     <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
                     <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
                     <li><a class="nav-link" href="{{ url_for('shortlist') }}">Shortlist</a></li>
                     <li><a class="nav-link" href="{{ url_for('cohort_faq') }}">FAQ</a></li>
+                    <li><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
+                    {% else %}
+                    <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a class="nav-link" href="{{ url_for('shortlist') }}">Shortlist</a></li>
                     <li><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
                     {% endif %}
                 </ul>
