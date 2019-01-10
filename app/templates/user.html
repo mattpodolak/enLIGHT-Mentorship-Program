@@ -65,19 +65,25 @@
                 <div class="profile-right-middle-container">
                     {% if user.is_mentor() %}
                         <h2 class="text name-text">Skillset</h2>
-                        <div class="skills-bubble">
-                            <label class="text">{{ info.skill }}</label>
+                        {% for skill in skill_array %}
+                            <div class="skills-bubble">
+                            <label class="text">{{ skill }}</label>
                         </div>
+                        {% endfor %}
                     {% elif user.is_cohort() %}
                         <h2 class="text name-text">Team Skillset</h2>
-                        <div class="skills-bubble">
-                            <label class="text">{{ info.skills }}</label>
-                        </div>
+                        {% for skill in skill_array %}
+                            <div class="skills-bubble">
+                                <label class="text">{{ skill }}</label>
+                            </div>
+                        {% endfor %}
                     {% else %}
                         <h2 class="text name-text">Team Skillset</h2>
-                        <div class="skills-bubble">
-                            <label class="text">{{ info.skills }}</label>
-                        </div>
+                        {% for skill in skill_array %}
+                            <div class="skills-bubble">
+                                <label class="text">{{ skill }}</label>
+                            </div>
+                        {% endfor %}
                     {% endif %}
 
                 </div>

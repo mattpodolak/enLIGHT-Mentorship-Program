@@ -309,18 +309,25 @@ def user(userId):
     except AttributeError:
         return render_template('404.html')
     mentees = []
+    skill_array = []
     if user == current_user:
         if current_user.is_admin():
             return render_template('404.html')
         elif current_user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
+            if info.skill is not None:
+                skill_array = info.skill.split(", ")
             for m in info.users:
                 mentee = Mentee.query.filter_by(email=m.email).first()
                 mentees.append(mentee)
         elif current_user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
 
     elif current_user.is_admin():
         if user.is_admin():
@@ -328,8 +335,12 @@ def user(userId):
             return render_template('404.html')
         elif user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
+            if info.skills is not None:
+                skill_array = info.skill.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
             
     elif current_user.is_mentor():
         if user.is_admin():
@@ -339,19 +350,23 @@ def user(userId):
         else:
             # current user = mentor, can only view mentees
             info = Mentee.query.filter_by(email=user.email).first()
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
     else:
         if user.is_admin():
             return render_template('404.html')
         elif user.is_mentor():
             # current user = mentee, can only view mentors
             info = Mentor.query.filter_by(email=user.email).first()
+            if info.skills is not None:
+                skill_array = info.skill.split(", ")
             # clean the data a bit before passing to mentees
             info.email = None
             user.email = None
         else:
             return render_template('404.html')
     
-    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees)
+    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees, skill_array=skill_array)
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required

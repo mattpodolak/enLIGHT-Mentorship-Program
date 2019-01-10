@@ -165,6 +165,7 @@
 .skills-bubble{
     display: inline-block;
     padding: 2%;
+    margin: 1%;
     border-radius: 20px;
     background-color: #e5e9f1;
 }
