@@ -54,8 +54,7 @@ def shortlist():
         flash('Feature not available for admin.')
         return redirect(url_for('dashboard'))
     elif current_user.is_mentor():
-        flash('Mentee shortlist not available yet.')
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('mentee_shortlist'))
     else:
         return redirect(url_for('mentor_shortlist'))
 
@@ -193,6 +192,7 @@ def mentee_list():
         user = User.query.filter_by(email=cohort.email).first()
         cohort.email_hash = user.email_hash
         cohort.mentor = user.mentor
+        print(cohort)
     return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList)
 
 @flapp.route('/app_list')
