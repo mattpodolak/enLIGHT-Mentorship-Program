@@ -26,7 +26,11 @@ class Mentor(db.Model):
     #posts is not a db field, defined one the "one" side of one-to-many relation
     #backref defines name of field for the "many" objs
     #lazy defines database query for relationship
+
+    #connects to user to assign a mentor to an acct
     users = db.relationship('User', backref='mentor', lazy='dynamic')
+
+    #these track mentor preferences for mentee and cohort users
     mentee_pref_id = db.Column(db.Integer, db.ForeignKey('mentee.id'))
     cohort_pref_id = db.Column(db.Integer, db.ForeignKey('cohort.id'))
 
@@ -45,7 +49,10 @@ class Mentee(db.Model):
     mentor2 = db.Column(db.String(128))
     mentor3 = db.Column(db.String(128))
 
+    #connects to mentor to track the mentor prefs of mentee
     prefs = db.relationship('Mentor', backref='mentee', lazy='dynamic')
+
+    #connects to user to help track mentee prefs for mentors
     mentor_pref_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
@@ -63,7 +70,10 @@ class Cohort(db.Model):
     mentor2 = db.Column(db.String(128))
     mentor3 = db.Column(db.String(128))
 
+    #connects to mentor to track the mentor prefs of cohort
     prefs = db.relationship('Mentor', backref='cohort', lazy='dynamic')
+
+    #connects to user to help track mentee prefs for mentors
     mentor_pref_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
@@ -100,7 +110,10 @@ class User(UserMixin, db.Model):
     profile_pic = db.Column(db.String(188))
     access = db.Column(db.Integer)
     #in db.Fore... reference user.id user is database table name, referencing the id from this table
+    #connects to mentor so a mentor can be assigned to an acct
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentor.id'))
+
+    #tracks mentee preferences for mentor accts
     prefs_m = db.relationship('Mentee', backref='mentorpref', lazy='dynamic')
     prefs_c = db.relationship('Cohort', backref='mentorpref', lazy='dynamic')
 
