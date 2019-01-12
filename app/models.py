@@ -21,7 +21,7 @@ class Mentor(db.Model):
     company = db.Column(db.String(164))
     position = db.Column(db.String(164))
     linked = db.Column(db.String(164))
-    # twitter = db.Column(db.String(164))
+    twitter = db.Column(db.String(164))
     #in db.relat... referenced by model class ie: Post
     #posts is not a db field, defined one the "one" side of one-to-many relation
     #backref defines name of field for the "many" objs
@@ -95,6 +95,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     email_hash = db.Column(db.String(128))
     password_hash = db.Column(db.String(128))
+    profile_pic = db.Column(db.String(188))
     access = db.Column(db.Integer)
     #in db.Fore... reference user.id user is database table name, referencing the id from this table
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentor.id'))
