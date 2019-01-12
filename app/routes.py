@@ -556,3 +556,7 @@ def terms():
 @flapp.route('/contact')
 def contact():
     return render_template('contact.html', title='Contact')
+
+@flapp.route('/login_dashboard')    
+def login_dashboard():
+    return render_template('login_dashboard.html', title='Login Dashboard')
