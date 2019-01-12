@@ -52,7 +52,7 @@
                                 {% if cohort.mentorpref == mentor %}
                                     <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
                                 {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist C</a></td>
+                                    <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist</a></td>
                                 {% endif %}
                             {% endif %}
                         </tr>
@@ -101,7 +101,7 @@
                                 {% if mentee.mentorpref == mentor %}
                                     <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
                                 {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}">Shortlist M</a></td>
+                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}">Shortlist</a></td>
                                 {% endif %}
                             {% endif %}
                         </tr>
