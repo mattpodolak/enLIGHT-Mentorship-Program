@@ -27,7 +27,7 @@
                 {% endif %}
                     <th>Company</th>
                     <th>Industry</th>
-                    <th>Favorite</th>
+                    <th>Favourite</th>
             </thead>
             <tbody>
                 {% if cohorts %}
@@ -48,13 +48,7 @@
                             {% endif %}
                             <td>{{cohort.company}}</td>
                             <td>{{cohort.industry}}</td>
-                            {% if mentor %}
-                                {% if cohort.mentorpref == mentor %}
-                                    <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
-                                {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist</a></td>
-                                {% endif %}
-                            {% endif %}
+                            <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}
@@ -97,13 +91,7 @@
                             {% endif %}
                             <td>{{mentee.company}}</td>
                             <td>{{mentee.industry}}</td>
-                            {% if mentor %}
-                                {% if mentee.mentorpref == mentor %}
-                                    <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
-                                {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}">Shortlist</a></td>
-                                {% endif %}
-                            {% endif %}
+                            <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}
