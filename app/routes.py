@@ -129,7 +129,7 @@ def acc_mentorpref(mentorId):
 @flapp.route('/acc_menteepref/<menteeId>')
 @login_required
 def acc_menteepref(menteeId):
-    user = User.query.filter_by(email_hash=menteeId).first()   
+    user = User.query.filter_by(email_hash=menteeId).first()
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
         if user.is_cohort():
