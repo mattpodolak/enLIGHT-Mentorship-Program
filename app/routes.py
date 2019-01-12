@@ -133,7 +133,7 @@ def del_menteepref(menteeId):
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
         if user.is_cohort():
-            cohort = Cohort.query.filter_by(email=user.email)
+            cohort = Cohort.query.filter_by(email=user.email).first()
             cohort.mentorpref = None
         else:
             mentee = Mentee.query.filter_by(email=user.email).first()
@@ -148,11 +148,15 @@ def del_menteepref(menteeId):
 @login_required
 def acc_menteepref(menteeId):
     user = User.query.filter_by(email_hash=menteeId).first()
+    print('1', user)
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
         if user.is_cohort():
-            cohort = Cohort.query.filter_by(email=user.email)
+            cohort = Cohort.query.filter_by(email=user.email).first()
+            print('2', mentor)
             cohort.mentorpref = mentor
+            print('3', cohort)
+            print('4', cohort.mentorpref)
         else:
             mentee = Mentee.query.filter_by(email=user.email).first()
             mentee.mentorpref = mentor
