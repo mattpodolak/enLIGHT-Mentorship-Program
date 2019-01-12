@@ -46,6 +46,7 @@ class Mentee(db.Model):
     mentor3 = db.Column(db.String(128))
 
     prefs = db.relationship('Mentor', backref='mentee', lazy='dynamic')
+    mentor_pref_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return '<Mentee {}>'.format(self.email)
@@ -63,6 +64,7 @@ class Cohort(db.Model):
     mentor3 = db.Column(db.String(128))
 
     prefs = db.relationship('Mentor', backref='cohort', lazy='dynamic')
+    mentor_pref_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return '<Cohort {}>'.format(self.email)
@@ -99,6 +101,8 @@ class User(UserMixin, db.Model):
     access = db.Column(db.Integer)
     #in db.Fore... reference user.id user is database table name, referencing the id from this table
     mentor_id = db.Column(db.Integer, db.ForeignKey('mentor.id'))
+    prefs_m = db.relationship('Mentee', backref='mentorpref', lazy='dynamic')
+    prefs_c = db.relationship('Cohort', backref='mentorpref', lazy='dynamic')
 
     def is_admin(self):
         if(self.access == 2):

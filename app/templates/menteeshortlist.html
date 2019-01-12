@@ -27,7 +27,6 @@
                 {% endif %}
                     <th>Company</th>
                     <th>Industry</th>
-                    <th>Favorite</th>
             </thead>
             <tbody>
                 {% if cohorts %}
@@ -48,7 +47,6 @@
                             {% endif %}
                             <td>{{cohort.company}}</td>
                             <td>{{cohort.industry}}</td>
-                            <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist C</a></td>
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}
@@ -91,7 +89,6 @@
                             {% endif %}
                             <td>{{mentee.company}}</td>
                             <td>{{mentee.industry}}</td>
-                            <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist C</a></td>
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}

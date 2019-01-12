@@ -127,6 +127,24 @@ def acc_mentorpref(mentorId):
         flash('Shortlist has been updated.')
     return redirect(url_for('mentor_list'))
 
+@flapp.route('/acc_menteepref/<menteeId>')
+@login_required
+def acc_menteepref(menteeId):
+    user = User.query.filter_by(email_hash=menteeId).first()   
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+        if user.is_cohort():
+            cohort = Cohort.query.filter_by(email=user.email)
+            cohort.mentorpref = mentor
+        else:
+            mentee = Mentee.query.filter_by(email=user.email).first()
+            mentee.mentorpref = mentor
+        db.session.commit()
+        flash('Shortlist has been updated.')
+    else:
+        flash('Feature not available.')
+    return redirect(url_for('mentee_list'))
+
 @flapp.route('/mentor_shortlist')
 @login_required
 def mentor_shortlist():
@@ -148,6 +166,18 @@ def mentor_shortlist():
         mentor.email_hash = user.email_hash
             
     return render_template('mentorshortlist.html', title='Mentor Shortlist', mentors=mentorList)
+
+@flapp.route('/mentee_shortlist')
+@login_required
+def mentee_shortlist():
+    if current_user.is_mentor():
+        user = User.query.filter_by(email=current_user.email).first()
+        menteeList = Mentee.query.filter_by(mentorpref=user)
+        cohortList = Cohort.query.filter_by(mentorpref=user)
+    else:
+        menteeList = None
+        cohortList = None            
+    return render_template('menteeshortlist.html', title='Mentee Shortlist', mentees=menteeList, cohorts=cohortList)
 
 
 @flapp.route('/mentee_list')
