@@ -190,7 +190,13 @@ def mentee_shortlist():
     if current_user.is_mentor():
         user = User.query.filter_by(email=current_user.email).first()
         menteeList = Mentee.query.filter_by(mentorpref=user)
+        for mentee in menteeList:
+            user = User.query.filter_by(email=mentee.email).first()
+            mentee.email_hash = user.email_hash
         cohortList = Cohort.query.filter_by(mentorpref=user)
+        for cohort in cohortList:
+            user = User.query.filter_by(email=cohort.email).first()
+            cohort.email_hash = user.email_hash
     else:
         menteeList = None
         cohortList = None            
@@ -218,7 +224,10 @@ def mentee_list():
         if current_user.is_mentor():
             if cohort.company is None:
                 cohortList.remove(cohort)
-    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList)
+    mentor = None
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList, mentor=mentor)
 
 @flapp.route('/app_list')
 @login_required
