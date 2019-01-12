@@ -126,6 +126,24 @@ def acc_mentorpref(mentorId):
         flash('Shortlist has been updated.')
     return redirect(url_for('mentor_list'))
 
+@flapp.route('/del_menteepref/<menteeId>')
+@login_required
+def del_menteepref(menteeId):
+    user = User.query.filter_by(email_hash=menteeId).first()
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+        if user.is_cohort():
+            cohort = Cohort.query.filter_by(email=user.email)
+            cohort.mentorpref = None
+        else:
+            mentee = Mentee.query.filter_by(email=user.email).first()
+            mentee.mentorpref = None
+        db.session.commit()
+        flash('Removed from shortlist.')
+    else:
+        flash('Feature not available.')
+    return redirect(url_for('mentee_list'))
+
 @flapp.route('/acc_menteepref/<menteeId>')
 @login_required
 def acc_menteepref(menteeId):
