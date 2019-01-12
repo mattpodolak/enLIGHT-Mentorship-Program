@@ -188,11 +188,18 @@ def mentee_list():
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
         mentee.mentor = user.mentor
+        #if mentor remove empty accts
+        if current_user.is_mentor():
+            if mentee.company is None:
+                menteeList.remove(mentee)
     for cohort in cohortList:
         user = User.query.filter_by(email=cohort.email).first()
         cohort.email_hash = user.email_hash
         cohort.mentor = user.mentor
-        print(cohort)
+        #if mentor remove empty accts
+        if current_user.is_mentor():
+            if cohort.company is None:
+                cohortList.remove(cohort)
     return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList)
 
 @flapp.route('/app_list')
