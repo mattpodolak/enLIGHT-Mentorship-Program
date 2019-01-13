@@ -643,6 +643,10 @@ def terms():
 def contact():
     return render_template('contact.html', title='Contact')
 
+@flapp.route('/edit_picture')
+def edit_picture():
+    return render_template('edit_picture.html', title='Edit Profile Picture')
+
 @flapp.route('/upload', methods=['POST'])
 def upload():
     s3 = boto3.resource('s3')
@@ -681,4 +685,5 @@ def upload():
         form.help_needed.data = info.help_req
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
 
