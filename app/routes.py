@@ -642,3 +642,8 @@ def terms():
 @flapp.route('/contact')
 def contact():
     return render_template('contact.html', title='Contact')
+
+@flapp.route('/upload', methods=['POST'])
+def upload():
+    s3 = boto3.resource('s3')
+    s3.Bucket('enlight-hub-profile-pictures').put_object(Key='profile.png', Body=request.files['myfile'])
