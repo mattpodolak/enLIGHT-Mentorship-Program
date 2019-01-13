@@ -374,6 +374,7 @@ def logout():
 @login_required
 def user(userId):
     user = User.query.filter_by(email_hash=userId).first()
+    profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
     try:
         # check if user is defined
         user.id
@@ -386,6 +387,7 @@ def user(userId):
             return render_template('404.html')
         elif current_user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
             if info.skill is not None:
                 skill_array = info.skill.split(", ")
             for m in info.users:
@@ -393,10 +395,12 @@ def user(userId):
                 mentees.append(mentee)
         elif current_user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
 
@@ -406,10 +410,12 @@ def user(userId):
             return render_template('404.html')
         elif user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skill.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
             
@@ -421,6 +427,7 @@ def user(userId):
         else:
             # current user = mentor, can only view mentees
             info = Mentee.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
     else:
@@ -429,6 +436,7 @@ def user(userId):
         elif user.is_mentor():
             # current user = mentee, can only view mentors
             info = Mentor.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skill.split(", ")
             # clean the data a bit before passing to mentees
@@ -437,16 +445,21 @@ def user(userId):
         else:
             return render_template('404.html')
     
-    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees, skill_array=skill_array)
+    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees,
+                           skill_array=skill_array, profile_pic_filepath=profile_pic_filepath)
+
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
     if current_user.is_admin():
         return render_template('404.html')
     elif current_user.is_mentor():
         form = EditMentorProfileForm(current_user.email)
         info = Mentor.query.filter_by(email=current_user.email).first()
+        profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
@@ -477,10 +490,11 @@ def edit_profile():
             form.linked.data = info.linked
             form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile',
-                            form=form)
+                            form=form, profile_pic_filepath=profile_pic_filepath)
     elif current_user.is_cohort():
         form = EditCohortProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()
+        profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
 
         if form.validate_on_submit():
             current_user.email = form.email.data
@@ -502,11 +516,12 @@ def edit_profile():
             form.team_skills.data = info.skills
             form.help_needed.data = info.help_req
         return render_template('edit_profile.html', title='Edit Profile',
-                               form=form)
+                               form=form, profile_pic_filepath=profile_pic_filepath)
     else:
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
-        
+        profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
@@ -527,7 +542,7 @@ def edit_profile():
             form.team_skills.data = info.skills
             form.help_needed.data = info.help_req
         return render_template('edit_profile.html', title='Edit Profile',
-                            form=form)
+                            form=form, profile_pic_filepath=profile_pic_filepath)
 
 
 @flapp.route('/application', methods=['GET', 'POST'])
@@ -645,13 +660,21 @@ def contact():
 
 @flapp.route('/edit_picture')
 def edit_picture():
-    return render_template('edit_picture.html', title='Edit Profile Picture')
+    profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
+    if current_user.is_mentor():
+        profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+    elif current_user.is_cohort():
+        profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+    else:
+        profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+    return render_template('edit_picture.html', title='Edit Profile Picture', profile_pic_filepath=profile_pic_filepath)
 
 @flapp.route('/upload', methods=['POST'])
 def upload():
     s3 = boto3.resource('s3')
-    s3.Bucket('enlight-hub-profile-pictures').put_object(Key='profile.png', Body=request.files['myfile'])
+    s3_filename = str(current_user.id) + "-profile-pic.png"
     if current_user.is_mentor():
+        s3.Bucket('enlight-hub-profile-pictures').put_object(Key='mentors/' + s3_filename, Body=request.files['myfile'])
         form = EditMentorProfileForm(current_user.email)
         info = Mentor.query.filter_by(email=current_user.email).first()
         form.email.data = current_user.email
@@ -666,6 +689,7 @@ def upload():
         form.linked.data = info.linked
         form.twitter.data = info.twitter
     elif current_user.is_cohort():
+        s3.Bucket('enlight-hub-profile-pictures').put_object(Key='cohorts/' + s3_filename, Body=request.files['myfile'])
         form = EditCohortProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()
         form.email.data = current_user.email
@@ -675,6 +699,7 @@ def upload():
         form.team_skills.data = info.skills
         form.help_needed.data = info.help_req
     else:
+        s3.Bucket('enlight-hub-profile-pictures').put_object(Key='mentees/' + s3_filename, Body=request.files['myfile'])
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
         form.email.data = current_user.email
