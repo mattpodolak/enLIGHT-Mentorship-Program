@@ -5,6 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application, Cohort
 from werkzeug.urls import url_parse
 import sys
+import os, json, boto3
 from app.email import send_password_reset_email, accept_applicant, match_mentee
 
 @flapp.route('/')
