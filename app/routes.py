@@ -647,3 +647,38 @@ def contact():
 def upload():
     s3 = boto3.resource('s3')
     s3.Bucket('enlight-hub-profile-pictures').put_object(Key='profile.png', Body=request.files['myfile'])
+    if current_user.is_mentor():
+        form = EditMentorProfileForm(current_user.email)
+        info = Mentor.query.filter_by(email=current_user.email).first()
+        form.email.data = current_user.email
+        form.first_name.data = info.first_name
+        form.last_name.data = info.last_name
+        form.about_me.data = info.about_me
+        form.avail.data = info.avail
+        form.skill.data = info.skill
+        form.industry.data = info.industry
+        form.company.data = info.company
+        form.position.data = info.position
+        form.linked.data = info.linked
+        form.twitter.data = info.twitter
+    elif current_user.is_cohort():
+        form = EditCohortProfileForm(current_user.email)
+        info = Cohort.query.filter_by(email=current_user.email).first()
+        form.email.data = current_user.email
+        form.company_name.data = info.company
+        form.founder_names.data = info.founder
+        form.industry.data = info.industry
+        form.team_skills.data = info.skills
+        form.help_needed.data = info.help_req
+    else:
+        form = EditMenteeProfileForm(current_user.email)
+        info = Mentee.query.filter_by(email=current_user.email).first()
+        form.email.data = current_user.email
+        form.company_name.data = info.company
+        form.founder_names.data = info.founder
+        form.industry.data = info.industry
+        form.team_skills.data = info.skills
+        form.help_needed.data = info.help_req
+    return render_template('edit_profile.html', title='Edit Profile',
+                           form=form)
+
