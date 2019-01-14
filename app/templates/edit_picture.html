@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <div class="background-container">
+        <h1 class="title-text">Edit Profile Picture</h1>
+        <div class="form-container">
+            <div class="form-left-container">
+                <img src="{{ profile_pic_filepath }}" class="edit-profile-pic"/>
+            </div>
+            <div class="form-right-container">
+                <form action="{{ url_for('upload') }}" enctype="multipart/form-data" method="post">
+                    <input class="file-select" type="file" name="myfile">
+                    <input class="edit-profile-button" type="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
