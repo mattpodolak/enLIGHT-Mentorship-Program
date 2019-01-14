@@ -161,12 +161,14 @@ a {
 }
 
 .cohort_img{
-    flex: 1;
+    flex-shrink: 0;
     background-color: #33cc33;
     border-radius: 50%;
+    width: 160px;
+    height: 160px;
     font-size: 124px;
-    top: -10px;
-    left: -10px;
+    top: -20px;
+    left: -20px;
 }
 
 
@@ -237,15 +239,51 @@ a {
     margin-right: -50vw;
     /*margin-top: 300px;*/
     min-height: 250px;
-
 }
 
+/* Large */
+@media all and (max-width: 800px){
+    .page-footer{
+        flex-flow: column wrap;
+        flex: 1 100%;
+        align-items: center;
+        justify-content: center;        
+    }
+
+    .footer_item{
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .mission_statement{
+        flex-flow: column wrap;
+        align-items: center;
+        justify-content: center;
+        flex: 1 100%;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .mission_info{
+        max-width: 70%;
+        margin: 12px 0;
+        padding: 0;
+    }
+
+    .mission_img{
+        max-width: 70%;
+        margin: 0;
+        padding: 0;
+    }
+}
 
 
 
 .footer_item{
     color: #ffffff;
-    max-width: 25%;
+    max-width: 400px;
     padding-left: 40px;
     padding-right: 40px;
 }
@@ -430,6 +468,9 @@ a {
     overflow-y: auto;
 }
 
+.footer_social{
+    margin: 6px;
+}
 
 .footer-copyright{
     color: #555;
