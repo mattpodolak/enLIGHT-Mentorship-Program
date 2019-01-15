@@ -555,6 +555,14 @@ def application():
         db.session.commit()
         flash('Congratulations, you applied successfully!')
         return redirect(url_for('index'))
+    elif request.method == 'GET':
+        info = Mentee.query.filter_by(email=current_user.email).first()
+        form.contact_email.data = current_user.email
+        form.company_name.data = info.company
+        form.founder_names.data = info.founder
+        form.industry.data = info.industry
+        form.team_skills.data = info.skills
+        form.help_needed.data = info.help_req
     return render_template('application.html', title='Cohort Application Form',
                            form=form)
 
