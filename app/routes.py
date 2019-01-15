@@ -347,16 +347,21 @@ def del_app(appId):
 def acc_app(appId):
     if current_user.is_admin():
         app = Application.query.filter_by(id=appId).first()
+        mentee = Mentee.query.filter_by(email=app.email).first()
+        user = Mentee.query.filter_by(email=app.email).first()
         app.accept = "Accepted"
         db.session.commit()
-        # create User and Mentee accounts
-        user = User(email=app.email, access=0)
-        user.set_password(app.company)
-        user.set_id()
-        db.session.add(user)
-        db.session.commit()
-        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
-        db.session.add(mentee)
+        # change user access, create Cohort account
+        user.access = 3
+        cohort = Cohort(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req, mentor1=mentee.mentor1, mentor2=mentee.mentor2, mentor3=mentee.mentor3, mentorpref=mentee.mentorpref)
+        db.session.add(cohort)
+        # adjust mentor prefs for new acct
+        mentors = Mentor.query.filter_by(mentee=mentee)
+        for mentor in mentors:
+            mentor.mentee = None
+            mentor.cohort = cohort
+        # delete old mentee account
+        db.session.delete(mentee)
         db.session.commit()
         flash('You accepted the application for ' + app.company)
         accept_applicant(user, app)
