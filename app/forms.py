@@ -109,7 +109,7 @@ class EditCohortProfileForm(FlaskForm):
 
 class ApplicationForm(FlaskForm):
     company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])
-    contact_email = StringField('Contact Email', validators=[DataRequired(), Email()])
+    #contact_email = StringField('Contact Email', validators=[DataRequired(), Email()])
     founder_names = StringField('Names of Founders', validators=[DataRequired(), Length(min=0, max=280)])
     industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
     team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
