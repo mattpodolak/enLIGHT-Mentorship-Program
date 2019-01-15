@@ -348,7 +348,7 @@ def acc_app(appId):
     if current_user.is_admin():
         app = Application.query.filter_by(id=appId).first()
         mentee = Mentee.query.filter_by(email=app.email).first()
-        user = Mentee.query.filter_by(email=app.email).first()
+        user = User.query.filter_by(email=app.email).first()
         app.accept = "Accepted"
         db.session.commit()
         # change user access, create Cohort account
