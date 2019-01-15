@@ -215,23 +215,36 @@ def mentee_shortlist():
 def mentee_list():          
     menteeList = Mentee.query.all()
     cohortList = Cohort.query.all()
+    removeMentee = []
+    removeCohort = []
+    mentor = None
+    
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
         mentee.mentor = user.mentor
-        #if mentor remove empty accts
+        # if mentor mark empty accts for removal
         if current_user.is_mentor():
             if mentee.company is None:
-                menteeList.remove(mentee)
+                removeMentee.append(mentee)
+    
     for cohort in cohortList:
         user = User.query.filter_by(email=cohort.email).first()
         cohort.email_hash = user.email_hash
         cohort.mentor = user.mentor
-        #if mentor remove empty accts
+        # if mentor mark empty accts for removal
         if current_user.is_mentor():
             if cohort.company is None:
-                cohortList.remove(cohort)
-    mentor = None
+                removeCohort.append(cohort)
+    
+    # remove marked accounts
+    if current_user.is_mentor():
+        for mentee in removeMentee:
+            menteeList.remove(mentee)
+        
+        for cohort in removeCohort:
+            cohortList.remove(cohort)
+        
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
     return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList, mentor=mentor)
