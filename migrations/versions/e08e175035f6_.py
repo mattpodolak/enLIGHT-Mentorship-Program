@@ -1,8 +1,8 @@
-"""added twitter to mentor
+"""empty message
 
-Revision ID: ecb4b2f3dbc1
+Revision ID: e08e175035f6
 Revises: 
-Create Date: 2019-01-06 19:18:30.057375
+Create Date: 2019-01-14 18:02:33.901905
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ecb4b2f3dbc1'
+revision = 'e08e175035f6'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -47,6 +47,8 @@ def upgrade():
     sa.Column('mentor1', sa.String(length=128), nullable=True),
     sa.Column('mentor2', sa.String(length=128), nullable=True),
     sa.Column('mentor3', sa.String(length=128), nullable=True),
+    sa.Column('mentor_pref_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['mentor_pref_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_cohort_email'), 'cohort', ['email'], unique=True)
@@ -61,6 +63,8 @@ def upgrade():
     sa.Column('mentor1', sa.String(length=128), nullable=True),
     sa.Column('mentor2', sa.String(length=128), nullable=True),
     sa.Column('mentor3', sa.String(length=128), nullable=True),
+    sa.Column('mentor_pref_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['mentor_pref_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_mentee_email'), 'mentee', ['email'], unique=True)
@@ -89,6 +93,7 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('email_hash', sa.String(length=128), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
+    sa.Column('profile_pic', sa.String(length=188), nullable=True),
     sa.Column('access', sa.Integer(), nullable=True),
     sa.Column('mentor_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['mentor_id'], ['mentor.id'], ),
