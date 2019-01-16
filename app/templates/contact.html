@@ -10,7 +10,7 @@
         </p>
 
         <div align="center" id="contact-form-container">
-            <form>
+            <!--<form>
                 <div class="form-group">
                     <input type="text" class="form-control bottom-margin text-input-style" placeholder="Name">
                     <input type="text" class="form-control bottom-margin text-input-style" placeholder="Email Address">
@@ -18,6 +18,23 @@
                     <textarea class="form-control bottom-margin text-input-style" rows="6" placeholder="Message"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary top-margin submit-button send-button-style">Send</button>
+            </form>-->
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                
+                {{ form.name.label(class="text label-text") }} <br>
+                {{ form.name(class="form-control bottom-margin text-input-style") }} <br>
+
+                {{ form.email.label(class="text label-text") }} <br>
+                {{ form.email(class="form-control bottom-margin text-input-style") }} <br>
+
+                {{ form.subject.label(class="text label-text") }} <br>
+                {{ form.subject(class="form-control bottom-margin text-input-style") }} <br>
+
+                {{ form.message.label(class="text label-text") }} <br>
+                {{ form.message(class="form-control bottom-margin text-input-style") }} <br>
+
+                {{ form.submit(class="btn btn-primary top-margin submit-button send-button-style") }}
             </form>
         </div>
 
