@@ -388,6 +388,28 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@flapp.route('/del_user/<userId>')
+@login_required
+def del_user(userId):
+    if current_user.is_admin():
+        user = User.query.filter_by(email_hash=userId).first()
+        if user.is_mentor:
+            mentor = Mentor.query.filter_by(email=user.email).first()
+            db.session.delete(mentor)
+        elif user.is_cohort:
+            cohort = Cohort.query.filter_by(email=user.email).first()
+            db.session.delete(cohort)
+        else:
+            mentee = Mentee.query.filter_by(email=user.email).first()
+            db.session.delete(mentee)
+        db.session.delete(user)
+        db.session.commit()
+        flash('You successfully deleted ', user.email)
+        return redirect(url_for('dashboard'))
+    else:
+       return render_template('404.html') 
+
+
 @flapp.route('/user/<userId>')
 @login_required
 def user(userId):
