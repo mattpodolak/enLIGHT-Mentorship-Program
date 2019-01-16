@@ -215,23 +215,36 @@ def mentee_shortlist():
 def mentee_list():          
     menteeList = Mentee.query.all()
     cohortList = Cohort.query.all()
+    removeMentee = []
+    removeCohort = []
+    mentor = None
+    
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
         mentee.mentor = user.mentor
-        #if mentor remove empty accts
+        # if mentor mark empty accts for removal
         if current_user.is_mentor():
             if mentee.company is None:
-                menteeList.remove(mentee)
+                removeMentee.append(mentee)
+    
     for cohort in cohortList:
         user = User.query.filter_by(email=cohort.email).first()
         cohort.email_hash = user.email_hash
         cohort.mentor = user.mentor
-        #if mentor remove empty accts
+        # if mentor mark empty accts for removal
         if current_user.is_mentor():
             if cohort.company is None:
-                cohortList.remove(cohort)
-    mentor = None
+                removeCohort.append(cohort)
+    
+    # remove marked accounts
+    if current_user.is_mentor():
+        for mentee in removeMentee:
+            menteeList.remove(mentee)
+        
+        for cohort in removeCohort:
+            cohortList.remove(cohort)
+        
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
     return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList, mentor=mentor)
@@ -347,16 +360,21 @@ def del_app(appId):
 def acc_app(appId):
     if current_user.is_admin():
         app = Application.query.filter_by(id=appId).first()
+        mentee = Mentee.query.filter_by(email=app.email).first()
+        user = User.query.filter_by(email=app.email).first()
         app.accept = "Accepted"
         db.session.commit()
-        # create User and Mentee accounts
-        user = User(email=app.email, access=0)
-        user.set_password(app.company)
-        user.set_id()
-        db.session.add(user)
-        db.session.commit()
-        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
-        db.session.add(mentee)
+        # change user access, create Cohort account
+        user.access = 3
+        cohort = Cohort(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req, mentor1=mentee.mentor1, mentor2=mentee.mentor2, mentor3=mentee.mentor3, mentorpref=mentee.mentorpref)
+        db.session.add(cohort)
+        # adjust mentor prefs for new acct
+        mentors = Mentor.query.filter_by(mentee=mentee)
+        for mentor in mentors:
+            mentor.mentee = None
+            mentor.cohort = cohort
+        # delete old mentee account
+        db.session.delete(mentee)
         db.session.commit()
         flash('You accepted the application for ' + app.company)
         accept_applicant(user, app)
@@ -550,11 +568,19 @@ def edit_profile():
 def application():
     form = ApplicationForm()
     if form.validate_on_submit():
-        apply = Application(accept="Pending", company=form.company_name.data, founder=form.founder_names.data, email=form.contact_email.data, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
+        apply = Application(accept="Pending", company=form.company_name.data, founder=form.founder_names.data, email=current_user.email, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
         db.session.add(apply)
         db.session.commit()
         flash('Congratulations, you applied successfully!')
         return redirect(url_for('index'))
+    elif request.method == 'GET':
+        info = Mentee.query.filter_by(email=current_user.email).first()
+        #form.contact_email.data = current_user.email
+        form.company_name.data = info.company
+        form.founder_names.data = info.founder
+        form.industry.data = info.industry
+        form.team_skills.data = info.skills
+        form.help_needed.data = info.help_req
     return render_template('application.html', title='Cohort Application Form',
                            form=form)
 
