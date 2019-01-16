@@ -758,5 +758,3 @@ def upload():
         form.help_needed.data = info.help_req
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
-
-
