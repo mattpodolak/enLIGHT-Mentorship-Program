@@ -20,6 +20,7 @@
                 <thead>
                 {% if current_user.is_admin() %}
                     <th>ID</th>
+                    <th>Delete</th>
                     <th>Mentees</th>
                     <th>Email</th>
                 {% endif %}
@@ -34,6 +35,7 @@
                     <tr class="expand-row">
                         {% if current_user.is_admin() %}
                             <td>{{mentor.id}}</td>
+                            <td><a href="{{ url_for('del_user', userId=mentor.email_hash) }}">Delete Acct</a></td>
                             {% if mentor.mentees %}
                                 <td>{% for mentee in mentor.mentees %}
                                         {{mentee.company}},
