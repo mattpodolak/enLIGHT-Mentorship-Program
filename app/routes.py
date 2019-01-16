@@ -5,6 +5,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application, Cohort
 from werkzeug.urls import url_parse
 import sys
+import os, json, boto3
 from app.email import send_password_reset_email, accept_applicant, match_mentee
 
 @flapp.route('/')
@@ -54,8 +55,7 @@ def shortlist():
         flash('Feature not available for admin.')
         return redirect(url_for('dashboard'))
     elif current_user.is_mentor():
-        flash('Mentee shortlist not available yet.')
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('mentee_shortlist'))
     else:
         return redirect(url_for('mentor_shortlist'))
 
@@ -127,6 +127,46 @@ def acc_mentorpref(mentorId):
         flash('Shortlist has been updated.')
     return redirect(url_for('mentor_list'))
 
+@flapp.route('/del_menteepref/<menteeId>')
+@login_required
+def del_menteepref(menteeId):
+    user = User.query.filter_by(email_hash=menteeId).first()
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+        if user.is_cohort():
+            cohort = Cohort.query.filter_by(email=user.email).first()
+            cohort.mentorpref = None
+        else:
+            mentee = Mentee.query.filter_by(email=user.email).first()
+            mentee.mentorpref = None
+        db.session.commit()
+        flash('Removed from shortlist.')
+    else:
+        flash('Feature not available.')
+    return redirect(url_for('mentee_list'))
+
+@flapp.route('/acc_menteepref/<menteeId>')
+@login_required
+def acc_menteepref(menteeId):
+    user = User.query.filter_by(email_hash=menteeId).first()
+    print('1', user)
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+        if user.is_cohort():
+            cohort = Cohort.query.filter_by(email=user.email).first()
+            print('2', mentor)
+            cohort.mentorpref = mentor
+            print('3', cohort)
+            print('4', cohort.mentorpref)
+        else:
+            mentee = Mentee.query.filter_by(email=user.email).first()
+            mentee.mentorpref = mentor
+        db.session.commit()
+        flash('Shortlist has been updated.')
+    else:
+        flash('Feature not available.')
+    return redirect(url_for('mentee_list'))
+
 @flapp.route('/mentor_shortlist')
 @login_required
 def mentor_shortlist():
@@ -149,21 +189,65 @@ def mentor_shortlist():
             
     return render_template('mentorshortlist.html', title='Mentor Shortlist', mentors=mentorList)
 
+@flapp.route('/mentee_shortlist')
+@login_required
+def mentee_shortlist():
+    if current_user.is_mentor():
+        user = User.query.filter_by(email=current_user.email).first()
+        menteeList = Mentee.query.filter_by(mentorpref=user)
+        cohortList = Cohort.query.filter_by(mentorpref=user)
+
+        for mentee in menteeList:
+            user = User.query.filter_by(email=mentee.email).first()
+            mentee.email_hash = user.email_hash
+        
+        for cohort in cohortList:
+            user = User.query.filter_by(email=cohort.email).first()
+            cohort.email_hash = user.email_hash
+    else:
+        menteeList = None
+        cohortList = None            
+    return render_template('menteeshortlist.html', title='Mentee Shortlist', mentees=menteeList, cohorts=cohortList)
+
 
 @flapp.route('/mentee_list')
 @login_required
 def mentee_list():          
     menteeList = Mentee.query.all()
     cohortList = Cohort.query.all()
+    removeMentee = []
+    removeCohort = []
+    mentor = None
+    
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
         mentee.mentor = user.mentor
+        # if mentor mark empty accts for removal
+        if current_user.is_mentor():
+            if mentee.company is None:
+                removeMentee.append(mentee)
+    
     for cohort in cohortList:
         user = User.query.filter_by(email=cohort.email).first()
         cohort.email_hash = user.email_hash
         cohort.mentor = user.mentor
-    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList)
+        # if mentor mark empty accts for removal
+        if current_user.is_mentor():
+            if cohort.company is None:
+                removeCohort.append(cohort)
+    
+    # remove marked accounts
+    if current_user.is_mentor():
+        for mentee in removeMentee:
+            menteeList.remove(mentee)
+        
+        for cohort in removeCohort:
+            cohortList.remove(cohort)
+        
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList, mentor=mentor)
 
 @flapp.route('/app_list')
 @login_required
@@ -237,7 +321,7 @@ def register_user(userType):
             db.session.commit()
             # create mentor / mentee instance
             if accessType == 1:
-                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me= form.about_me.data, avail= form.avail.data, skill=form.skill.data , industry=form.industry.data , company=form.company.data , position=form.position.data , linked=form.linked.data )
+                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me=form.about_me.data, avail=form.avail.data, skill=form.skill.data , industry=form.industry.data, company=form.company.data, position=form.position.data, linked=form.linked.data, twitter=form.twitter.data)
                 db.session.add(mentor)
                 db.session.commit()
             elif accessType == 3:
@@ -276,16 +360,21 @@ def del_app(appId):
 def acc_app(appId):
     if current_user.is_admin():
         app = Application.query.filter_by(id=appId).first()
+        mentee = Mentee.query.filter_by(email=app.email).first()
+        user = User.query.filter_by(email=app.email).first()
         app.accept = "Accepted"
         db.session.commit()
-        # create User and Mentee accounts
-        user = User(email=app.email, access=0)
-        user.set_password(app.company)
-        user.set_id()
-        db.session.add(user)
-        db.session.commit()
-        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
-        db.session.add(mentee)
+        # change user access, create Cohort account
+        user.access = 3
+        cohort = Cohort(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req, mentor1=mentee.mentor1, mentor2=mentee.mentor2, mentor3=mentee.mentor3, mentorpref=mentee.mentorpref)
+        db.session.add(cohort)
+        # adjust mentor prefs for new acct
+        mentors = Mentor.query.filter_by(mentee=mentee)
+        for mentor in mentors:
+            mentor.mentee = None
+            mentor.cohort = cohort
+        # delete old mentee account
+        db.session.delete(mentee)
         db.session.commit()
         flash('You accepted the application for ' + app.company)
         accept_applicant(user, app)
@@ -299,28 +388,61 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@flapp.route('/del_user/<userId>')
+@login_required
+def del_user(userId):
+    if current_user.is_admin():
+        user = User.query.filter_by(email_hash=userId).first()
+        if user.is_mentor():
+            mentor = Mentor.query.filter_by(email=user.email).first()
+            db.session.delete(mentor)
+        elif user.is_cohort():
+            cohort = Cohort.query.filter_by(email=user.email).first()
+            db.session.delete(cohort)
+        else:
+            mentee = Mentee.query.filter_by(email=user.email).first()
+            db.session.delete(mentee)
+        db.session.delete(user)
+        db.session.commit()
+        flash('You successfully deleted ', user.email)
+        return redirect(url_for('dashboard'))
+    else:
+       return render_template('404.html') 
+
+
 @flapp.route('/user/<userId>')
 @login_required
 def user(userId):
     user = User.query.filter_by(email_hash=userId).first()
+    profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
     try:
         # check if user is defined
         user.id
     except AttributeError:
         return render_template('404.html')
     mentees = []
+    skill_array = []
     if user == current_user:
         if current_user.is_admin():
             return render_template('404.html')
         elif current_user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+            if info.skill is not None:
+                skill_array = info.skill.split(", ")
             for m in info.users:
                 mentee = Mentee.query.filter_by(email=m.email).first()
                 mentees.append(mentee)
         elif current_user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
 
     elif current_user.is_admin():
         if user.is_admin():
@@ -328,8 +450,14 @@ def user(userId):
             return render_template('404.html')
         elif user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+            if info.skills is not None:
+                skill_array = info.skill.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
             
     elif current_user.is_mentor():
         if user.is_admin():
@@ -339,28 +467,39 @@ def user(userId):
         else:
             # current user = mentor, can only view mentees
             info = Mentee.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
     else:
         if user.is_admin():
             return render_template('404.html')
         elif user.is_mentor():
             # current user = mentee, can only view mentors
             info = Mentor.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+            if info.skills is not None:
+                skill_array = info.skill.split(", ")
             # clean the data a bit before passing to mentees
             info.email = None
             user.email = None
         else:
             return render_template('404.html')
     
-    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees)
+    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees,
+                           skill_array=skill_array, profile_pic_filepath=profile_pic_filepath)
+
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
+    profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
     if current_user.is_admin():
         return render_template('404.html')
     elif current_user.is_mentor():
         form = EditMentorProfileForm(current_user.email)
         info = Mentor.query.filter_by(email=current_user.email).first()
+        profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
@@ -389,12 +528,13 @@ def edit_profile():
             form.company.data = info.company
             form.position.data = info.position
             form.linked.data = info.linked
-            # form.twitter.data = info.twitter
+            form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile',
-                            form=form)
+                            form=form, profile_pic_filepath=profile_pic_filepath)
     elif current_user.is_cohort():
         form = EditCohortProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()
+        profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
 
         if form.validate_on_submit():
             current_user.email = form.email.data
@@ -416,11 +556,12 @@ def edit_profile():
             form.team_skills.data = info.skills
             form.help_needed.data = info.help_req
         return render_template('edit_profile.html', title='Edit Profile',
-                               form=form)
+                               form=form, profile_pic_filepath=profile_pic_filepath)
     else:
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
-        
+        profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
@@ -441,7 +582,7 @@ def edit_profile():
             form.team_skills.data = info.skills
             form.help_needed.data = info.help_req
         return render_template('edit_profile.html', title='Edit Profile',
-                            form=form)
+                            form=form, profile_pic_filepath=profile_pic_filepath)
 
 
 @flapp.route('/application', methods=['GET', 'POST'])
@@ -449,11 +590,19 @@ def edit_profile():
 def application():
     form = ApplicationForm()
     if form.validate_on_submit():
-        apply = Application(accept="Pending", company=form.company_name.data, founder=form.founder_names.data, email=form.contact_email.data, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
+        apply = Application(accept="Pending", company=form.company_name.data, founder=form.founder_names.data, email=current_user.email, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
         db.session.add(apply)
         db.session.commit()
         flash('Congratulations, you applied successfully!')
         return redirect(url_for('index'))
+    elif request.method == 'GET':
+        info = Mentee.query.filter_by(email=current_user.email).first()
+        #form.contact_email.data = current_user.email
+        form.company_name.data = info.company
+        form.founder_names.data = info.founder
+        form.industry.data = info.industry
+        form.team_skills.data = info.skills
+        form.help_needed.data = info.help_req
     return render_template('application.html', title='Cohort Application Form',
                            form=form)
 
@@ -557,6 +706,55 @@ def terms():
 def contact():
     return render_template('contact.html', title='Contact')
 
-@flapp.route('/login_dashboard')    
-def login_dashboard():
-    return render_template('login_dashboard.html', title='Login Dashboard')
+@flapp.route('/edit_picture')
+def edit_picture():
+    profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
+    if current_user.is_mentor():
+        profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+    elif current_user.is_cohort():
+        profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+    else:
+        profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+    return render_template('edit_picture.html', title='Edit Profile Picture', profile_pic_filepath=profile_pic_filepath)
+
+@flapp.route('/upload', methods=['POST'])
+def upload():
+    s3 = boto3.resource('s3')
+    s3_filename = str(current_user.id) + "-profile-pic.png"
+    if current_user.is_mentor():
+        s3.Bucket('enlight-hub-profile-pictures').put_object(Key='mentors/' + s3_filename, Body=request.files['myfile'])
+        form = EditMentorProfileForm(current_user.email)
+        info = Mentor.query.filter_by(email=current_user.email).first()
+        form.email.data = current_user.email
+        form.first_name.data = info.first_name
+        form.last_name.data = info.last_name
+        form.about_me.data = info.about_me
+        form.avail.data = info.avail
+        form.skill.data = info.skill
+        form.industry.data = info.industry
+        form.company.data = info.company
+        form.position.data = info.position
+        form.linked.data = info.linked
+        form.twitter.data = info.twitter
+    elif current_user.is_cohort():
+        s3.Bucket('enlight-hub-profile-pictures').put_object(Key='cohorts/' + s3_filename, Body=request.files['myfile'])
+        form = EditCohortProfileForm(current_user.email)
+        info = Cohort.query.filter_by(email=current_user.email).first()
+        form.email.data = current_user.email
+        form.company_name.data = info.company
+        form.founder_names.data = info.founder
+        form.industry.data = info.industry
+        form.team_skills.data = info.skills
+        form.help_needed.data = info.help_req
+    else:
+        s3.Bucket('enlight-hub-profile-pictures').put_object(Key='mentees/' + s3_filename, Body=request.files['myfile'])
+        form = EditMenteeProfileForm(current_user.email)
+        info = Mentee.query.filter_by(email=current_user.email).first()
+        form.email.data = current_user.email
+        form.company_name.data = info.company
+        form.founder_names.data = info.founder
+        form.industry.data = info.industry
+        form.team_skills.data = info.skills
+        form.help_needed.data = info.help_req
+    return render_template('edit_profile.html', title='Edit Profile',
+                           form=form)

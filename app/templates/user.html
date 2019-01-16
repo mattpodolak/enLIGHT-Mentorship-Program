@@ -1,195 +1,193 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-    <div class="row background-container user">
+    <div class="background-container">
         <h1 class="title-text">My Profile</h1>
-            <div class="col-md-6 col-md-offset-3 user-border profile-container">
-                <div class="profile-left-container">
-                    <img src="../static/test.png" class="profile-pic"/>
+        <div class="user-border profile-container">
+            <div class="profile-left-container">
+                <img src="{{ profile_pic_filepath }}" class="profile-pic"/>
+                {% if user.is_mentor() %}
+                    <a href="{{ info.linked }}" target="_blank">
+                        <p class="text link-text linkedin">LinkedIn</p>
+                    </a>
+                    <a href="{{ info.twitter }}" target="_blank">
+                        <p class="text link-text">Twitter</p>
+                    </a>
+                {% endif %}
+                {% if user == current_user %}
+                    <div class="edit-profile-text">
+                        <a href="{{ url_for('edit_profile') }}">
+                            <p class="text link-text">Edit profile</p>
+                        </a>
+                    </div>
+{#                            <a href="{{ url_for('reset_pw') }}">#}
+{#                                <p class="text link-text">Reset password</p>#}
+{#                            </a>#}
+                {% endif %}
+            </div>
+            <div class="profile-right-container">
+                <div class="profile-right-top-container">
                     {% if user.is_mentor() %}
-                        <a href="{{ info.linked }}" target="_blank">
-                            <p class="text link-text linkedin">LinkedIn</p>
-                        </a>
-                        <a href="{{ info.twitter }}" target="_blank">
-                            <p class="text link-text">Twitter</p>
-                        </a>
-                    {% endif %}
-                    {% if user == current_user %}
-                        {% if user.is_mentor() %}
-                            <div class="edit-bottom">
-                                <a href="{{ url_for('edit_profile') }}">
-                                    <p class="text link-text">Edit profile</p>
-                                </a>
-                            </div>
-                        {% else %}
-                            <div class="edit-bottom edit-bottom-mentee">
-                                <a href="{{ url_for('edit_profile') }}">
-                                    <p class="text link-text">Edit profile</p>
-                                </a>
-                            </div>
-                        {% endif %}
-{#                        <a href="{{ url_for('reset_pw') }}">#}
-{#                            <p class="text link-text">Reset password</p>#}
-{#                        </a>#}
+                        <h2 class="text name-text">{{info.first_name}} {{info.last_name}}</h2>
+                        <label class="text label-text">Position</label>
+                        <p class="text">{{info.position}} at {{info.company}}</p>
+                        <label class="text label-text">Industry</label>
+                        <p class="text">{{info.industry}}</p>
+                        <label class="text label-text">Email</label>
+                        <p class="text">{{info.email}}</p>
+                        <label class="text label-text">Availability</label>
+                        <p class="text">{{info.avail}}</p>
+                        <label class="text label-text">Bio</label>
+                        <p class="text">{{info.about_me}}</p>
+                    {% elif user.is_cohort() %}
+                        <h2 class="text name-text">{{info.company}}</h2>
+                        <label class="text label-text">Founders</label>
+                        <p class="text">{{info.founder}}</p>
+                        <label class="text label-text">Industry</label>
+                        <p class="text">{{info.industry}}</p>
+                        <label class="text label-text">Email</label>
+                        <p class="text">{{info.email}}</p>
+                        <label class="text label-text">Help Required</label>
+                        <p class="text">{{info.help_req}}</p>
+                    {% else %}
+                        <h2 class="text name-text">{{info.company}}</h2>
+                        <label class="text label-text">Founders</label>
+                        <p class="text">{{info.founder}}</p>
+                        <label class="text label-text">Industry</label>
+                        <p class="text">{{info.industry}}</p>
+                        <label class="text label-text">Email</label>
+                        <p class="text">{{info.email}}</p>
+                        <label class="text label-text">Help Required</label>
+                        <p class="text">{{info.help_req}}</p>
                     {% endif %}
                 </div>
-                <div class="profile-right-container">
-                    <div class="profile-right-top-container">
-                        {% if user.is_mentor() %}
-                            <h2 class="text name-text">{{info.first_name}} {{info.last_name}}</h2>
-                            <label class="text label-text">Position</label>
-                            <p class="text">{{info.position}} at {{info.company}}</p>
-                            <label class="text label-text">Industry</label>
-                            <p class="text">{{info.industry}}</p>
-                            <label class="text label-text">Email</label>
-                            <p class="text">{{info.email}}</p>
-                            <label class="text label-text">Availability</label>
-                            <p class="text">{{info.avail}}</p>
-                            <label class="text label-text">Bio</label>
-                            <p class="text">{{info.about_me}}</p>
-                        {% elif user.is_cohort() %}
-                            <h2 class="text name-text">{{info.company}}</h2>
-                            <label class="text label-text">Founders</label>
-                            <p class="text">{{info.founder}}</p>
-                            <label class="text label-text">Industry</label>
-                            <p class="text">{{info.industry}}</p>
-                            <label class="text label-text">Email</label>
-                            <p class="text">{{info.email}}</p>
-                            <label class="text label-text">Help Required</label>
-                            <p class="text">{{info.help_req}}</p>
-                        {% else %}
-                            <h2 class="text name-text">{{info.company}}</h2>
-                            <label class="text label-text">Founders</label>
-                            <p class="text">{{info.founder}}</p>
-                            <label class="text label-text">Industry</label>
-                            <p class="text">{{info.industry}}</p>
-                            <label class="text label-text">Email</label>
-                            <p class="text">{{info.email}}</p>
-                            <label class="text label-text">Help Required</label>
-                            <p class="text">{{info.help_req}}</p>
-                        {% endif %}
-                    </div>
-                    <div class="divider"></div>
-                    <div class="profile-right-middle-container">
-                        {% if user.is_mentor() %}
-                            <h2 class="text name-text">Skillset</h2>
+                <div class="divider"></div>
+                <div class="profile-right-middle-container">
+                    {% if user.is_mentor() %}
+                        <h2 class="text name-text">Skillset</h2>
+                        {% for skill in skill_array %}
                             <div class="skills-bubble">
-                                <label class="text">{{ info.skill }}</label>
-                            </div>
-                        {% elif user.is_cohort() %}
-                            <h2 class="text name-text">Team Skillset</h2>
+                            <label class="text">{{ skill }}</label>
+                        </div>
+                        {% endfor %}
+                    {% elif user.is_cohort() %}
+                        <h2 class="text name-text">Team Skillset</h2>
+                        {% for skill in skill_array %}
                             <div class="skills-bubble">
-                                <label class="text">{{ info.skills }}</label>
+                                <label class="text">{{ skill }}</label>
                             </div>
-                        {% else %}
-                            <h2 class="text name-text">Team Skillset</h2>
+                        {% endfor %}
+                    {% else %}
+                        <h2 class="text name-text">Team Skillset</h2>
+                        {% for skill in skill_array %}
                             <div class="skills-bubble">
-                                <label class="text">{{ info.skills }}</label>
+                                <label class="text">{{ skill }}</label>
                             </div>
-                        {% endif %}
+                        {% endfor %}
+                    {% endif %}
 
-                    </div>
-                    <div class="divider"></div>
-                    <div class="profile-right-bottom-container">
-                        {% if user.is_mentor() %}
-                            <h2 class="text name-text">Matched Mentees</h2>
+                </div>
+                <div class="divider"></div>
+                <div class="profile-right-bottom-container">
+                    {% if user.is_mentor() %}
+                        <h2 class="text name-text">Matched Mentees</h2>
+                        <div class="mentor-container">
+                            <div>
+                                <img src="../static/test.png" class="mentor-profile-pic"/>
+                                <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
+                            </div>
+                            <div>
+                                <img src="../static/test.png" class="mentor-profile-pic"/>
+                                <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
+                            </div>
+                            <div>
+                                <img src="../static/test.png" class="mentor-profile-pic"/>
+                                <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
+                            </div>
+                        </div>
+                    {% elif user.is_cohort() %}
+                        {% if mentor %}
+                            <h2 class="text name-text">Matched Mentors</h2>
                             <div class="mentor-container">
                                 <div>
                                     <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
+                                    <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
                                 </div>
                                 <div>
                                     <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
+                                    <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
                                 </div>
                                 <div>
                                     <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
+                                    <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
                                 </div>
                             </div>
-                        {% elif user.is_cohort() %}
-                            {% if mentor %}
-                                <h2 class="text name-text">Matched Mentors</h2>
-                                <div class="mentor-container">
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
-                                    </div>
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
-                                    </div>
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
-                                    </div>
-                                </div>
-    {#                            <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>#}
-                            {% else %}
-                                <h2 class="text name-text">Mentor Preferences</h2>
-                                <div class="mentor-container">
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
-                                    </div>
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
-                                    </div>
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
-                                    </div>
-                                </div>
-                            {% endif %}
+                            <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
                         {% else %}
-                            {% if mentor %}
-                                <h2 class="text name-text">Matched Mentors</h2>
-                                <div class="mentor-container">
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
-                                    </div>
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
-                                    </div>
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
-                                    </div>
+                            <h2 class="text name-text">Mentor Preferences</h2>
+                            <div class="mentor-container">
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
                                 </div>
-    {#                            <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>#}
-                            {% else %}
-                                <h2 class="text name-text">Mentor Preferences</h2>
-                                <div class="mentor-container">
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
-                                    </div>
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
-                                    </div>
-                                    <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
-                                        <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
-                                    </div>
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
                                 </div>
-                            {% endif %}
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
+                                </div>
+                            </div>
                         {% endif %}
-                    </div>
+                    {% else %}
+                        {% if mentor %}
+                            <h2 class="text name-text">Matched Mentors</h2>
+                            <div class="mentor-container">
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
+                                </div>
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
+                                </div>
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
+                                </div>
+                            </div>
+                            <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
+                        {% else %}
+                            <h2 class="text name-text">Mentor Preferences</h2>
+                            <div class="mentor-container">
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
+                                </div>
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
+                                </div>
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
-{#                {% if user == current_user %}#}
-{#                    {% if mentees %}#}
-{#                        <li><b>Mentees: </b>#}
-{#                            {% for mentee in mentees %}#}
-{#                                {{mentee.company}},#}
-{#                            {% endfor %}#}
-{#                        </li>#}
-{#                    {% endif %}#}
-{#                {% endif %}#}
-{#                <br>#}
             </div>
+            {% if user == current_user %}
+                {% if mentees %}
+                    <li><b>Mentees: </b>
+                        {% for mentee in mentees %}
+                            {{mentee.company}},
+                        {% endfor %}
+                    </li>
+                {% endif %}
+            {% endif %}
+            <br>
+        </div>
     </div>
 {% endblock %}

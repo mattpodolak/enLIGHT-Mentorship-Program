@@ -32,6 +32,7 @@ class MentorRegistrationForm(FlaskForm):
     company = StringField('Current Company', validators=[Length(min=0, max=164)])
     position = StringField('Current Position', validators=[Length(min=0, max=164)])
     linked = StringField('LinkedIn Link', validators=[Length(min=0, max=164)])
+    twitter = StringField('Twitter Link', validators=[Length(min=0, max=164)])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
@@ -52,8 +53,8 @@ class EditMentorProfileForm(FlaskForm):
     industry = StringField('Industries', validators=[DataRequired(), Length(min=0, max=164)])
     company = StringField('Current Company', validators=[DataRequired(), Length(min=0, max=164)])
     position = StringField('Current Position', validators=[DataRequired(), Length(min=0, max=164)])
-    linked = StringField('LinkedIn', validators=[DataRequired(), Length(min=0, max=164)])
-    twitter = StringField('Twitter', validators=[DataRequired(), Length(min=0, max=164)])
+    linked = StringField('LinkedIn Link', validators=[DataRequired(), Length(min=0, max=164)])
+    twitter = StringField('Twitter Link', validators=[DataRequired(), Length(min=0, max=164)])
     submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
@@ -108,12 +109,12 @@ class EditCohortProfileForm(FlaskForm):
 
 class ApplicationForm(FlaskForm):
     company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])
-    contact_email = StringField('Contact Email', validators=[DataRequired(), Email()])
+    #contact_email = StringField('Contact Email', validators=[DataRequired(), Email()])
     founder_names = StringField('Names of Founders', validators=[DataRequired(), Length(min=0, max=280)])
     industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
     team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
     help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
-    interest = TextAreaField('Why are you interested in the mentorship program?', validators=[DataRequired(), Length(min=0, max=500)])
+    interest = TextAreaField('Why are you interested in the cohort program?', validators=[DataRequired(), Length(min=0, max=500)])
     gain = TextAreaField('What do you hope to gain by the end of the program?', validators=[DataRequired(), Length(min=0, max=500)])
     stage = StringField('What stage is your startup at?', validators=[DataRequired(), Length(min=0, max=100)])
     relation = StringField('What type of mentorship relationship are you looking for (i.e. longterm)?', validators=[DataRequired(), Length(min=0, max=280)])

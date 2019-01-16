@@ -21,14 +21,13 @@
             <thead>
                 {% if current_user.is_admin() %}
                     <th>MODIFY</th>
-                    <th>Delete</th>
                     <th>Mentor</th>
                     <th>Contact</th>
                     <th>Preferences</th>
                 {% endif %}
                     <th>Company</th>
                     <th>Industry</th>
-                    <th>Favorite</th>
+                    <th>Favourite</th>
             </thead>
             <tbody>
                 {% if cohorts %}
@@ -36,7 +35,6 @@
                         <tr class="expand-row">
                             {% if current_user.is_admin() %}
                                 <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.id) }}">CHANGE</a></td>
-                                <td><a href="{{ url_for('del_user', userId=cohort.email_hash) }}">Delete Acct</a></td>
                                 <td>
                                   {% if cohort.mentor %}
                                     <b>Mentor:</b> {{cohort.mentor.first_name}} {{cohort.mentor.last_name}}
@@ -50,13 +48,7 @@
                             {% endif %}
                             <td>{{cohort.company}}</td>
                             <td>{{cohort.industry}}</td>
-                            {% if mentor %}
-                                {% if cohort.mentorpref == mentor %}
-                                    <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
-                                {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist</a></td>
-                                {% endif %}
-                            {% endif %}
+                            <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}
@@ -66,7 +58,7 @@
                                         <p>Founders: {{cohort.founder}}</p>
                                         <p>Team Skills: {{cohort.skills}}</p>
                                     </h2>
-                                    <h3>{{cohort.help_req}}</h3>
+                                    <h3>{{mentee.help_req}}</h3>
                                 </td>
                                 <td></td>
                             {% else %}
@@ -86,7 +78,6 @@
                         <tr class="expand-row">
                             {% if current_user.is_admin() %}
                                 <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">CHANGE</a></td>
-                                <td><a href="{{ url_for('del_user', userId=mentee.email_hash) }}">Delete Acct</a></td>
                                 <td>
                                   {% if mentee.mentor %}
                                     <b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}
@@ -100,13 +91,7 @@
                             {% endif %}
                             <td>{{mentee.company}}</td>
                             <td>{{mentee.industry}}</td>
-                            {% if mentor %}
-                                {% if mentee.mentorpref == mentor %}
-                                    <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
-                                {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}">Shortlist</a></td>
-                                {% endif %}
-                            {% endif %}
+                            <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}
