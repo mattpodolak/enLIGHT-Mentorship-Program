@@ -95,7 +95,7 @@
                             <div class="mentor-container">
                                 {% for mentee in mentees %}
                                     <div>
-                                        <img src="../static/test.png" class="mentor-profile-pic"/>
+                                        <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentees/{{ mentee.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
                                         <h4 class="text profile-pic-text">{{ mentee.company }}</h4>
                                     </div>
                                 {% endfor %}
@@ -106,7 +106,7 @@
                                 <div class="mentor-container">
                                     {% for pref in prefs %}
                                         <div>
-                                            <img src="../static/test.png" class="mentor-profile-pic"/>
+                                            <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentees/{{ pref.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
                                             <h4 class="text profile-pic-text">{{ pref.company }}</h4>
                                         </div>
                                     {% endfor %}
@@ -118,7 +118,7 @@
                             <h2 class="text name-text">Matched Mentors</h2>
                             <div class="mentor-container">
                                 <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentors/{{ mentor.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
                                     <h4 class="text profile-pic-text">{{ mentor.first_name }}</h4>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                                 <div class="mentor-container">
                                     {% for pref in prefs %}
                                         <div>
-                                            <img src="../static/test.png" class="mentor-profile-pic"/>
+                                            <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentees/{{ pref.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
                                             <h4 class="text profile-pic-text">{{ pref.first_name }}</h4>
                                         </div>
                                     {% endfor %}
@@ -140,7 +140,7 @@
                             <h2 class="text name-text">Matched Mentors</h2>
                             <div class="mentor-container">
                                 <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentors/{{ mentor.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
                                     <h4 class="text profile-pic-text">{{ mentor.first_name }}</h4>
                                 </div>
                             </div>
@@ -150,7 +150,7 @@
                                 <div class="mentor-container">
                                     {% for pref in prefs %}
                                         <div>
-                                            <img src="../static/test.png" class="mentor-profile-pic"/>
+                                            <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentees/{{ prefs.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
                                             <h4 class="text profile-pic-text">{{ pref.first_name }}</h4>
                                         </div>
                                     {% endfor %}

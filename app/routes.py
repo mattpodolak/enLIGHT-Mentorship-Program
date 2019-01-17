@@ -541,7 +541,7 @@ def user(userId):
             return render_template('404.html')
         elif current_user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentors/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skill is not None:
                 skill_array = info.skill.split(", ")
             for m in info.users:
@@ -576,7 +576,7 @@ def user(userId):
 
         elif current_user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
 
@@ -600,7 +600,7 @@ def user(userId):
 
         else:
             info = Mentee.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
             
@@ -628,17 +628,17 @@ def user(userId):
             return render_template('404.html')
         elif user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentors/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skill is not None:
                 skill_array = info.skill.split(", ")
         elif current_user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
             
@@ -649,13 +649,13 @@ def user(userId):
             return render_template('404.html')
         elif user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
         else:
             # current user = mentor, can only view mentees
             info = Mentee.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
     else:
@@ -664,7 +664,7 @@ def user(userId):
         elif user.is_mentor():
             # current user = mentee, can only view mentors
             info = Mentor.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+            profile_pic_filepath += 'mentors/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skill is not None:
                 skill_array = info.skill.split(", ")
             # clean the data a bit before passing to mentees
@@ -691,7 +691,7 @@ def edit_profile():
     elif current_user.is_mentor():
         form = EditMentorProfileForm(current_user.email)
         info = Mentor.query.filter_by(email=current_user.email).first()
-        profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+        profile_pic_filepath += 'mentors/' + str(current_user.email_hash) + '-profile-pic.png'
 
         if form.validate_on_submit():
             current_user.email = form.email.data
@@ -727,7 +727,7 @@ def edit_profile():
     elif current_user.is_cohort():
         form = EditCohortProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()
-        profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+        profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
 
         if form.validate_on_submit():
             current_user.email = form.email.data
@@ -753,7 +753,7 @@ def edit_profile():
     else:
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
-        profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+        profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
 
         if form.validate_on_submit():
             current_user.email = form.email.data
@@ -920,17 +920,17 @@ def contact():
 def edit_picture():
     profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
     if current_user.is_mentor():
-        profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
+        profile_pic_filepath += 'mentors/' + str(current_user.email_hash) + '-profile-pic.png'
     elif current_user.is_cohort():
-        profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+        profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
     else:
-        profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
+        profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
     return render_template('edit_picture.html', title='Edit Profile Picture', profile_pic_filepath=profile_pic_filepath)
 
 @flapp.route('/upload', methods=['POST'])
 def upload():
     s3 = boto3.resource('s3')
-    s3_filename = str(current_user.id) + "-profile-pic.png"
+    s3_filename = str(current_user.email_hash) + "-profile-pic.png"
     if current_user.is_mentor():
         s3.Bucket('enlight-hub-profile-pictures').put_object(Key='mentors/' + s3_filename, Body=request.files['myfile'])
         form = EditMentorProfileForm(current_user.email)
@@ -947,7 +947,7 @@ def upload():
         form.linked.data = info.linked
         form.twitter.data = info.twitter
     elif current_user.is_cohort():
-        s3.Bucket('enlight-hub-profile-pictures').put_object(Key='cohorts/' + s3_filename, Body=request.files['myfile'])
+        s3.Bucket('enlight-hub-profile-pictures').put_object(Key='mentees/' + s3_filename, Body=request.files['myfile'])
         form = EditCohortProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()
         form.email.data = current_user.email
