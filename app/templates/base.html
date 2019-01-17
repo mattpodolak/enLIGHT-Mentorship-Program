@@ -42,19 +42,19 @@
                     <!--<li><a class="nav-link" href="{{ url_for('application') }}">Apply Now</a></li>-->
                     {% elif current_user.is_cohort() %}
                     <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
-                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Postings</a></li>
                     <li><a class="nav-link" href="{{ url_for('shortlist') }}">Shortlist</a></li>
                     <li><a class="nav-link" href="{{ url_for('cohort_faq') }}">FAQ</a></li>
                     <li><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
                     {% elif current_user.is_admin() or current_user.is_mentor()%}
                     <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
-                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Postings</a></li>
                     <li><a class="nav-link" href="{{ url_for('shortlist') }}">Shortlist</a></li>
                     <li><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
                     {% else %}
                     <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
                     <li><a class="nav-link" href="{{ url_for('application') }}">Cohort Application</a></li>
-                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Postings</a></li>
                     <li><a class="nav-link" href="{{ url_for('shortlist') }}">Shortlist</a></li>
                     <li><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
                     {% endif %}
