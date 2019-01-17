@@ -518,10 +518,10 @@ a:hover {
     margin-left: -50vw;
     margin-right: -50vw;
     background-color: #13253b;
-    padding-top: 7%;
+    padding-top: 10%;
     padding-bottom: 10%;
-    min-height: calc(100vh - 250px);
     margin-bottom: -2%;
+    min-height: calc(100vh - 250px);
 }
 
 .full-screen-alert{

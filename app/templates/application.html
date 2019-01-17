@@ -3,7 +3,8 @@
 
 {% block app_content %}
     <div class="body-content-container-blue">
-        <div class="col-md-4 col-md-offset-4 application-border" style="padding-left: 50px; padding-right: 50px">
+        <div class=" application-border" style="padding-left: 50px; padding-right: 50px; width: 50%; margin: 0 auto">
+            <br>
             <h1 class="form-header align-center">Cohort Application</h1>
             <h3 class="form-subheader align-center">Please enter your information below to be considered</h3>
 {#            {{ wtf.quick_form(form)}}#}
@@ -45,7 +46,12 @@
                 {{ form.business_docs.label(class="form-label-text") }} <br>
                 {{ form.business_docs(class="form-control text-input-style text-input-center text-input-bottom-spacing")}}
 
-                {{ form.submit(class="btn btn-primary top-margin submit-button send-button-style") }}
+                <div style="width: 100%; text-align: center">
+                    {{ form.submit(class="btn btn-primary top-margin submit-button submit-button-style") }}
+                </div>
+
+                <br>
+                <br>
             </form>
         </div>
     </div>
