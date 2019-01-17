@@ -90,95 +90,77 @@
                 <div class="divider"></div>
                 <div class="profile-right-bottom-container">
                     {% if user.is_mentor() %}
-                        <h2 class="text name-text">Matched Mentees</h2>
-                        <div class="mentor-container">
-                            <div>
-                                <img src="../static/test.png" class="mentor-profile-pic"/>
-                                <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
+                        {% if mentees %}
+                            <h2 class="text name-text">Matched Mentees</h2>
+                            <div class="mentor-container">
+                                {% for mentee in mentees %}
+                                    <div>
+                                        <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentees/{{ mentee.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
+                                        <h4 class="text profile-pic-text">{{ mentee.company }}</h4>
+                                    </div>
+                                {% endfor %}
                             </div>
-                            <div>
-                                <img src="../static/test.png" class="mentor-profile-pic"/>
-                                <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
-                            </div>
-                            <div>
-                                <img src="../static/test.png" class="mentor-profile-pic"/>
-                                <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
-                            </div>
-                        </div>
+                        {% else %}
+                            {% if prefs %}
+                                <h2 class="text name-text">Mentee Preferences</h2>
+                                <div class="mentor-container">
+                                    {% for pref in prefs %}
+                                        <div>
+                                            <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentees/{{ pref.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
+                                            <h4 class="text profile-pic-text">{{ pref.company }}</h4>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endif %}
                     {% elif user.is_cohort() %}
                         {% if mentor %}
                             <h2 class="text name-text">Matched Mentors</h2>
                             <div class="mentor-container">
                                 <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
+                                    <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentors/{{ mentor.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ mentor.first_name }}</h4>
                                 </div>
                             </div>
-                            <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
                         {% else %}
-                            <h2 class="text name-text">Mentor Preferences</h2>
-                            <div class="mentor-container">
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
+                            {% if prefs %}
+                                <h2 class="text name-text">Mentor Preferences</h2>
+                                <div class="mentor-container">
+                                    {% for pref in prefs %}
+                                        <div>
+                                            <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentees/{{ pref.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
+                                            <h4 class="text profile-pic-text">{{ pref.first_name }}</h4>
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
-                                </div>
-                            </div>
+                            {% endif %}
                         {% endif %}
                     {% else %}
                         {% if mentor %}
                             <h2 class="text name-text">Matched Mentors</h2>
                             <div class="mentor-container">
                                 <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
+                                    <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentors/{{ mentor.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">{{ mentor.first_name }}</h4>
                                 </div>
                             </div>
-                            <li><b>Mentor:</b> {{mentor.first_name}} {{mentor.last_name}}</li>
                         {% else %}
-                            <h2 class="text name-text">Mentor Preferences</h2>
-                            <div class="mentor-container">
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor1 }}</h4>
+                            {% if prefs %}
+                                <h2 class="text name-text">Mentor Preferences</h2>
+                                <div class="mentor-container">
+                                    {% for pref in prefs %}
+                                        <div>
+                                            <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentees/{{ prefs.email_hash }}-profile-pic.png" class="mentor-profile-pic"/>
+                                            <h4 class="text profile-pic-text">{{ pref.first_name }}</h4>
+                                        </div>
+                                    {% endfor %}
                                 </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor2 }}</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">{{ info.mentor3 }}</h4>
-                                </div>
-                            </div>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                 </div>
             </div>
-            {% if user == current_user %}
+            <!--{% if user == current_user %}
                 {% if mentees %}
                     <li><b>Mentees: </b>
                         {% for mentee in mentees %}
@@ -186,7 +168,7 @@
                         {% endfor %}
                     </li>
                 {% endif %}
-            {% endif %}
+            {% endif %}-->
             <br>
         </div>
     </div>
