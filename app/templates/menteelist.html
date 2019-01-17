@@ -41,7 +41,7 @@
                     {% for cohort in cohorts %}
                         <tr class="expand-row">
                             {% if current_user.is_admin() %}
-                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.id) }}">CHANGE</a></td>
+                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.email_hash) }}">CHANGE</a></td>
                                 <td><a href="{{ url_for('del_user', userId=cohort.email_hash) }}">Delete Acct</a></td>
                                 <td>
                                   {% if cohort.mentor %}
@@ -91,7 +91,7 @@
                         {% for mentee in mentees %}
                             <tr class="expand-row">
                                 {% if current_user.is_admin() %}
-                                    <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">CHANGE</a></td>
+                                    <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.email_hash) }}">CHANGE</a></td>
                                     <td><a href="{{ url_for('del_user', userId=mentee.email_hash) }}">Delete Acct</a></td>
                                     <td>
                                       {% if mentee.mentor %}

@@ -857,8 +857,11 @@ def update_mentor():
 @login_required
 def add_mentor(menteeId):
     if current_user.is_admin():
-        mentee = Mentee.query.filter_by(id=menteeId).first()
-        user = User.query.filter_by(email=mentee.email).first()
+        user = User.query.filter_by(email_hash=menteeId).first()
+        if user.is_cohort():
+            mentee = Cohort.query.filter_by(email=user.email).first()
+        else:
+            mentee = Mentee.query.filter_by(email=user.email).first()
         form = MenteeMatchForm()
         if form.validate_on_submit():
             mentorId = form.mentor.data
