@@ -24,29 +24,30 @@
         <h1>Shortlist</h1>
     </div>
 </div>
-
-<div class="shortlist_container">
-    {% if mentors %}
-        {% for mentor in mentors %}
-            <div class="shortlist_profile">
-                <div class="shortlist_info">
-                    <p><b>{{mentor.first_name}} {{mentor.last_name}}</b></p>
-                    <p>{{mentor.position}} of {{mentor.company}}</p>
-                    <p>Industry: {{mentor.industry}}</p>
-                    <p>Skillset: {{mentor.skill}}</p>
-                    <p>Availability: {{mentor.avail}}</p>
-                    <p><a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a></p>
-                    {% if mentor.email_hash in prefMentors %}
-                        <td><a href="{{ url_for('del_pref', Id=mentor.email_hash) }}">Remove from Preferred</a></td>
-                    {% else %}
-                        <td><a href="{{ url_for('save_pref', Id=mentor.email_hash) }}">Make Preferred</a></td>
-                    {% endif %}
+<div width=100% style="display: flex; justify-content: center; min-height: calc(100vh -230)">
+    <div class="shortlist_container">
+        {% if mentors %}
+            {% for mentor in mentors %}
+                <div class="shortlist_profile">
+                    <div class="shortlist_info">
+                        <p><b>{{mentor.first_name}} {{mentor.last_name}}</b></p>
+                        <p>{{mentor.position}} of {{mentor.company}}</p>
+                        <p>Industry: {{mentor.industry}}</p>
+                        <p>Skillset: {{mentor.skill}}</p>
+                        <p>Availability: {{mentor.avail}}</p>
+                        <p><a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a></p>
+                        {% if mentor.email_hash in prefMentors %}
+                            <td><a href="{{ url_for('del_pref', Id=mentor.email_hash) }}">Remove from Preferred</a></td>
+                        {% else %}
+                            <td><a href="{{ url_for('save_pref', Id=mentor.email_hash) }}">Make Preferred</a></td>
+                        {% endif %}
+                    </div>
+                    <div class="shortlist_about">
+                        <p>{{mentor.about_me}}</p>
+                    </div>
                 </div>
-                <div class="shortlist_about">
-                    <p>{{mentor.about_me}}</p>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
 </div>  
 {% endblock %}
