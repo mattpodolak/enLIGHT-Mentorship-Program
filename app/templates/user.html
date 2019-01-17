@@ -17,10 +17,10 @@
             <div class="profile-left-container">
                 <img src="{{ profile_pic_filepath }}" class="profile-pic"/>
                 {% if user.is_mentor() %}
-                    <a href="{{ info.linked }}" target="_blank">
+                    <a href="{{ url_for('external_link', link='linked', userId=user.email_hash) }}">
                         <p class="text link-text linkedin">LinkedIn</p>
                     </a>
-                    <a href="{{ info.twitter }}" target="_blank">
+                    <a href="{{ url_for('external_link', link='twitter', userId=user.email_hash) }}">
                         <p class="text link-text">Twitter</p>
                     </a>
                 {% endif %}

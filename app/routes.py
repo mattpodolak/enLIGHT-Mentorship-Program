@@ -968,3 +968,15 @@ def upload():
         form.help_needed.data = info.help_req
     flash('Profile picture successfully uploaded. Please allow some time for profile to update.')
     return redirect(url_for('edit_profile'))
+     
+@flapp.route('/external_link/<link>/<userId>')
+def external_link(link, userId):
+    user = User.query.filter_by(email_hash=userId).first()
+    mentor = Mentor.query.filter_by(email=user.email).first()
+    if link == 'linked':
+        link = mentor.linked
+    elif link == 'twitter':
+        link = mentor.twitter 
+    if link.find("http://") != 0 and link.find("https://") != 0:
+        link = "http://" + link
+    return redirect(link)
