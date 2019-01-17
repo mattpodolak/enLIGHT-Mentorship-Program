@@ -100,6 +100,7 @@
                                 </td>
                             <td>{{mentee.company}}</td>
                             <td>{{mentee.industry}}</td>
+                            <td></td>
                             {% else %}
                             <td colspan="3">{{mentee.company}}</td>
                             <td colspan="3">{{mentee.industry}}</td>
@@ -108,28 +109,36 @@
                                 {% if mentee.mentorpref == mentor %}
                                     <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
                                 {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}">Shortlist</a></td>
+                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}"><img src="../static/heart_icon.png"></a></td>
                                 {% endif %}
                             {% endif %}
                         </tr>
-                        <tr style="display: none; background-color: #F4F7F9" >
+                        <tr style="display: none; background-color: #F4F7F9;">
                             {% if current_user.is_admin() %}
-                                <td></td>
-                                <td colspan="5">
+                                <td colspan="7" style="padding: 14px 20%;">
                                     <h2><p>{{mentee.company}}</p>
                                         <p>Founders: {{mentee.founder}}</p>
-                                        <p>Team Skills: {{mentee.skills}}</p>
                                     </h2>
-                                    <h3>{{mentee.help_req}}</h3>
+                                    {% set skill_list = mentee.skills.split(',')%}
+                                    {% for skills in skill_list %}
+                                        <div class="skills-bubble">
+                                            <label class="text">{{ skills }}</label>
+                                        </div>
+                                    {% endfor %}
+                                    <br>{{mentee.help_req}}
                                 </td>
-                                <td></td>
                             {% else %}
-                                <td colspan="7">
+                                <td colspan="7" style="padding: 14px 20%;">
                                     <h2><p>{{mentee.company}}</p>
                                         <p>Founders: {{mentee.founder}}</p>
-                                        <p>Team Skills: {{mentee.skills}}</p>
                                     </h2>
-                                    <h3>{{mentee.help_req}}</h3>
+                                    {% set skill_list = mentee.skills.split(',')%}
+                                    {% for skills in skill_list %}
+                                        <div class="skills-bubble">
+                                            <label class="text">{{ skills }}</label>
+                                        </div>
+                                    {% endfor %}
+                                    <br>{{mentee.help_req}}
                                 </td>
                             {% endif %}
                         </tr>

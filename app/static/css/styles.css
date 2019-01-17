@@ -375,6 +375,9 @@ a {
     overflow-x: auto;
     margin: 0px auto;      
 }
+.mentor_rtable tr:hover{
+    background-color: #F0F0F4;
+}
 
 .mentor_rtable th{
     font-size: 14px;
