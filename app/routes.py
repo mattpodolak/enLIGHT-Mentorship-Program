@@ -549,6 +549,8 @@ def user(userId):
                     mentee = Cohort.query.filter_by(email=m.email).first()
                 else:
                     mentee = Mentee.query.filter_by(email=m.email).first()
+                user_m = User.query.filter_by(email=mentee.email).first()
+                mentee.email_hash = user_m.email_hash
                 mentees.append(mentee)
             
             # find preferred mentees
@@ -568,6 +570,8 @@ def user(userId):
                     mentee = Cohort.query.filter_by(email=tempu.email).first()
                 else:
                     mentee = Mentee.query.filter_by(email=tempu.email).first()
+                user_m = User.query.filter_by(email=mentee.email).first()
+                mentee.email_hash = user_m.email_hash
                 prefs.append(mentee)
 
         elif current_user.is_cohort():
@@ -590,6 +594,8 @@ def user(userId):
 
             for tempu in tempList:
                 mentor = Mentor.query.filter_by(email=tempu.email).first()
+                user_m = User.query.filter_by(email=mentor.email).first()
+                mentor.email_hash = user_m.email_hash
                 prefs.append(mentor)
 
         else:
@@ -612,6 +618,8 @@ def user(userId):
 
             for tempu in tempList:
                 mentor = Mentor.query.filter_by(email=tempu.email).first()
+                user_m = User.query.filter_by(email=mentor.email).first()
+                mentor.email_hash = user_m.email_hash
                 prefs.append(mentor)
 
     elif current_user.is_admin():
@@ -665,7 +673,13 @@ def user(userId):
         else:
             return render_template('404.html')
     
-    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees,
+    mentor = user.mentor
+    mentor.email_hash = None
+    if user.mentor is not None:
+        user_m = User.query.filter_by(email=user.mentor.email_hash).first()
+        mentor.email_hash = user_m.email_hash
+
+    return render_template('user.html', title='Profile', user=user, info=info, mentor=mentor, mentees=mentees,
                            skill_array=skill_array, profile_pic_filepath=profile_pic_filepath, prefs=prefs)
 
 
