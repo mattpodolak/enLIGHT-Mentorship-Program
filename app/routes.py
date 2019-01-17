@@ -33,7 +33,8 @@ def homepage():
     elif current_user.is_cohort():
         return render_template('home_cohort.html', title='Home')
     else:
-        return render_template('home_gm.html', title='Home')
+        app = Application.query.filter_by(email=current_user.email).first()
+        return render_template('home_gm.html', title='Home', app=app)
 
 
 @flapp.route('/dashboard')

@@ -121,11 +121,6 @@ class ApplicationForm(FlaskForm):
     website = StringField('Website (optional)', validators=[Length(min=0, max=280)])
     business_docs = StringField('Please provide a link to any applicable business documents', validators=[DataRequired(), Length(min=0, max=380)]) 
     submit = SubmitField('Apply Now!')
-    
-    def validate_contact_email(self, contact_email):
-        user = Application.query.filter_by(email=contact_email.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different email address.')
 
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
