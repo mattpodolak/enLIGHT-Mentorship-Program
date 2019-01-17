@@ -43,7 +43,7 @@ def match_mentee(user, mentee):
                                          user=user, mentee=mentee))
 
 def contact_email(name, email, subject, message):
-    send_email("[enLIGHT Mentorship] Contact",
+    send_email("[enLIGHT Mentorship] Contact Form",
                sender=flapp.config['ADMINS'][0],
                recipients=["mpodola2@gmail.com"],
                text_body=render_template('email/contact.txt',
