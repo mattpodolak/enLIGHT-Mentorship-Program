@@ -22,21 +22,27 @@
                     availabilities.  Apply today to get valuable guidance! </h2>
             </div>
         </div>
-        <div class="mentor_list_container">
-            <table class="mentor_rtable">
+      <div class="mentor_list_container">
+          <table width="100%" class="mentor_rtable">
                 {% if mentors %}
                     <thead>
-                    {% if current_user.is_admin() %}
-                        <th>ID</th>
-                        <th>Delete</th>
-                        <th>Mentees</th>
-                        <th>Email</th>
-                    {% endif %}
-                        <th>NAME</th>
-                        <th>Work Title</th>
-                        <th>Availability</th>
-                        <th>Skillset</th>
-                        <th>Favourite</th>
+                        {% if current_user.is_admin() %}
+                            <th width="11.1%">ID</th>
+                            <th width="11.1%">Delete</th>
+                            <th width="11.1%">Mentees</th>
+                            <th width="11.1%">Email</th>
+                            <th width="11.1%">NAME</th>
+                            <th width="11.1%">Work Title</th>
+                            <th width="11.1%">Availability</th>
+                            <th width="11.1%">Skillset</th>
+                            <th width="11.1%">Favourite</th>
+                        {% else %}
+                            <th width="20%">NAME</th>
+                            <th width="20%">Work Title</th>
+                            <th width="20%">Availability</th>
+                            <th width="20%">Skillset</th>
+                            <th width="20%">Favourite</th>
+                        {% endif %}
                     </thead>
                     <tbody>
                     {% for mentor in mentors %}
@@ -64,35 +70,36 @@
                                     {% if mentor.mentee == menteeInfo %}
                                         <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
                                     {% else %}
-                                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
+                                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}"><img src="../static/heart_icon.png"></a>
                                     {% endif %}
                                 {% elif cohortInfo %}
                                     {% if mentor.cohort == cohortInfo %}
                                         <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
                                     {% else %}
-                                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
+                                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}"><img src="../static/heart_icon.png"></a>
                                     {% endif %}
                                 {% else %}
-                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}">Shortlist</a>
+                                    <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}"><img src="../static/heart_icon.png"></a>
                                 {% endif %}
-                            </td>
-                        </tr>
-                        <tr style="display: none; background-color: #F4F7F9" >
-                            <td></td>
-                            <td colspan="4">
-                                <h2>{{mentor.first_name}} {{mentor.last_name}}</h2><br>
-                                {{mentor.about_me}}
-                            </td>
-                            {% if current_user.is_admin() %}
-                                <td colspan="3"></td>
-                            {% else %}
-                                <td colspan="1"></td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-                {% endif %}
-            </table>
+                          </td>
+                      </tr>
+                    <tr style="display: none; background-color: #F4F7F9;" >
+                        {% if current_user.is_admin() %}
+                        <td colspan="8" style="padding: 14px 20%;">
+                            <h2>{{mentor.first_name}} {{mentor.last_name}}</h2><br>
+                            {{mentor.about_me}}
+                        </td>
+                        {% else %}
+                        <td colspan="5" style="padding: 14px 20%;">
+                            <h2>{{mentor.first_name}} {{mentor.last_name}}</h2><br>
+                            {{mentor.about_me}}
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+            {% endif %}
+        </table>
         </div>
     </div>
 {% endblock %}
