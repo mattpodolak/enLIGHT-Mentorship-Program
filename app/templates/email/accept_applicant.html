@@ -1,15 +1,8 @@
 <p>Dear {{app.company}},</p>
 <h2>CONGRATULATIONS!</h2>
-<h3>Your application to become a mentee has been accepted.</h3>
-<p>We have created a mentee account for you, please reset your password and update your profile.</p>
-<p>
-    To reset your password
-    <a href="{{ url_for('reset_password', token=token, _external=True) }}">
-        click here
-    </a>.
-</p>
-<p>Alternatively, you can paste the following link in your browser's address bar:</p>
-<p>{{ url_for('reset_password', token=token, _external=True) }}</p>
-<p>If you have not applied to become a mentee simply ignore this message.</p>
+<h3>Your application to become a member of the enLIGHT Cohort has been accepted.</h3>
+<p>We have upgraded your general member account for you, please login to view your new profile.</p>
+
+<p>If you have not applied to join our Cohort simply ignore this message.</p>
 <p>Sincerely,</p>
 <p>The enLIGHT Team</p>

@@ -8,25 +8,26 @@
             });  
         });
     </script>
-    <div class="mentor_intro_content">
-        <div class="mentor_intro">
-            <h1>Innovators of today </h1>
-            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eros magna, iaculis non porta eu, dapibus ut tellus. Sed eget venenatis eros. Nam nec efficitur urna. Praesent aliquam tristique suscipit. Mauris porttitor, arcu vitae tincidunt fringilla, tortor diam facilisis enim, ac volutpat lacus tellus eget metus. Sed elementum sapien est, sed ornare ex dapibus eu. Ut id auctor lacus. Curabitur aliquet molestie purus, ut viverra neque aliquam eget. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse luctus, dui at convallis efficitur, nisl nulla bibendum est, in molestie ligula metus a ligula. Fusce eros ex, varius in nibh eget, accumsan bibendum arcu.</h2>
+    <div class="body-content-container-white">
+        <div class="mentor_intro_content">
+            <div class="mentor_intro">
+                <h1>Innovators of today</h1>
+                <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eros magna, iaculis non porta eu, dapibus ut tellus. Sed eget venenatis eros. Nam nec efficitur urna. Praesent aliquam tristique suscipit. Mauris porttitor, arcu vitae tincidunt fringilla, tortor diam facilisis enim, ac volutpat lacus tellus eget metus. Sed elementum sapien est, sed ornare ex dapibus eu. Ut id auctor lacus. Curabitur aliquet molestie purus, ut viverra neque aliquam eget. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse luctus, dui at convallis efficitur, nisl nulla bibendum est, in molestie ligula metus a ligula. Fusce eros ex, varius in nibh eget, accumsan bibendum arcu.</h2>
+            </div>
         </div>
-    </div>
-
 
     <div class="mentor_list_container">
         <table width="100%" class="mentor_rtable">               
             <thead>
                 {% if current_user.is_admin() %}
-                    <th width="14.6%">MODIFY</th>
-                    <th width="14.6%">Mentor</th>
-                    <th width="14.6%">Contact</th>
-                    <th width="14.6%">Preferences</th>
-                    <th width="14.6%">Company</th>
-                    <th width="14.6%">Industry</th>
-                    <th width="14.6%">Favorite</th>
+                    <th width="12.5%">MODIFY</th>
+                    <th>Delete</th>
+                    <th width="12.5%">Mentor</th>
+                    <th width="12.5%">Contact</th>
+                    <th width="12.5%">Preferences</th>
+                    <th width="12.5%">Company</th>
+                    <th width="12.5%">Industry</th>
+                    <th width="12.5%">Favorite</th>
                 {% else %}
                     <th width="40%" colspan="3">Company</th>
                     <th width="40%" colspan="3">Industry</th>
@@ -39,6 +40,7 @@
                         <tr class="expand-row">
                             {% if current_user.is_admin() %}
                                 <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.id) }}">CHANGE</a></td>
+                                <td><a href="{{ url_for('del_user', userId=cohort.email_hash) }}">Delete Acct</a></td>
                                 <td>
                                   {% if cohort.mentor %}
                                     <b>Mentor:</b> {{cohort.mentor.first_name}} {{cohort.mentor.last_name}}
@@ -52,14 +54,14 @@
                             {% endif %}
                             <td>{{cohort.company}}</td>
                             <td>{{cohort.industry}}</td>
-                            {% if mentor %}
-                                {% if cohort.mentorpref == mentor %}
-                                    <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
-                                {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist</a></td>
+                                {% if mentor %}
+                                    {% if cohort.mentorpref == mentor %}
+                                        <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
+                                    {% else %}
+                                        <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}"><img src="../static/heart_icon.png"></a></td>
+                                    {% endif %}
                                 {% endif %}
-                            {% endif %}
-                        </tr>
+                            </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}
                                 <td colspan="7">
@@ -84,36 +86,33 @@
                     {% endfor %}
                 {% endif %}
                 {% if mentees %}
-                    {% for mentee in mentees %}
-                        <tr class="expand-row">
-                            {% if current_user.is_admin() %}
-                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">CHANGE</a></td>
-                                <td>
-                                  {% if mentee.mentor %}
-                                    <b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}
-                                  {% endif %}
-                                </td>
-                                <td>{{mentee.email}}</td>
-                                <td>{{mentee.mentor1}}<br> 
-                                    {{mentee.mentor2}}<br> 
-                                    {{mentee.mentor3}}
-                                </td>
-                            <td>{{mentee.company}}</td>
-                            <td>{{mentee.industry}}</td>
-                            <td></td>
-                            {% else %}
-                            <td colspan="3">{{mentee.company}}</td>
-                            <td colspan="3">{{mentee.industry}}</td>
-                            {% endif %}
-                            {% if mentor %}
-                                {% if mentee.mentorpref == mentor %}
-                                    <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
-                                {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}"><img src="../static/heart_icon.png"></a></td>
+                        {% for mentee in mentees %}
+                            <tr class="expand-row">
+                                {% if current_user.is_admin() %}
+                                    <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">CHANGE</a></td>
+                                    <td><a href="{{ url_for('del_user', userId=mentee.email_hash) }}">Delete Acct</a></td>
+                                    <td>
+                                      {% if mentee.mentor %}
+                                        <b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}
+                                      {% endif %}
+                                    </td>
+                                    <td>{{mentee.email}}</td>
+                                    <td>{{mentee.mentor1}}<br>
+                                        {{mentee.mentor2}}<br>
+                                        {{mentee.mentor3}}
+                                    </td>
                                 {% endif %}
-                            {% endif %}
-                        </tr>
-                        <tr style="display: none; background-color: #F4F7F9;">
+                                <td>{{mentee.company}}</td>
+                                <td>{{mentee.industry}}</td>
+                                {% if mentor %}
+                                    {% if mentee.mentorpref == mentor %}
+                                        <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
+                                    {% else %}
+                                        <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}"><img src="../static/heart_icon.png"></a></td>
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                            <tr style="display: none; background-color: #F4F7F9;">
                             {% if current_user.is_admin() %}
                                 <td colspan="7" style="padding: 14px 20%;">
                                     <h2><p>{{mentee.company}}</p>
@@ -141,10 +140,12 @@
                                     <br>{{mentee.help_req}}
                                 </td>
                             {% endif %}
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-            </tbody>
-        </table>
+                          </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
 {% endblock %}
