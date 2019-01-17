@@ -240,15 +240,11 @@ def del_pref(Id):
 @login_required
 def acc_menteepref(menteeId):
     user = User.query.filter_by(email_hash=menteeId).first()
-    print('1', user)
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
         if user.is_cohort():
             cohort = Cohort.query.filter_by(email=user.email).first()
-            print('2', mentor)
             cohort.mentorpref = mentor
-            print('3', cohort)
-            print('4', cohort.mentorpref)
         else:
             mentee = Mentee.query.filter_by(email=user.email).first()
             mentee.mentorpref = mentor
@@ -264,13 +260,17 @@ def mentor_shortlist():
     if current_user.is_cohort():
         cohort = Cohort.query.filter_by(email=current_user.email).first()
         mentorList = Mentor.query.filter_by(cohort=cohort)
+        prefMentors = [cohort.mentor1, cohort.mentor2, cohort.mentor3]
     elif current_user.is_admin():
         mentorList = None
+        prefMentors = None
     elif current_user.is_mentor():
         mentorList = None
+        prefMentors = None
     else:
         mentee = Mentee.query.filter_by(email=current_user.email).first()
         mentorList = Mentor.query.filter_by(mentee=mentee)
+        prefMentors = [mentee.mentor1, mentee.mentor2, mentee.mentor3]
     for mentor in mentorList:
         user = User.query.filter_by(email=mentor.email).first()
         # clean the data a bit before passing to mentees
@@ -278,7 +278,7 @@ def mentor_shortlist():
             mentor.email = None
         mentor.email_hash = user.email_hash
             
-    return render_template('mentorshortlist.html', title='Mentor Shortlist', mentors=mentorList)
+    return render_template('mentorshortlist.html', title='Mentor Shortlist', mentors=mentorList, prefMentors=prefMentors)
 
 @flapp.route('/mentee_shortlist')
 @login_required
@@ -301,8 +301,9 @@ def mentee_shortlist():
         prefMentees = [mentor.mentee1, mentor.mentee2, mentor.mentee3]
     else:
         menteeList = None
-        cohortList = None            
-    return render_template('menteeshortlist.html', title='Mentee Shortlist', mentees=menteeList, cohorts=cohortList)
+        cohortList = None
+        prefMentees = None          
+    return render_template('menteeshortlist.html', title='Mentee Shortlist', mentees=menteeList, cohorts=cohortList, prefMentees=prefMentees)
 
 
 @flapp.route('/mentee_list')
