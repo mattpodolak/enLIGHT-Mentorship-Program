@@ -21,7 +21,7 @@
             <thead>
                 {% if current_user.is_admin() %}
                     <th width="12.5%">MODIFY</th>
-                    <th>Delete</th>
+                    <th width="12.5%">Delete</th>
                     <th width="12.5%">Mentor</th>
                     <th width="12.5%">Contact</th>
                     <th width="12.5%">Preferences</th>
@@ -118,12 +118,14 @@
                                     <h2><p>{{mentee.company}}</p>
                                         <p>Founders: {{mentee.founder}}</p>
                                     </h2>
-                                    {% set skill_list = mentee.skills.split(',')%}
-                                    {% for skills in skill_list %}
-                                        <div class="skills-bubble">
-                                            <label class="text">{{ skills }}</label>
-                                        </div>
-                                    {% endfor %}
+                                    {% if mentee.skills %}
+                                        {% set skill_list = mentee.skills.split(',')%}
+                                        {% for skills in skill_list %}
+                                            <div class="skills-bubble">
+                                                <label class="text">{{ skills }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
                                     <br>{{mentee.help_req}}
                                 </td>
                             {% else %}

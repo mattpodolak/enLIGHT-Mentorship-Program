@@ -27,21 +27,22 @@
                 {% if mentors %}
                     <thead>
                         {% if current_user.is_admin() %}
-                        <th width="11.1%">ID</th>
-                        <th width="11.1%">Delete</th>
-                        <th width="11.1%">Mentees</th>
-                        <th width="11.1%">Email</th>
-                        <th width="11.1%">NAME</th>
-                        <th width="11.1%">Work Title</th>
-                        <th width="11.1%">Availability</th>
-                        <th width="11.1%">Skillset</th>
-                        <th width="11.1%">Favourite</th>
-                    {% endif %}
-                        <th width="20%">NAME</th>
-                        <th width="20%">Work Title</th>
-                        <th width="20%">Availability</th>
-                        <th width="20%">Skillset</th>
-                        <th width="20%">Favourite</th>
+                            <th width="11.1%">ID</th>
+                            <th width="11.1%">Delete</th>
+                            <th width="11.1%">Mentees</th>
+                            <th width="11.1%">Email</th>
+                            <th width="11.1%">NAME</th>
+                            <th width="11.1%">Work Title</th>
+                            <th width="11.1%">Availability</th>
+                            <th width="11.1%">Skillset</th>
+                            <th width="11.1%">Favourite</th>
+                        {% else %}
+                            <th width="20%">NAME</th>
+                            <th width="20%">Work Title</th>
+                            <th width="20%">Availability</th>
+                            <th width="20%">Skillset</th>
+                            <th width="20%">Favourite</th>
+                        {% endif %}
                     </thead>
                     <tbody>
                     {% for mentor in mentors %}
