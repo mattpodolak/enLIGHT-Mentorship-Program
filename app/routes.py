@@ -161,7 +161,8 @@ def save_pref(Id):
             mentor.mentee3 = Id
             flash('Added to preferred mentees')
         else:
-           flash('You already have 3 preferred mentees')    
+           flash('You already have 3 preferred mentees') 
+        db.session.commit()   
         return redirect(url_for('mentee_shortlist'))
     elif current_user.is_cohort():
         cohort = Cohort.query.filter_by(email=current_user.email).first()
@@ -176,6 +177,7 @@ def save_pref(Id):
             flash('Added to preferred mentors')
         else:
            flash('You already have 3 preferred mentors')
+        db.session.commit()
         return redirect(url_for('mentor_shortlist'))
     elif current_user.is_admin():
         flash('Feature not available.')
@@ -192,6 +194,7 @@ def save_pref(Id):
             flash('Added to preferred mentors')
         else:
            flash('You already have 3 preferred mentors')
+        db.session.commit()
         return redirect(url_for('mentor_shortlist'))
 
 @flapp.route('/del_pref/<Id>')
@@ -207,7 +210,8 @@ def del_pref(Id):
             flash('Removed from preferred mentees')
         elif mentor.mentee3 == Id:
             mentor.mentee3 = None
-            flash('Removed from preferred mentees')    
+            flash('Removed from preferred mentees') 
+        db.session.commit()   
         return redirect(url_for('mentee_shortlist'))
     elif current_user.is_cohort():
         cohort = Cohort.query.filter_by(email=current_user.email).first()
@@ -220,6 +224,7 @@ def del_pref(Id):
         elif cohort.mentor3 == Id:
             cohort.mentor3 = None
             flash('Removed from preferred mentors')
+        db.session.commit()
         return redirect(url_for('mentor_shortlist'))
     elif current_user.is_admin():
         flash('Feature not available.')
@@ -234,6 +239,7 @@ def del_pref(Id):
         elif mentee.mentor3 == Id:
             mentee.mentor3 = None
             flash('Removed from preferred mentors')
+        db.session.commit()
         return redirect(url_for('mentor_shortlist'))
 
 @flapp.route('/acc_menteepref/<menteeId>')
