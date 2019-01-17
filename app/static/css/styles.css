@@ -439,8 +439,10 @@ a {
     flex-direction: row;
     flex-wrap: wrap;
     max-width: 100%;
+    min-height: calc(100vh - 230px);
     justify-content: center;
     padding: 20px;
+    margin: auto;
 }
 
 .shortlist_profile{
@@ -451,6 +453,7 @@ a {
     flex-grow: 1;
     margin: 24px;
     min-height: 180px;
+    max-height: 460px;
     max-width: 28%;
     min-width: 300px;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
@@ -469,7 +472,7 @@ a {
     line-height: 1.21;
     letter-spacing: normal;
     color: #707070;  
-    height: 84%; 
+    max-height: 84%; 
     align-items: center; 
     margin: 10px;
 }
