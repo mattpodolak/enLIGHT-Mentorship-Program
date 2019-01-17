@@ -106,6 +106,12 @@ class EditCohortProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError('Please use a different email address.')
 
+class ContactForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Length(min=0, max=100)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    subject = StringField('Subject', validators=[DataRequired(), Length(min=0, max=100)])
+    message = TextAreaField('Message', validators=[DataRequired(), Length(min=0, max=500)])
+    submit = SubmitField('Send')
 
 class ApplicationForm(FlaskForm):
     company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])

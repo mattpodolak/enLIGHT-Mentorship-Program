@@ -1,12 +1,12 @@
 from app import flapp, db
-from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm
+from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm, ContactForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application, Cohort
 from werkzeug.urls import url_parse
 import sys
 import os, json, boto3
-from app.email import send_password_reset_email, accept_applicant, match_mentee
+from app.email import send_password_reset_email, accept_applicant, match_mentee, contact_email
 
 @flapp.route('/')
 @flapp.route('/index')
@@ -814,9 +814,22 @@ def privacy():
 def terms():
     return render_template('terms.html', title='Terms of Service')
 
-@flapp.route('/contact')
+@flapp.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html', title='Contact')
+    form = ContactForm()
+    if form.validate_on_submit():
+        try:
+            # send contact email
+            name = form.name.data
+            email = form.email.data
+            subject = form.subject.data
+            message = form.message.data
+            contact_email(name, email, subject, message)
+            flash('Your contact message has successfully sent!')
+        except:
+            flash('Your contact message has failed to send :(')
+        return redirect(url_for('index'))
+    return render_template('contact.html', title='Contact', form=form)
 
 @flapp.route('/edit_picture')
 def edit_picture():
