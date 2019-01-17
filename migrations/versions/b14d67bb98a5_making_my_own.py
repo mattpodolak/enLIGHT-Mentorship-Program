@@ -1,8 +1,8 @@
-"""empty message
+"""making my own
 
-Revision ID: e08e175035f6
+Revision ID: b14d67bb98a5
 Revises: 
-Create Date: 2019-01-14 18:02:33.901905
+Create Date: 2019-01-17 10:31:08.410774
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e08e175035f6'
+revision = 'b14d67bb98a5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -81,6 +81,9 @@ def upgrade():
     sa.Column('position', sa.String(length=164), nullable=True),
     sa.Column('linked', sa.String(length=164), nullable=True),
     sa.Column('twitter', sa.String(length=164), nullable=True),
+    sa.Column('mentee1', sa.String(length=128), nullable=True),
+    sa.Column('mentee2', sa.String(length=128), nullable=True),
+    sa.Column('mentee3', sa.String(length=128), nullable=True),
     sa.Column('mentee_pref_id', sa.Integer(), nullable=True),
     sa.Column('cohort_pref_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['cohort_pref_id'], ['cohort.id'], ),
