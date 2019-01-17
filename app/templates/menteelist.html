@@ -53,10 +53,13 @@
                                     {{cohort.mentor2}}<br> 
                                     {{cohort.mentor3}}
                                 </td>
+                                <td>{{cohort.company}}</td>
+                                <td>{{cohort.industry}}</td>
+                                <td></td>
+                            {% else %}
+                            <td colspan="3">{{cohort.company}}</td>
+                            <td colspan="3">{{cohort.industry}}</td>
                             {% endif %}
-                            <td>{{cohort.company}}</td>
-                            <td>{{cohort.industry}}</td>
-                            <td></td>
                                 {% if mentor %}
                                     {% if cohort.mentorpref == mentor %}
                                         <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
