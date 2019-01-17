@@ -161,12 +161,14 @@ a {
 }
 
 .cohort_img{
-    flex: 1;
+    flex-shrink: 0;
     background-color: #33cc33;
     border-radius: 50%;
+    width: 160px;
+    height: 160px;
     font-size: 124px;
-    top: -10px;
-    left: -10px;
+    top: -20px;
+    left: -20px;
 }
 
 
@@ -237,15 +239,53 @@ a {
     margin-right: -50vw;
     /*margin-top: 300px;*/
     min-height: 250px;
-
 }
 
+/* Large */
+@media all and (max-width: 800px){
+    .page-footer{
+        flex-flow: column wrap;
+        flex: 1 100%;
+    }
+
+    .footer_item{
+        max-width: 80%;
+        padding: 0;
+        margin: 0 40px;
+    }
+
+    .mission_statement{
+        flex-flow: column wrap;
+        align-items: center;
+        justify-content: center;
+        flex: 1 100%;
+        left: 0;
+        right: 0;
+        margin: 0 40px;
+        padding: 0;
+    }
+
+    .mission_info{
+        max-width: 70%;
+        margin: 12px 0;
+        padding: 0;
+    }
+
+    .mission_img{
+        max-width: 70%;
+        width: 300px;
+        margin: 12px 0;
+        padding: 0;
+        background-color: #707070;
+        max-height: 40%;
+    }
+}
 
 
 
 .footer_item{
     color: #ffffff;
-    max-width: 25%;
+    max-width: 400px;
     padding-left: 40px;
     padding-right: 40px;
 }
@@ -289,7 +329,7 @@ a {
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    max-width: 50%;    
+    max-width: 65%;    
 }
 
 .mentor_intro h1{
@@ -319,19 +359,24 @@ a {
 .mentor_list_container{
     display: flex;
     justify-content: center;
-    margin-top: 60px;   
+    margin: 60px 0;   
     width: 100%;
+    overflow-x: auto;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
 }
 
 
 .mentor_rtable{
     flex-wrap: wrap;
     padding: 0;
-    display: inline-block;
+    /*display: inline-block;*/
     vertical-align: top;
     max-width: 100%;
     overflow-x: auto;
     margin: 0px auto;      
+}
+.mentor_rtable tr:hover{
+    background-color: #F0F0F4;
 }
 
 .mentor_rtable th{
@@ -347,7 +392,8 @@ a {
 .mentor_rtable td{
     padding: 20px 20px;
     color: #707070;
-    font-family: Segoe UI;    
+    font-family: Segoe UI;
+    text-align: center;   
 }
 
 .mentor_rtable h3{
@@ -430,6 +476,9 @@ a {
     overflow-y: auto;
 }
 
+.footer_social{
+    margin: 6px;
+}
 
 .footer-copyright{
     color: #555;
