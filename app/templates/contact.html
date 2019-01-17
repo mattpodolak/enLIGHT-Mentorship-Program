@@ -19,21 +19,20 @@
                 </div>
                 <button type="submit" class="btn btn-primary top-margin submit-button send-button-style">Send</button>
             </form>-->
+
             <form action="" method="post">
+                <div class="form-group">
+
                 {{ form.hidden_tag() }}
                 
-                {{ form.name.label(class="text label-text") }} <br>
-                {{ form.name(class="form-control bottom-margin text-input-style") }} <br>
+                {{ form.name(class="form-control bottom-margin text-input-style", placeholder="Name")}} <br>
 
-                {{ form.email.label(class="text label-text") }} <br>
-                {{ form.email(class="form-control bottom-margin text-input-style") }} <br>
+                {{ form.email(class="form-control bottom-margin text-input-style", placeholder="Email Address") }} <br>
 
-                {{ form.subject.label(class="text label-text") }} <br>
-                {{ form.subject(class="form-control bottom-margin text-input-style") }} <br>
+                {{ form.subject(class="form-control bottom-margin text-input-style", placeholder="Subject") }} <br>
 
-                {{ form.message.label(class="text label-text") }} <br>
-                {{ form.message(class="form-control bottom-margin text-input-style") }} <br>
-
+                {{ form.message(class="form-control bottom-margin text-input-style", placeholder="Message", cols="35", rows="7")}}
+                </div>
                 {{ form.submit(class="btn btn-primary top-margin submit-button send-button-style") }}
             </form>
         </div>
