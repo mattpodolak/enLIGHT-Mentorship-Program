@@ -379,6 +379,8 @@ def acc_app(appId):
         db.session.commit()
         flash('You accepted the application for ' + app.company)
         accept_applicant(user, app)
+        db.session.delete(app)
+        db.session.commit()
         return redirect(url_for('dashboard'))
     else:
         return render_template('404.html')
@@ -402,6 +404,9 @@ def del_user(userId):
             db.session.delete(cohort)
         else:
             mentee = Mentee.query.filter_by(email=user.email).first()
+            app = Application.query.filter_by(email=user.email).first()
+            if app is not None:
+                db.session.delete(app)
             db.session.delete(mentee)
         db.session.delete(user)
         db.session.commit()
