@@ -1,6 +1,7 @@
 {% extends "dashboard.html" %}
 {% block dash_content %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!--
     <script type=text/javascript>
         $(function() {
             $(".expand-row").click(function () {
@@ -8,6 +9,7 @@
             });  
         });
     </script>
+    -->
     <div class="body-content-container-white">
         <div class="mentor_intro_content">
             <div class="mentor_intro">
@@ -18,18 +20,20 @@
 
 
         <div class="mentor_list_container">
-            <table class="mentor_rtable">
+            <table width="100%" class="mentor_rtable">
                 <thead>
                     {% if current_user.is_admin() %}
                         <th>MODIFY</th>
                         <th>Mentor</th>
                         <th>Contact</th>
                         <th>Preferences</th>
+                    {% else %}
+                        <th width="20%">Company</th>
+                        <th width="20%">Industry</th>
+                        <th width="20%">Favourite</th>
+                        <th width="20%">Preferred</th>
+                        <th width="20%">Profile</th>
                     {% endif %}
-                        <th>Company</th>
-                        <th>Industry</th>
-                        <th>Favourite</th>
-                        <th>Preferred</th>
                 </thead>
                 <tbody>
                     {% if cohorts %}
@@ -56,6 +60,7 @@
                                 {% else %}
                                     <td><a href="{{ url_for('save_pref', Id=cohort.email_hash) }}">Make Preferred</a></td>
                                 {% endif %}
+                                <td>VIEW PROFILE</td>
                             </tr>
                             <tr style="display: none; background-color: #F4F7F9" >
                                 {% if current_user.is_admin() %}
@@ -104,6 +109,7 @@
                                 {% else %}
                                     <td><a href="{{ url_for('save_pref', Id=mentee.email_hash) }}">Make Preferred</a></td>
                                 {% endif %}
+                                <td>VIEW PROFILE</td>
                             </tr>
                             <tr style="display: none; background-color: #F4F7F9" >
                                 {% if current_user.is_admin() %}
