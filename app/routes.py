@@ -543,7 +543,10 @@ def user(userId):
             if info.skill is not None:
                 skill_array = info.skill.split(", ")
             for m in info.users:
-                mentee = Mentee.query.filter_by(email=m.email).first()
+                if m.is_cohort():
+                    mentee = Cohort.query.filter_by(email=m.email).first()
+                else:
+                    mentee = Mentee.query.filter_by(email=m.email).first()
                 mentees.append(mentee)
         elif current_user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
@@ -563,8 +566,13 @@ def user(userId):
         elif user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
             profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
-            if info.skills is not None:
+            if info.skill is not None:
                 skill_array = info.skill.split(", ")
+        elif current_user.is_cohort():
+            info = Cohort.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
             profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
@@ -576,6 +584,11 @@ def user(userId):
             return render_template('404.html')
         elif user.is_mentor():
             return render_template('404.html')
+        elif user.is_cohort():
+            info = Cohort.query.filter_by(email=user.email).first()
+            profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
         else:
             # current user = mentor, can only view mentees
             info = Mentee.query.filter_by(email=user.email).first()
@@ -589,7 +602,7 @@ def user(userId):
             # current user = mentee, can only view mentors
             info = Mentor.query.filter_by(email=user.email).first()
             profile_pic_filepath += 'mentors/' + str(current_user.id) + '-profile-pic.png'
-            if info.skills is not None:
+            if info.skill is not None:
                 skill_array = info.skill.split(", ")
             # clean the data a bit before passing to mentees
             info.email = None
