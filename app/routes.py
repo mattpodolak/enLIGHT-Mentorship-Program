@@ -589,7 +589,7 @@ def user(userId):
                 tempList.append(user_p3)
 
             for tempu in tempList:
-                    mentor = Mentor.query.filter_by(email=tempu.email).first()
+                mentor = Mentor.query.filter_by(email=tempu.email).first()
                 prefs.append(mentor)
 
         else:
@@ -611,7 +611,7 @@ def user(userId):
                 tempList.append(user_p3)
 
             for tempu in tempList:
-                    mentor = Mentor.query.filter_by(email=tempu.email).first()
+                mentor = Mentor.query.filter_by(email=tempu.email).first()
                 prefs.append(mentor)
 
     elif current_user.is_admin():
