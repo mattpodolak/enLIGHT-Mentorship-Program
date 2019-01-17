@@ -715,8 +715,9 @@ def application():
         form.industry.data = info.industry
         form.team_skills.data = info.skills
         form.help_needed.data = info.help_req
+        app = Application.query.filter_by(email=current_user.email).first()
     return render_template('application.html', title='Cohort Application Form',
-                           form=form)
+                           form=form, app=app)
 
 @flapp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
