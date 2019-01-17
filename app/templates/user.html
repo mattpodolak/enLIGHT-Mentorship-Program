@@ -2,7 +2,9 @@
 
 {% block app_content %}
     <div class="background-container">
-        <h1 class="title-text">My Profile</h1>
+        {% if user == current_user %}
+            <h1 class="title-text">My Profile</h1>
+        {% endif %}
         <div class="user-border profile-container">
             <div class="profile-left-container">
                 <img src="{{ profile_pic_filepath }}" class="profile-pic"/>
