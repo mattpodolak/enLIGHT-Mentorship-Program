@@ -397,7 +397,8 @@ def signup():
         db.session.add(mentee)
         db.session.commit()
         flash('Congratulations, you have registered ' + form.email.data)
-        return redirect(url_for('login'))
+        # return redirect(url_for('login'))
+        return render_template('edit_picture.html', title='Edit Picture')
     return render_template('signup.html', title='Sign Up', form=form)    
 
 @flapp.route('/register_user/<userType>', methods=['GET', 'POST'])
@@ -882,5 +883,6 @@ def upload():
         form.industry.data = info.industry
         form.team_skills.data = info.skills
         form.help_needed.data = info.help_req
-    return render_template('edit_profile.html', title='Edit Profile',
+    flash('Profile picture successfully uploaded. Please allow some time for profile to update.')
+    return render_template('edit_profile.html', title='Profile',
                            form=form)
