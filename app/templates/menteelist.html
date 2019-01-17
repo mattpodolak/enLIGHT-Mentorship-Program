@@ -1,6 +1,7 @@
 {% extends "dashboard.html" %}
 {% block dash_content %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!-- script
     <script type=text/javascript>
         $(function() {
             $(".expand-row").click(function () {
@@ -8,6 +9,7 @@
             });  
         });
     </script>
+    -->
     <div class="body-content-container-white">
         <div class="mentor_intro_content">
             <div class="mentor_intro">
@@ -101,9 +103,12 @@
                                         {{mentee.mentor2}}<br>
                                         {{mentee.mentor3}}
                                     </td>
+                                    <td>{{mentee.company}}</td>
+                                    <td>{{mentee.industry}}</td>
+                                {% else %}
+                                <td colspan="3">{{mentee.company}}</td>
+                                <td colspan="3">{{mentee.industry}}</td>
                                 {% endif %}
-                                <td>{{mentee.company}}</td>
-                                <td>{{mentee.industry}}</td>
                                 {% if mentor %}
                                     {% if mentee.mentorpref == mentor %}
                                         <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
