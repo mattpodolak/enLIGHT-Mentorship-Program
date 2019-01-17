@@ -967,5 +967,4 @@ def upload():
         form.team_skills.data = info.skills
         form.help_needed.data = info.help_req
     flash('Profile picture successfully uploaded. Please allow some time for profile to update.')
-    return render_template('edit_profile.html', title='Profile',
-                           form=form)
+    return redirect(edit_profile)
