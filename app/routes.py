@@ -535,6 +535,7 @@ def user(userId):
         return render_template('404.html')
     mentees = []
     skill_array = []
+    prefs = []
     if user == current_user:
         if current_user.is_admin():
             return render_template('404.html')
@@ -549,16 +550,69 @@ def user(userId):
                 else:
                     mentee = Mentee.query.filter_by(email=m.email).first()
                 mentees.append(mentee)
+            
+            # find preferred mentees
+            tempList = []
+            if info.mentee1 is not None:
+                user_p1 = User.query.filter_by(email_hash=info.mentee1).first()
+                tempList.append(user_p1)
+            if info.mentee2 is not None:
+                user_p2 = User.query.filter_by(email_hash=info.mentee2).first()
+                tempList.append(user_p2)
+            if info.mentee3 is not None:
+                user_p3 = User.query.filter_by(email_hash=info.mentee3).first()
+                tempList.append(user_p3)
+
+            for tempu in tempList:
+                if tempu.is_cohort():
+                    mentee = Cohort.query.filter_by(email=tempu.email).first()
+                else:
+                    mentee = Mentee.query.filter_by(email=tempu.email).first()
+                prefs.append(mentee)
+
         elif current_user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
             profile_pic_filepath += 'cohorts/' + str(current_user.id) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
+
+            # find preferred mentors
+            tempList = []
+            if info.mentor1 is not None:
+                user_p1 = User.query.filter_by(email_hash=info.mentor1).first()
+                tempList.append(user_p1)
+            if info.mentor2 is not None:
+                user_p2 = User.query.filter_by(email_hash=info.mentor2).first()
+                tempList.append(user_p2)
+            if info.mentor3 is not None:
+                user_p3 = User.query.filter_by(email_hash=info.mentor3).first()
+                tempList.append(user_p3)
+
+            for tempu in tempList:
+                    mentor = Mentor.query.filter_by(email=tempu.email).first()
+                prefs.append(mentor)
+
         else:
             info = Mentee.query.filter_by(email=user.email).first()
             profile_pic_filepath += 'mentees/' + str(current_user.id) + '-profile-pic.png'
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
+            
+            # find preferred mentors
+            tempList = []
+            if info.mentor1 is not None:
+                user_p1 = User.query.filter_by(email_hash=info.mentor1).first()
+                tempList.append(user_p1)
+            if info.mentor2 is not None:
+                user_p2 = User.query.filter_by(email_hash=info.mentor2).first()
+                tempList.append(user_p2)
+            if info.mentor3 is not None:
+                user_p3 = User.query.filter_by(email_hash=info.mentor3).first()
+                tempList.append(user_p3)
+
+            for tempu in tempList:
+                    mentor = Mentor.query.filter_by(email=tempu.email).first()
+                prefs.append(mentor)
 
     elif current_user.is_admin():
         if user.is_admin():
@@ -612,7 +666,7 @@ def user(userId):
             return render_template('404.html')
     
     return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees,
-                           skill_array=skill_array, profile_pic_filepath=profile_pic_filepath)
+                           skill_array=skill_array, profile_pic_filepath=profile_pic_filepath, prefs=prefs)
 
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
