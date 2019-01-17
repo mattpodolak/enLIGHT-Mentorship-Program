@@ -265,24 +265,26 @@ def acc_menteepref(menteeId):
 def mentor_shortlist():
     if current_user.is_cohort():
         cohort = Cohort.query.filter_by(email=current_user.email).first()
-        mentorList = Mentor.query.filter_by(cohort=cohort)
+        mentors = Mentor.query.filter_by(cohort=cohort)
         prefMentors = [cohort.mentor1, cohort.mentor2, cohort.mentor3]
     elif current_user.is_admin():
-        mentorList = None
+        mentors = None
         prefMentors = None
     elif current_user.is_mentor():
-        mentorList = None
+        mentors = None
         prefMentors = None
     else:
         mentee = Mentee.query.filter_by(email=current_user.email).first()
-        mentorList = Mentor.query.filter_by(mentee=mentee)
+        mentors = Mentor.query.filter_by(mentee=mentee)
         prefMentors = [mentee.mentor1, mentee.mentor2, mentee.mentor3]
-    for mentor in mentorList:
+    mentorList = []
+    for mentor in mentors:
         user = User.query.filter_by(email=mentor.email).first()
         # clean the data a bit before passing to mentees
         if current_user.access == 0:
             mentor.email = None
         mentor.email_hash = user.email_hash
+        mentorList.append(mentor)
             
     return render_template('mentorshortlist.html', title='Mentor Shortlist', mentors=mentorList, prefMentors=prefMentors)
 
@@ -290,25 +292,28 @@ def mentor_shortlist():
 @login_required
 def mentee_shortlist():
     if current_user.is_mentor():
-        user = User.query.filter_by(email=current_user.email).first()
-        menteeList = Mentee.query.filter_by(mentorpref=user)
-        cohortList = Cohort.query.filter_by(mentorpref=user)
-
-        for mentee in menteeList:
-            user = User.query.filter_by(email=mentee.email).first()
-            mentee.email_hash = user.email_hash
-        
-        for cohort in cohortList:
-            user = User.query.filter_by(email=cohort.email).first()
-            cohort.email_hash = user.email_hash
-
-        #preferred mentees
+        c_user = User.query.filter_by(email=current_user.email).first()
+        mentees = Mentee.query.filter_by(mentorpref=c_user)
+        menteeList = []
+        cohorts = Cohort.query.filter_by(mentorpref=c_user)
+        cohortList = []
+        # preferred mentees
         mentor = Mentor.query.filter_by(email=current_user.email).first()
         prefMentees = [mentor.mentee1, mentor.mentee2, mentor.mentee3]
+
+        for mentee in mentees:
+            user = User.query.filter_by(email=mentee.email).first()
+            mentee.email_hash = user.email_hash
+            menteeList.append(mentee)
+        
+        for cohort in cohorts:
+            user = User.query.filter_by(email=cohort.email).first()
+            cohort.email_hash = user.email_hash
+            cohortList.append(cohort)
     else:
         menteeList = None
         cohortList = None
-        prefMentees = None          
+        prefMentees = None
     return render_template('menteeshortlist.html', title='Mentee Shortlist', mentees=menteeList, cohorts=cohortList, prefMentees=prefMentees)
 
 
