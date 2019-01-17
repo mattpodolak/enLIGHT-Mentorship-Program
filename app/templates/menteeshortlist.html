@@ -28,6 +28,7 @@
                     <th>Company</th>
                     <th>Industry</th>
                     <th>Favourite</th>
+                    <th>Preferred</th>
             </thead>
             <tbody>
                 {% if cohorts %}
@@ -49,6 +50,11 @@
                             <td>{{cohort.company}}</td>
                             <td>{{cohort.industry}}</td>
                             <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
+                            {% if cohort.email_hash in prefMentees %}
+                                <td><a href="{{ url_for('del_pref', Id=cohort.email_hash) }}">Remove from Preferred</a></td>
+                            {% else %}
+                                <td><a href="{{ url_for('save_pref', Id=cohort.email_hash) }}">Make Preferred</a></td>
+                            {% endif %}
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}
@@ -92,6 +98,11 @@
                             <td>{{mentee.company}}</td>
                             <td>{{mentee.industry}}</td>
                             <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
+                            {% if mentee.email_hash in prefMentees %}
+                                <td><a href="{{ url_for('del_pref', Id=mentee.email_hash) }}">Remove from Preferred</a></td>
+                            {% else %}
+                                <td><a href="{{ url_for('save_pref', Id=mentee.email_hash) }}">Make Preferred</a></td>
+                            {% endif %}
                         </tr>
                         <tr style="display: none; background-color: #F4F7F9" >
                             {% if current_user.is_admin() %}

@@ -205,6 +205,10 @@ def mentee_shortlist():
         for cohort in cohortList:
             user = User.query.filter_by(email=cohort.email).first()
             cohort.email_hash = user.email_hash
+
+        #preferred mentees
+        mentor = Mentor.query.filter_by(email=current_user.email).first()
+        prefMentees = [mentor.mentee1, mentor.mentee2, mentor.mentee3]
     else:
         menteeList = None
         cohortList = None            

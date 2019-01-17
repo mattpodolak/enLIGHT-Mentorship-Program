@@ -35,6 +35,11 @@
                     <p>Skillset: {{mentor.skill}}</p>
                     <p>Availability: {{mentor.avail}}</p>
                     <p><a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a></p>
+                    {% if mentor.email_hash in prefMentors %}
+                        <td><a href="{{ url_for('del_pref', Id=mentor.email_hash) }}">Remove from Preferred</a></td>
+                    {% else %}
+                        <td><a href="{{ url_for('save_pref', Id=mentor.email_hash) }}">Make Preferred</a></td>
+                    {% endif %}
                 </div>
                 <div class="shortlist_about">
                     <p>{{mentor.about_me}}</p>
