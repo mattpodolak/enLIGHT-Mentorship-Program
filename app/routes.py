@@ -675,7 +675,7 @@ def user(userId):
     
     mentor = user.mentor
     if user.mentor is not None:
-        user_m = User.query.filter_by(email=user.mentor.email_hash).first()
+        user_m = User.query.filter_by(email=user.mentor.email).first()
         mentor.email_hash = user_m.email_hash
 
     return render_template('user.html', title='Profile', user=user, info=info, mentor=mentor, mentees=mentees,
