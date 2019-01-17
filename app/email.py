@@ -41,3 +41,12 @@ def match_mentee(user, mentee):
                                          user=user, mentee=mentee),
                html_body=render_template('email/match_mentee.html',
                                          user=user, mentee=mentee))
+
+def contact_email(name, email, subject, message):
+    send_email("[enLIGHT Mentorship] Contact",
+               sender=flapp.config['ADMINS'][0],
+               recipients=["mpodola2@gmail.com"],
+               text_body=render_template('email/contact.txt',
+                                         name=name, email=email, subject=subject, message=message),
+               html_body=render_template('email/contact.html',
+                                         name=name, email=email, subject=subject, message=message))
