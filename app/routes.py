@@ -151,13 +151,13 @@ def del_menteepref(menteeId):
 def save_pref(Id):
     if current_user.is_mentor():
         mentor = Mentor.query.filter_by(email=current_user.email).first()
-        if not mentor.mentee1:
+        if not mentor.mentee1 and mentor.mentee1 != Id:
             mentor.mentee1 = Id
             flash('Added to preferred mentees')
-        elif not mentor.mentee2:
+        elif not mentor.mentee2 and mentor.mentee2 != Id:
             mentor.mentee2 = Id
             flash('Added to preferred mentees')
-        elif not mentor.mentee3:
+        elif not mentor.mentee3 and mentor.mentee3 != Id:
             mentor.mentee3 = Id
             flash('Added to preferred mentees')
         else:
@@ -165,13 +165,13 @@ def save_pref(Id):
         return redirect(url_for('mentee_shortlist'))
     elif current_user.is_cohort():
         cohort = Cohort.query.filter_by(email=current_user.email).first()
-        if not cohort.mentor1:
+        if not cohort.mentor1 and cohort.mentor1 != Id:
             cohort.mentor1 = Id
             flash('Added to preferred mentors')
-        elif not cohort.mentor2:
+        elif not cohort.mentor2 and cohort.mentor2 != Id:
             cohort.mentor2 = Id
             flash('Added to preferred mentors')
-        elif not cohort.mentor3:
+        elif not cohort.mentor3 and cohort.mentor3 != Id:
             cohort.mentor3 = Id
             flash('Added to preferred mentors')
         else:
@@ -180,19 +180,19 @@ def save_pref(Id):
     elif current_user.is_admin():
         flash('Feature not available.')
     else:
-       mentee = Mentee.query.filter_by(email=current_user.email).first()
-        if not mentee.mentor1:
+        mentee = Mentee.query.filter_by(email=current_user.email).first()
+        if not mentee.mentor1 and mentee.mentor1 != Id:
             mentee.mentor1 = Id
             flash('Added to preferred mentors')
-        elif not mentee.mentor2:
+        elif not mentee.mentor2 and mentee.mentor2 != Id:
             mentee.mentor2 = Id
             flash('Added to preferred mentors')
-        elif not mentee.mentor3:
+        elif not mentee.mentor3 and mentee.mentor3 != Id:
             mentee.mentor3 = Id
             flash('Added to preferred mentors')
         else:
            flash('You already have 3 preferred mentors')
-       return redirect(url_for('mentor_shortlist'))
+        return redirect(url_for('mentor_shortlist'))
 
 @flapp.route('/del_pref/<Id>')
 @login_required
@@ -224,7 +224,7 @@ def del_pref(Id):
     elif current_user.is_admin():
         flash('Feature not available.')
     else:
-       mentee = Mentee.query.filter_by(email=current_user.email).first()
+        mentee = Mentee.query.filter_by(email=current_user.email).first()
         if mentee.mentor1 == Id:
             mentee.mentor1 = None
             flash('Removed from preferred mentors')
@@ -234,7 +234,7 @@ def del_pref(Id):
         elif mentee.mentor3 == Id:
             mentee.mentor3 = None
             flash('Removed from preferred mentors')
-       return redirect(url_for('mentor_shortlist'))
+        return redirect(url_for('mentor_shortlist'))
 
 @flapp.route('/acc_menteepref/<menteeId>')
 @login_required
