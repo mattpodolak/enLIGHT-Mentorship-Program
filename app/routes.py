@@ -674,7 +674,6 @@ def user(userId):
             return render_template('404.html')
     
     mentor = user.mentor
-    mentor.email_hash = None
     if user.mentor is not None:
         user_m = User.query.filter_by(email=user.mentor.email_hash).first()
         mentor.email_hash = user_m.email_hash
