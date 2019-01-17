@@ -14,7 +14,14 @@
         <div class="mentor_intro_content">
             <div class="mentor_intro">
                 <h1>Innovators of today</h1>
-                <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eros magna, iaculis non porta eu, dapibus ut tellus. Sed eget venenatis eros. Nam nec efficitur urna. Praesent aliquam tristique suscipit. Mauris porttitor, arcu vitae tincidunt fringilla, tortor diam facilisis enim, ac volutpat lacus tellus eget metus. Sed elementum sapien est, sed ornare ex dapibus eu. Ut id auctor lacus. Curabitur aliquet molestie purus, ut viverra neque aliquam eget. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse luctus, dui at convallis efficitur, nisl nulla bibendum est, in molestie ligula metus a ligula. Fusce eros ex, varius in nibh eget, accumsan bibendum arcu.</h2>
+                <h2 style="margin-left:20%; margin-right: 20%">
+                    As modern society advances at an exponential rate, innovation has become an increasingly bigger
+                    driving force to its success. At enLIGHT we aim to ensure that innovators get all the help they need
+                    in order to make their ideas come to life. As a mentor, you will have the unique opportunity in growing
+                    an idea into something that can potentially revolutionize the world. You will be able to meet with
+                    them both virtually as well as in person, depending on both parties’ availabilities.
+
+                </h2>
             </div>
         </div>
 
@@ -41,7 +48,7 @@
                     {% for cohort in cohorts %}
                         <tr class="expand-row">
                             {% if current_user.is_admin() %}
-                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.id) }}">CHANGE</a></td>
+                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.email_hash) }}">CHANGE</a></td>
                                 <td><a href="{{ url_for('del_user', userId=cohort.email_hash) }}">Delete Acct</a></td>
                                 <td>
                                   {% if cohort.mentor %}
@@ -95,7 +102,7 @@
                         {% for mentee in mentees %}
                             <tr class="expand-row">
                                 {% if current_user.is_admin() %}
-                                    <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">CHANGE</a></td>
+                                    <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.email_hash) }}">CHANGE</a></td>
                                     <td><a href="{{ url_for('del_user', userId=mentee.email_hash) }}">Delete Acct</a></td>
                                     <td>
                                       {% if mentee.mentor %}
