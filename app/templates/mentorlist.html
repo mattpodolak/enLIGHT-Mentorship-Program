@@ -11,21 +11,84 @@
     </script>
     --> 
     <div class="body-content-container-white">
-        <div class="mentor_intro_content">
-            <div class="mentor_intro">
-                <h1>Learn From the Best Mentors</h1>
-                <h2 style="margin-left:19%; margin-right: 19%">
-                    Our team aims to ensure that you gain the most beneficial experience throughout your journey with the
-                    mentorship program. Team enLIGHT will be working towards matching all startups with the best match with
-                    regards to your startup’s needs. You will be exposed to the best mentors, who aspire to empower you to
-                    launch or grow your startup. They aspire to give back to the community of young entrepreneurs, sharing
-                    their expertise and experiences with the new generation of young leaders, you! By providing support and
-                    wise advice, our inspiring team of advisors will be able to lead you through your long and short term
-                    goals. You will be able to meet with them both virtually as well as in person, depending on both parties’
-                    availabilities.  Apply today to get valuable guidance!
-                </h2>
+        <div class="feature-image">
+            <div class="feature-title">
+                <h1><strong><strong><strong>NEW MENTORS AVAILABLE</strong></strong></strong></h1>
+                <br>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse turpis purus, volutpat vel pulvinar a, auctor ut sem.</p>
             </div>
         </div>
+
+        <div class="posting-container">
+            <div class="posting-title">
+                <h1><strong><strong><strong></strong>NEW MENTORS IN CANADA</strong></strong></strong></h1>
+            </div>
+
+            {% if mentors %}
+            {% for mentor in mentors %}
+            <div class="posting-template rounded shadow-lg">
+                <div class="posting-info">
+                    <h2><strong>{{mentor.first_name}} {{mentor.last_name}}</strong></h2>
+                    <p><strong>{{mentor.position}}</strong> @ {{mentor.company}}</p>
+                    <br>
+                    <details>
+                        <summary><strong>{{mentor.about_me}} &nbsp;</strong>
+                            <svg class="opacity-75 w-4 h-4 -mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="5 -4 20 20">
+                                <path 
+                                    fill="#33cc33"
+                                    d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/>
+                            </svg>
+                        </summary>
+                        <br>
+                        {% set skills = mentor.skill.split(',')%}
+                        {% for skill in skills %}
+                        <div class="skills-bubble">
+                            {{skill}}
+                        </div>
+                        {% endfor %}
+                        <br>
+                        <p>EMAIL: {{mentor.email}}</p>
+                        <p>AVAILABILITY: {{mentor.avail}}</p>
+                        {% if current_user.is_admin() %}
+                        <p>ID: {{mentor.id}}</p>
+                            {% if mentor.mentees %}
+                            <p> MENTEES:
+                                {% for mentee in mentor.mentees %}
+                                    {{mentee.company}},
+                                {% endfor %}
+                            </p>
+                            {% else %}
+                            <p>MENTEES: NONE</p>
+                            {% endif %}
+                        <p><a href="{{ url_for('del_user', userId=mentor.email_hash) }}">Delete Acct</a></p>
+                        {% endif %}
+                    </details> 
+                </div>
+                <div class="posting-updates">
+                    {% if menteeInfo %}
+                        {% if mentor.mentee == menteeInfo %}
+                            <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
+                        {% else %}
+                            <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}"><img src="../static/heart_icon.png"></a>
+                        {% endif %}
+                    {% elif cohortInfo %}
+                        {% if mentor.cohort == cohortInfo %}
+                            <a href="{{ url_for('del_mentorpref', mentorId=mentor.email_hash) }}">Remove Shortlist</a>
+                        {% else %}
+                            <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}"><img src="../static/heart_icon.png"></a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('acc_mentorpref', mentorId=mentor.email_hash) }}"><img src="../static/heart_icon.png"></a>
+                    {% endif %}
+                    <p>Posted today</p>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+        </div>
+
+
       <div class="mentor_list_container">
           <table width="100%" class="mentor_rtable">
                 {% if mentors %}

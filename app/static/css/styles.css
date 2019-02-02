@@ -318,48 +318,91 @@ a {
     color: #ffffff;
 }
 
-.mentor_intro_content{
-    display: flex;
-    padding: 20px; 
+.feature-image {
     max-width: 100%;
-    justify-content: center;
-
-}
-.mentor_intro_content h1{
-    text-align: center;
+    height: 100%;
+    background-color: #7f8583;
+    padding: 160px 0;
 }
 
-.mentor_intro{
-    align-items: center;
+.feature-title {
+    height: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: center; 
+    color: white;
+    text-align: center; 
+    font-family: 'Roboto', sans-serif;
+}
+
+.posting-container {
+    background-color: #e2e2e2;
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    max-width: 65%;    
+    padding-bottom: 100px;
 }
 
-.mentor_intro h1{
+.posting-title {
+    font-family: 'Roboto', sans-serif;
+    color: #33cc33;
     text-align: center;
-    font-family: Segoe UI;
-    font-size: 40px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.21;
-    letter-spacing: normal;
-    color: #707070;    
+    padding-top: 40px;
+    padding-bottom: 100px;
 }
 
-.mentor_intro h2{
-    font-family: Segoe UI;
-    font-size: 14px;
-    font-weight: normal;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: 1.21;
-    letter-spacing: normal;
-    text-align: left;
-    color: #707070;    
+.posting-template {
+    display: flex;
+    flex-direction: row;
+    background-color: #ffffff;
+    margin: 12px;
+    padding: 24px 48px;
+    min-height: 200px;
+    margin-left: 20%;
+    margin-right: 20%;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+} 
+
+.posting-info {
+    max-width: 60%;
+}
+
+.posting-info h2{
+    color: #33cc33;
+}
+
+.posting-updates {
+    max-width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: right;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+details {
+    user-select: none;
+}
+details[open] summary svg {
+    transform: rotate(-90deg);
+    transform-origin: 40% 65%;
+}
+summary {
+    cursor: pointer;
+}
+svg {
+    transition: all 0.3s;
+    width: 16px;
+    height: auto;
+
+}
+summary::-webkit-details-marker {
+    display: none;
+}
+:focus {
+    outline: none;
 }
 
 .main-dashboard{
