@@ -6,14 +6,12 @@
         <div class="user-border profile-container">
             <div class="profile-left-container">
                 <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/enLIGHT-Logo.png" class="profile-pic"/>
-                {% if user.is_mentor() %}
-                    <a href="{{ info.linked }}" target="_blank">
-                        <p class="text link-text linkedin">LinkedIn</p>
-                    </a>
-                    <a href="{{ info.twitter }}" target="_blank">
-                        <p class="text link-text">Twitter</p>
-                    </a>
-                {% endif %}
+                <a href="{{ info.linked }}" target="_blank">
+                    <p class="text link-text linkedin">LinkedIn</p>
+                </a>
+                <a href="{{ info.twitter }}" target="_blank">
+                    <p class="text link-text">Twitter</p>
+                </a>
                 {% if user == current_user %}
                     <div class="edit-profile-text">
                         <a href="{{ url_for('edit_profile') }}">
@@ -50,41 +48,31 @@
                         <label class="text label-text">Help Required</label>
                         <p class="text">{{info.help_req}}</p>
                     {% else %}
-                        <h2 class="text name-text">{{info.company}}</h2>
-                        <label class="text label-text">Founders</label>
-                        <p class="text">{{info.founder}}</p>
+                        <h2 class="text name-text">{{info.first_name}} {{info.last_name}}</h2>
+                        <label class="text label-text">Bio</label>
+                        <p class="text">{{info.bio}}</p>
+                        <label class="text label-text">Company</label>
+                        <p class="text">{{info.company}}</p>
+                        <label class="text label-text">University</label>
+                        <p class="text">{{info.university}}</p>
+                        <label class="text label-text">Major</label>
+                        <p class="text">{{info.major}}</p>
+                        <label class="text label-text">Year</label>
+                        <p class="text">{{info.year}}</p>
                         <label class="text label-text">Industry</label>
                         <p class="text">{{info.industry}}</p>
                         <label class="text label-text">Email</label>
                         <p class="text">{{info.email}}</p>
-                        <label class="text label-text">Help Required</label>
-                        <p class="text">{{info.help_req}}</p>
                     {% endif %}
                 </div>
                 <div class="divider"></div>
                 <div class="profile-right-middle-container">
-                    {% if user.is_mentor() %}
-                        <h2 class="text name-text">Skillset</h2>
-                        {% for skill in skill_array %}
-                            <div class="skills-bubble">
+                    <h2 class="text name-text">Skillset</h2>
+                    {% for skill in skill_array %}
+                        <div class="skills-bubble">
                             <label class="text">{{ skill }}</label>
                         </div>
-                        {% endfor %}
-                    {% elif user.is_cohort() %}
-                        <h2 class="text name-text">Team Skillset</h2>
-                        {% for skill in skill_array %}
-                            <div class="skills-bubble">
-                                <label class="text">{{ skill }}</label>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <h2 class="text name-text">Team Skillset</h2>
-                        {% for skill in skill_array %}
-                            <div class="skills-bubble">
-                                <label class="text">{{ skill }}</label>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                    {% endfor %}
 
                 </div>
                 <div class="divider"></div>

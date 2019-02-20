@@ -307,7 +307,7 @@ def register_user(userType):
             db.session.commit()
             # create mentor / mentee instance
             if accessType == 1:
-                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me=form.about_me.data, avail=form.avail.data, skill=form.skill.data , industry=form.industry.data, company=form.company.data, position=form.position.data, linked=form.linked.data, twitter=form.twitter.data)
+                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me=form.about_me.data, avail=form.avail.data, skill=form.skill.data, industry=form.industry.data, company=form.company.data, position=form.position.data, linkedin=form.linkedin.data, twitter=form.twitter.data)
                 db.session.add(mentor)
                 db.session.commit()
             elif accessType == 3:
@@ -458,7 +458,7 @@ def edit_profile():
             info.industry = form.industry.data
             info.company = form.company.data
             info.position = form.position.data
-            info.linked = form.linked.data
+            info.linkedin = form.linkedin.data
             info.twitter = form.twitter.data
             db.session.commit()
             flash('Your changes have been saved.')
@@ -473,10 +473,9 @@ def edit_profile():
             form.industry.data = info.industry
             form.company.data = info.company
             form.position.data = info.position
-            form.linked.data = info.linked
+            form.linkedin.data = info.linkedin
             form.twitter.data = info.twitter
-        return render_template('edit_profile.html', title='Edit Profile',
-                            form=form)
+        return render_template('edit_profile.html', title='Edit Profile', form=form)
     elif current_user.is_cohort():
         form = EditCohortProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()
@@ -494,14 +493,15 @@ def edit_profile():
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
+            form.first_name.data = info.first_name
+            form.last_name.data = info.last_name
             form.email.data = current_user.email
             form.company_name.data = info.company
             form.founder_names.data = info.founder
             form.industry.data = info.industry
             form.team_skills.data = info.skills
             form.help_needed.data = info.help_req
-        return render_template('edit_profile.html', title='Edit Profile',
-                               form=form)
+        return render_template('edit_profile.html', title='Edit Profile', form=form)
     else:
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
@@ -509,24 +509,35 @@ def edit_profile():
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
-            info.email = form.email.data
+            info.first_name = form.first_name.data
+            info.last_name = form.last_name.data
+            info.bio = form.bio.data
             info.company = form.company_name.data
-            info.founder = form.founder_names.data
-            info.industry = form.industry.data
+            info.university = dict(form.university.choices).get(form.university.data)
+            info.major = dict(form.major.choices).get(form.major.data)
+            info.year = dict(form.year.choices).get(form.year.data)
+            info.industry = dict(form.industry.choices).get(form.industry.data)
+            info.email = form.email.data
             info.skills = form.team_skills.data
-            info.help_req = form.help_needed.data
+            info.linkedin = form.linkedin.data
+            info.twitter = form.twitter.data
             db.session.commit()
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
+            form.first_name.data = info.first_name
+            form.last_name.data = info.last_name
+            form.bio.data = info.bio
+            form.university.data = info.university
+            form.major.data = info.major
+            form.year.data = info.year
             form.email.data = current_user.email
             form.company_name.data = info.company
-            form.founder_names.data = info.founder
             form.industry.data = info.industry
             form.team_skills.data = info.skills
-            form.help_needed.data = info.help_req
-        return render_template('edit_profile.html', title='Edit Profile',
-                            form=form)
+            form.linkedin.data = info.linkedin
+            form.twitter.data = info.twitter
+        return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 
 @flapp.route('/application', methods=['GET', 'POST'])

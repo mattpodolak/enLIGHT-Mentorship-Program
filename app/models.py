@@ -20,7 +20,7 @@ class Mentor(db.Model):
     industry = db.Column(db.String(164))
     company = db.Column(db.String(164))
     position = db.Column(db.String(164))
-    linked = db.Column(db.String(164))
+    linkedin = db.Column(db.String(164))
     twitter = db.Column(db.String(164))
     #in db.relat... referenced by model class ie: Post
     #posts is not a db field, defined one the "one" side of one-to-many relation
@@ -39,15 +39,21 @@ class Mentor(db.Model):
 
 class Mentee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(64))
+    last_name = db.Column(db.String(64))
+    bio = db.Column(db.String(280))
     company = db.Column(db.String(100))
-    founder = db.Column(db.String(280))
+    university = db.Column(db.String(280))
+    major = db.Column(db.String(280))
+    year = db.Column(db.String(128))
     email = db.Column(db.String(120), index=True, unique=True)
     industry = db.Column(db.String(280))
     skills = db.Column(db.String(280))
-    help_req = db.Column(db.String(280))
     mentor1 = db.Column(db.String(128))
     mentor2 = db.Column(db.String(128))
     mentor3 = db.Column(db.String(128))
+    linkedin = db.Column(db.String(164))
+    twitter = db.Column(db.String(164))
 
     #connects to mentor to track the mentor prefs of mentee
     prefs = db.relationship('Mentor', backref='mentee', lazy='dynamic')

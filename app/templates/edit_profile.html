@@ -22,12 +22,11 @@
                       </div>
                     </div>
 
-                    {% if current_user.is_mentor() %}
-                        {{ form.linked.label(class="text label-text") }} <br>
-                        {{ form.linked(class="input-contact text") }} <br>
-                        {{ form.twitter.label(class="text label-text") }} <br>
-                        {{ form.twitter(class="input-contact text") }}
-                    {% endif %}
+                    {{ form.linkedin.label(class="text label-text") }} <br>
+                    {{ form.linkedin(class="input-contact text") }} <br>
+                    {{ form.twitter.label(class="text label-text") }} <br>
+                    {{ form.twitter(class="input-contact text") }}
+
                     <div class="edit-action-buttons">
                         {{ form.submit(class="save-button") }}
                     </div>
@@ -63,16 +62,24 @@
                             {{ form.help_needed.label(class="text label-text") }}
                             {{ form.help_needed(class="input-profile text") }}
                         {% else %}
+                            {{ form.first_name.label(class="text label-text") }}
+                            {{ form.first_name(class="input-profile text") }}
+                            {{ form.last_name.label(class="text label-text") }}
+                            {{ form.last_name(class="input-profile text") }}
+                            {{ form.bio.label(class="text label-text") }}
+                            {{ form.bio(class="input-profile text") }}
                             {{ form.company_name.label(class="text label-text") }}
                             {{ form.company_name(class="input-profile text") }}
-                            {{ form.email.label(class="text label-text") }}
-                            {{ form.email(class="input-profile text") }}
-                            {{ form.founder_names.label(class="text label-text") }}
-                            {{ form.founder_names(class="input-profile text") }}
+                            {{ form.university.label(class="text label-text") }}
+                            {{ form.university(class="input-profile text") }}
+                            {{ form.major.label(class="text label-text") }}
+                            {{ form.major(class="input-profile text") }}
+                            {{ form.year.label(class="text label-text") }}
+                            {{ form.year(class="input-profile text") }}
                             {{ form.industry.label(class="text label-text") }}
                             {{ form.industry(class="input-profile text") }}
-                            {{ form.help_needed.label(class="text label-text") }}
-                            {{ form.help_needed(class="input-profile text") }}
+                            {{ form.email.label(class="text label-text") }}
+                            {{ form.email(class="input-profile text") }}
                         {% endif %}
     {#                    {{ wtf.quick_form(form)}}#}
                     </div>
@@ -84,11 +91,6 @@
 {#                                {{ form.skill.label }}#}
 {#                            </div>#}
                             {{ form.skill(class="input-profile text") }}
-                        {% elif current_user.is_cohort() %}
-{#                            <div class="skills-bubble">#}
-{#                                    {{ form.team_skills.dat/(class="text label-text") }}#}
-{#                            </div>#}
-                            {{ form.team_skills(class="input-profile text") }}
                         {% else %}
 {#                            <div class="skills-bubble">#}
 {#                                {{ form.team_skills.dat/(class="text label-text") }}#}

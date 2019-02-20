@@ -3,6 +3,37 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextA
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from app.models import User, Application, Mentor
 
+schoolList = [('mcg', 'McGill University'),
+                  ('mac', 'McMaster University'),
+                  ('qu', "Queen's University"),
+                  ('ubc', 'University of British Columbia'),
+                  ('uoft', 'University of Toronto'),
+                  ('uw', 'University of Waterloo'),
+                  ('uwo', 'University of Western Ontario'),
+                  ('wlu', 'Wilfred Laurier University')]
+
+majorList = [('ba', 'Bachelor of Arts (B.A)'),
+             ('basc', 'Bachelor of Applied Science (B.ASc.)'),
+             ('bba', 'Bachelor of Business Adminstration (B.B.A.)'),
+             ('bcom', 'Bachelor of Commerce (B.Comm)'),
+             ('bmath', 'Bachelor of Math (B.Math)'),
+             ('bsc', 'Bachelor of Science (B.Sc)')]
+
+yearList = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+
+industryList = [('acc', 'Accounting'),
+             ('arc', 'Architecture and Planning'),
+             ('auto', 'Automotive'),
+             ('aero', 'Aviation and Aerospace'),
+             ('bank', 'Banking'),
+             ('broad', 'Broadcast Media'),
+             ('cap', 'Capital Markets'),
+             ('cs', 'Computer Software'),
+             ('def', 'Defense and Space'),
+             ('eng', 'Engineering'),
+             ('fin', 'Financial Services'),
+             ('gov', 'Government Administration')]
+
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -31,7 +62,7 @@ class MentorRegistrationForm(FlaskForm):
     industry = StringField('Industries', validators=[Length(min=0, max=164)])
     company = StringField('Current Company', validators=[Length(min=0, max=164)])
     position = StringField('Current Position', validators=[Length(min=0, max=164)])
-    linked = StringField('LinkedIn Link', validators=[Length(min=0, max=164)])
+    linkedin = StringField('LinkedIn Link', validators=[Length(min=0, max=164)])
     twitter = StringField('Twitter Link', validators=[Length(min=0, max=164)])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
@@ -50,10 +81,10 @@ class EditMentorProfileForm(FlaskForm):
     about_me = StringField('About', validators=[DataRequired(), Length(min=0, max=280)])
     avail = StringField('Availability', validators=[DataRequired(), Length(min=0, max=64)])
     skill = StringField('Skillset', validators=[DataRequired(), Length(min=0, max=164)])
-    industry = StringField('Industries', validators=[DataRequired(), Length(min=0, max=164)])
+    industry = SelectField(u'Industry', choices=industryList, coerce=str)
     company = StringField('Current Company', validators=[DataRequired(), Length(min=0, max=164)])
     position = StringField('Current Position', validators=[DataRequired(), Length(min=0, max=164)])
-    linked = StringField('LinkedIn Link', validators=[DataRequired(), Length(min=0, max=164)])
+    linkedin = StringField('LinkedIn Link', validators=[DataRequired(), Length(min=0, max=164)])
     twitter = StringField('Twitter Link', validators=[DataRequired(), Length(min=0, max=164)])
     submit = SubmitField('Save Profile')
 
@@ -68,12 +99,18 @@ class EditMentorProfileForm(FlaskForm):
                 raise ValidationError('Please use a different email address.')
 
 class EditMenteeProfileForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired(), Length(min=0, max=64)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(min=0, max=64)])
+    bio = StringField('Bio', validators=[DataRequired(), Length(min=0, max=100)])
     company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])
+    university = SelectField(u'University', choices=schoolList, coerce=str)
+    major = SelectField(u'Major', choices=majorList, coerce=str)
+    year = SelectField(u'Year', choices=yearList, coerce=int)
+    industry = SelectField(u'Industry', choices=industryList, coerce=str)
     email = StringField('Contact Email', validators=[DataRequired(), Email()])
-    founder_names = StringField('Names of Founders', validators=[DataRequired(), Length(min=0, max=280)])
-    industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
     team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
-    help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
+    linkedin = StringField('LinkedIn Link', validators=[DataRequired(), Length(min=0, max=164)])
+    twitter = StringField('Twitter Link', validators=[DataRequired(), Length(min=0, max=164)])
     submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
