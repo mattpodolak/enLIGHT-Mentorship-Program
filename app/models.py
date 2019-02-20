@@ -67,10 +67,10 @@ class Mentee(db.Model):
 class Cohort(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company = db.Column(db.String(100))
-    founder = db.Column(db.String(280))
+    bio = db.Column(db.String(280))
+    members = db.Column(db.String(280))
     email = db.Column(db.String(120), index=True, unique=True)
     industry = db.Column(db.String(280))
-    skills = db.Column(db.String(280))
     help_req = db.Column(db.String(280))
     mentor1 = db.Column(db.String(128))
     mentor2 = db.Column(db.String(128))

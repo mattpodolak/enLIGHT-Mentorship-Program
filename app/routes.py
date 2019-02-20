@@ -392,8 +392,6 @@ def user(userId):
                 mentees.append(mentee)
         elif current_user.is_cohort():
             info = Cohort.query.filter_by(email=user.email).first()
-            if info.skills is not None:
-                skill_array = info.skills.split(", ")
         else:
             info = Mentee.query.filter_by(email=user.email).first()
             if info.skills is not None:
@@ -485,21 +483,17 @@ def edit_profile():
             current_user.set_id()
             info.email = form.email.data
             info.company = form.company_name.data
-            info.founder = form.founder_names.data
-            info.industry = form.industry.data
-            info.skills = form.team_skills.data
+            info.members = form.member_names.data
+            info.industry = dict(form.industry.choices).get(form.industry.data)
             info.help_req = form.help_needed.data
             db.session.commit()
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
-            form.first_name.data = info.first_name
-            form.last_name.data = info.last_name
             form.email.data = current_user.email
             form.company_name.data = info.company
-            form.founder_names.data = info.founder
+            form.member_names.data = info.members
             form.industry.data = info.industry
-            form.team_skills.data = info.skills
             form.help_needed.data = info.help_req
         return render_template('edit_profile.html', title='Edit Profile', form=form)
     else:
