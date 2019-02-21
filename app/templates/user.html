@@ -35,9 +35,9 @@
                         <p class="text">{{info.email}}</p>
                         <label class="text label-text">Availability</label>
                         <p class="text">{{info.avail}}</p>
-                        <label class="text label-text">Bio</label>
+                        <label class="text label-text">About</label>
                         <p class="text">{{info.about_me}}</p>
-                    {% elif user.is_cohort() %}
+                    {% elif user.is_company() %}
                         <h2 class="text name-text">{{info.company}}</h2>
                         <label class="text label-text">Founders</label>
                         <p class="text">{{info.founder}}</p>
@@ -49,8 +49,8 @@
                         <p class="text">{{info.help_req}}</p>
                     {% else %}
                         <h2 class="text name-text">{{info.first_name}} {{info.last_name}}</h2>
-                        <label class="text label-text">Bio</label>
-                        <p class="text">{{info.bio}}</p>
+                        <label class="text label-text">About</label>
+                        <p class="text">{{info.about}}</p>
                         <label class="text label-text">Company</label>
                         <p class="text">{{info.company}}</p>
                         <label class="text label-text">University</label>
@@ -93,7 +93,7 @@
                                 <h4 class="text profile-pic-text">{{ info.mentee_pref_id }}</h4>
                             </div>
                         </div>
-                    {% elif user.is_cohort() %}
+                    {% elif user.is_company() %}
                         {% if mentor %}
                             <h2 class="text name-text">Matched Mentors</h2>
                             <div class="mentor-container">

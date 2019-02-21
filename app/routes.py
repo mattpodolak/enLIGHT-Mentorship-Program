@@ -307,7 +307,17 @@ def register_user(userType):
             db.session.commit()
             # create mentor / mentee instance
             if accessType == 1:
-                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me=form.about_me.data, avail=form.avail.data, skill=form.skill.data, industry=form.industry.data, mentor_company=form.company.data, position=form.position.data, linkedin=form.linkedin.data, twitter=form.twitter.data)
+                mentor = Mentor(first_name=form.first_name.data,
+                                last_name=form.last_name.data,
+                                email=form.email.data,
+                                about_me=form.about_me.data,
+                                avail=form.avail.data,
+                                skills=form.skills.data,
+                                industry=dict(form.industry.choices).get(form.industry.data),
+                                mentor_company=form.company.data,
+                                position=form.position.data,
+                                linkedin=form.linkedin.data,
+                                twitter=form.twitter.data)
                 db.session.add(mentor)
                 db.session.commit()
             elif accessType == 3:
@@ -315,7 +325,17 @@ def register_user(userType):
                 db.session.add(cohort)
                 db.session.commit()
             else:
-                mentee = Mentee(email=form.email.data)
+                mentee = Mentee(first_name=form.first_name.data,
+                                last_name=form.last_name.data,
+                                email=form.email.data,
+                                about=form.about.data,
+                                skills=form.skills.data,
+                                university=dict(form.university.choices).get(form.university.data),
+                                major=dict(form.major.choices).get(form.major.data),
+                                year=dict(form.year.choices).get(form.year.data),
+                                industry=dict(form.industry.choices).get(form.industry.data),
+                                linkedin=form.linkedin.data,
+                                twitter=form.twitter.data)
                 db.session.add(mentee)
                 db.session.commit()
             flash('Congratulations, you have registered ' + form.email.data)
@@ -354,7 +374,12 @@ def acc_app(appId):
         user.set_id()
         db.session.add(user)
         db.session.commit()
-        mentee = Mentee(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req)
+        mentee = Mentee(company=app.company,
+                        founder=app.founder,
+                        email=app.email,
+                        industry=app.industry,
+                        skills=app.skills,
+                        help_req=app.help_req)
         db.session.add(mentee)
         db.session.commit()
         flash('You accepted the application for ' + app.company)
@@ -385,8 +410,8 @@ def user(userId):
             return render_template('404.html')
         elif current_user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
-            if info.skill is not None:
-                skill_array = info.skill.split(", ")
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
             for m in info.users:
                 mentee = Mentee.query.filter_by(email=m.email).first()
                 mentees.append(mentee)
@@ -467,7 +492,7 @@ def edit_profile():
             form.last_name.data = info.last_name
             form.about_me.data = info.about_me
             form.avail.data = info.avail
-            form.skill.data = info.skill
+            form.skill.data = info.skills
             form.industry.data = info.industry
             form.company.data = info.company
             form.position.data = info.position
@@ -505,14 +530,14 @@ def edit_profile():
             current_user.set_id()
             info.first_name = form.first_name.data
             info.last_name = form.last_name.data
-            info.bio = form.bio.data
+            info.about = form.about.data
             info.company = form.company_name.data
             info.university = dict(form.university.choices).get(form.university.data)
             info.major = dict(form.major.choices).get(form.major.data)
             info.year = dict(form.year.choices).get(form.year.data)
             info.industry = dict(form.industry.choices).get(form.industry.data)
             info.email = form.email.data
-            info.skills = form.team_skills.data
+            info.skills = form.skill.data
             info.linkedin = form.linkedin.data
             info.twitter = form.twitter.data
             db.session.commit()
@@ -521,14 +546,14 @@ def edit_profile():
         elif request.method == 'GET':
             form.first_name.data = info.first_name
             form.last_name.data = info.last_name
-            form.bio.data = info.bio
+            form.about.data = info.about
             form.university.data = info.university
             form.major.data = info.major
             form.year.data = info.year
             form.email.data = current_user.email
             form.company_name.data = info.company
             form.industry.data = info.industry
-            form.team_skills.data = info.skills
+            form.skill.data = info.skills
             form.linkedin.data = info.linkedin
             form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile', form=form)
@@ -539,7 +564,19 @@ def edit_profile():
 def application():
     form = ApplicationForm()
     if form.validate_on_submit():
-        apply = Application(accept="Pending", company=form.company_name.data, founder=form.founder_names.data, email=form.contact_email.data, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
+        apply = Application(accept="Pending",
+                            company=form.company_name.data,
+                            founder=form.founder_names.data,
+                            email=form.contact_email.data,
+                            industry=form.industry.data,
+                            skills=form.team_skills.data,
+                            help_req=form.help_needed.data,
+                            interest=form.interest.data,
+                            gain=form.gain.data,
+                            stage=form.stage.data,
+                            relation=form.relation.data,
+                            web=form.website.data,
+                            links=form.business_docs.data)
         db.session.add(apply)
         db.session.commit()
         flash('Congratulations, you applied successfully!')

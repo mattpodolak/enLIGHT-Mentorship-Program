@@ -50,7 +50,7 @@
                             {{ form.company(class="input-profile text") }}
                             {{ form.position.label(class="text label-text") }}
                             {{ form.position(class="input-profile text") }}
-                        {% elif current_user.is_cohort() %}
+                        {% elif current_user.is_company() %}
                             {{ form.company_name.label(class="text label-text") }}
                             {{ form.company_name(class="input-profile text") }}
                             {{ form.email.label(class="text label-text") }}
@@ -66,8 +66,8 @@
                             {{ form.first_name(class="input-profile text") }}
                             {{ form.last_name.label(class="text label-text") }}
                             {{ form.last_name(class="input-profile text") }}
-                            {{ form.bio.label(class="text label-text") }}
-                            {{ form.bio(class="input-profile text") }}
+                            {{ form.about.label(class="text label-text") }}
+                            {{ form.about(class="input-profile text") }}
                             {{ form.company_name.label(class="text label-text") }}
                             {{ form.company_name(class="input-profile text") }}
                             {{ form.university.label(class="text label-text") }}
@@ -86,17 +86,10 @@
                     <div class="divider"></div>
                     <div class="profile-right-middle-container">
                         <h2 class="text name-text">Skillset</h2>
-                        {% if current_user.is_mentor() %}
 {#                            <div class="skills-bubble">#}
 {#                                {{ form.skill.label }}#}
 {#                            </div>#}
-                            {{ form.skill(class="input-profile text") }}
-                        {% else %}
-{#                            <div class="skills-bubble">#}
-{#                                {{ form.team_skills.dat/(class="text label-text") }}#}
-{#                            </div>#}
-                            {{ form.team_skills(class="input-profile text") }}
-                        {% endif %}
+                        {{ form.skill(class="input-profile text") }}
                     </div>
                     <div class="divider"></div>
                     <div class="profile-right-bottom-container">
