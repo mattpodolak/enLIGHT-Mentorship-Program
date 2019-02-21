@@ -2,7 +2,7 @@ from app import flapp, db
 from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Mentor, Mentee, Application, Cohort
+from app.models import User, Mentor, Mentee, Application, Company
 from werkzeug.urls import url_parse
 import sys
 from app.email import send_password_reset_email, accept_applicant, match_mentee
@@ -17,7 +17,7 @@ def index():
 @flapp.route('/cohort_faq')
 @login_required
 def cohort_faq():
-    if current_user.is_cohort():
+    if current_user.is_company():
         return render_template('faq.html', title='FAQ')
     else:
         return render_template('404.html')
@@ -29,7 +29,7 @@ def homepage():
         return render_template('home_mentor.html', title='Home')
     elif current_user.is_mentor():
         return render_template('home_mentor.html', title='Home')
-    elif current_user.is_cohort():
+    elif current_user.is_company():
         return render_template('home_cohort.html', title='Home')
     else:
         return render_template('home_gm.html', title='Home')
@@ -48,7 +48,7 @@ def dashboard():
 @flapp.route('/shortlist')
 @login_required
 def shortlist():
-    if current_user.is_cohort():
+    if current_user.is_company():
         return redirect(url_for('mentor_shortlist'))
     elif current_user.is_admin():
         flash('Feature not available for admin.')
@@ -74,8 +74,8 @@ def mentor_list():
         for m in mentor.users:
             mentee = Mentee.query.filter_by(email=m.email).first()
             mentor.mentees.append(mentee)
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    if current_user.is_company():
+        cohort = Company.query.filter_by(email=current_user.email).first()
     elif current_user.is_admin():
         print('no data to grab')
     elif current_user.is_mentor():
@@ -89,8 +89,8 @@ def mentor_list():
 def del_mentorpref(mentorId):
     user = User.query.filter_by(email_hash=mentorId).first()
     mentor = Mentor.query.filter_by(email=user.email).first()
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    if current_user.is_company():
+        cohort = Company.query.filter_by(email=current_user.email).first()
         mentor.cohort = None
         db.session.commit()
         flash('Removed from shortlist.')
@@ -110,8 +110,8 @@ def del_mentorpref(mentorId):
 def acc_mentorpref(mentorId):
     user = User.query.filter_by(email_hash=mentorId).first()
     mentor = Mentor.query.filter_by(email=user.email).first()
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    if current_user.is_company():
+        cohort = Company.query.filter_by(email=current_user.email).first()
         mentor.cohort = cohort
         db.session.commit()
         flash('Shortlist has been updated.')
@@ -132,8 +132,8 @@ def del_menteepref(menteeId):
     user = User.query.filter_by(email_hash=menteeId).first()
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
-        if user.is_cohort():
-            cohort = Cohort.query.filter_by(email=user.email).first()
+        if user.is_company():
+            cohort = Company.query.filter_by(email=user.email).first()
             cohort.mentorpref = None
         else:
             mentee = Mentee.query.filter_by(email=user.email).first()
@@ -151,8 +151,8 @@ def acc_menteepref(menteeId):
     print('1', user)
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
-        if user.is_cohort():
-            cohort = Cohort.query.filter_by(email=user.email).first()
+        if user.is_company():
+            cohort = Company.query.filter_by(email=user.email).first()
             print('2', mentor)
             cohort.mentorpref = mentor
             print('3', cohort)
@@ -169,8 +169,8 @@ def acc_menteepref(menteeId):
 @flapp.route('/mentor_shortlist')
 @login_required
 def mentor_shortlist():
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    if current_user.is_company():
+        cohort = Company.query.filter_by(email=current_user.email).first()
         mentorList = Mentor.query.filter_by(cohort=cohort)
     elif current_user.is_admin():
         mentorList = None
@@ -194,7 +194,7 @@ def mentee_shortlist():
     if current_user.is_mentor():
         user = User.query.filter_by(email=current_user.email).first()
         menteeList = Mentee.query.filter_by(mentorpref=user)
-        cohortList = Cohort.query.filter_by(mentorpref=user)
+        cohortList = Company.query.filter_by(mentorpref=user)
 
         for mentee in menteeList:
             user = User.query.filter_by(email=mentee.email).first()
@@ -213,7 +213,7 @@ def mentee_shortlist():
 @login_required
 def mentee_list():          
     menteeList = Mentee.query.all()
-    cohortList = Cohort.query.all()
+    cohortList = Company.query.all()
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
@@ -307,11 +307,11 @@ def register_user(userType):
             db.session.commit()
             # create mentor / mentee instance
             if accessType == 1:
-                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me=form.about_me.data, avail=form.avail.data, skill=form.skill.data, industry=form.industry.data, company=form.company.data, position=form.position.data, linkedin=form.linkedin.data, twitter=form.twitter.data)
+                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me=form.about_me.data, avail=form.avail.data, skill=form.skill.data, industry=form.industry.data, mentor_company=form.company.data, position=form.position.data, linkedin=form.linkedin.data, twitter=form.twitter.data)
                 db.session.add(mentor)
                 db.session.commit()
             elif accessType == 3:
-                cohort = Cohort(email=form.email.data)
+                cohort = Company(email=form.email.data)
                 db.session.add(cohort)
                 db.session.commit()
             else:
@@ -390,8 +390,8 @@ def user(userId):
             for m in info.users:
                 mentee = Mentee.query.filter_by(email=m.email).first()
                 mentees.append(mentee)
-        elif current_user.is_cohort():
-            info = Cohort.query.filter_by(email=user.email).first()
+        elif current_user.is_company():
+            info = Company.query.filter_by(email=user.email).first()
         else:
             info = Mentee.query.filter_by(email=user.email).first()
             if info.skills is not None:
@@ -474,9 +474,9 @@ def edit_profile():
             form.linkedin.data = info.linkedin
             form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile', form=form)
-    elif current_user.is_cohort():
+    elif current_user.is_company():
         form = EditCohortProfileForm(current_user.email)
-        info = Cohort.query.filter_by(email=current_user.email).first()
+        info = Company.query.filter_by(email=current_user.email).first()
 
         if form.validate_on_submit():
             current_user.email = form.email.data

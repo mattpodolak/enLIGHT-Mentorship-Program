@@ -18,7 +18,7 @@ class Mentor(db.Model):
     avail = db.Column(db.String(64))
     skill = db.Column(db.String(164))
     industry = db.Column(db.String(164))
-    company = db.Column(db.String(164))
+    mentor_company = db.Column(db.String(164))
     position = db.Column(db.String(164))
     linkedin = db.Column(db.String(164))
     twitter = db.Column(db.String(164))
@@ -32,7 +32,7 @@ class Mentor(db.Model):
 
     #these track mentor preferences for mentee and cohort users
     mentee_pref_id = db.Column(db.Integer, db.ForeignKey('mentee.id'))
-    cohort_pref_id = db.Column(db.Integer, db.ForeignKey('cohort.id'))
+    company_pref_id = db.Column(db.Integer, db.ForeignKey('company.id'))
 
     def __repr__(self):
         return '<Mentor {}>'.format(self.email)
@@ -64,7 +64,7 @@ class Mentee(db.Model):
     def __repr__(self):
         return '<Mentee {}>'.format(self.email)
 
-class Cohort(db.Model):
+class Company(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     company = db.Column(db.String(100))
     bio = db.Column(db.String(280))
@@ -77,13 +77,13 @@ class Cohort(db.Model):
     mentor3 = db.Column(db.String(128))
 
     #connects to mentor to track the mentor prefs of cohort
-    prefs = db.relationship('Mentor', backref='cohort', lazy='dynamic')
+    prefs = db.relationship('Mentor', backref='company', lazy='dynamic')
 
     #connects to user to help track mentee prefs for mentors
     mentor_pref_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Cohort {}>'.format(self.email)
+        return '<Company {}>'.format(self.email)
 
 class Application(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -121,7 +121,7 @@ class User(UserMixin, db.Model):
 
     #tracks mentee preferences for mentor accts
     prefs_m = db.relationship('Mentee', backref='mentorpref', lazy='dynamic')
-    prefs_c = db.relationship('Cohort', backref='mentorpref', lazy='dynamic')
+    prefs_c = db.relationship('Company', backref='mentorpref', lazy='dynamic')
 
     def is_admin(self):
         if(self.access == 2):
@@ -133,7 +133,7 @@ class User(UserMixin, db.Model):
             return True
         return False
 
-    def is_cohort(self):
+    def is_company(self):
         if(self.access == 3):
             return True
         return False
