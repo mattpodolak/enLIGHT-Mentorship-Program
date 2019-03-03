@@ -310,12 +310,16 @@ def register_user(userType):
                 mentor = Mentor(first_name=form.first_name.data,
                                 last_name=form.last_name.data,
                                 email=form.email.data,
+                                headline=form.headline.data,
                                 about_me=form.about_me.data,
                                 avail=form.avail.data,
                                 skills=form.skills.data,
                                 industry=dict(form.industry.choices).get(form.industry.data),
                                 mentor_company=form.company.data,
                                 position=form.position.data,
+                                university=dict(form.university.choices).get(form.university.data),
+                                major=dict(form.major.choices).get(form.major.data),
+                                grad_year=form.grad_year.data,
                                 linkedin=form.linkedin.data,
                                 twitter=form.twitter.data)
                 db.session.add(mentor)
@@ -328,6 +332,7 @@ def register_user(userType):
                 mentee = Mentee(first_name=form.first_name.data,
                                 last_name=form.last_name.data,
                                 email=form.email.data,
+                                headline=form.headline.data,
                                 about=form.about.data,
                                 skills=form.skills.data,
                                 university=dict(form.university.choices).get(form.university.data),
@@ -476,6 +481,7 @@ def edit_profile():
             info.first_name = form.first_name.data
             info.last_name = form.last_name.data
             info.about_me = form.about_me.data
+            info.headline = form.headline.data
             info.avail = form.avail.data
             info.skill = form.skill.data
             info.industry = form.industry.data
@@ -490,6 +496,7 @@ def edit_profile():
             form.email.data = current_user.email
             form.first_name.data = info.first_name
             form.last_name.data = info.last_name
+            form.headline.data = info.headline
             form.about_me.data = info.about_me
             form.avail.data = info.avail
             form.skill.data = info.skills
@@ -510,6 +517,9 @@ def edit_profile():
             info.company = form.company_name.data
             info.members = form.member_names.data
             info.industry = dict(form.industry.choices).get(form.industry.data)
+            info.university = dict(form.university.choices).get(form.university.data)
+            info.major = dict(form.major.choices).get(form.major.data)
+            info.grad_year = form.grad_year.data
             info.help_req = form.help_needed.data
             db.session.commit()
             flash('Your changes have been saved.')
@@ -519,6 +529,9 @@ def edit_profile():
             form.company_name.data = info.company
             form.member_names.data = info.members
             form.industry.data = info.industry
+            form.university.data = info.university
+            form.major.data = info.major
+            form.grad_year.data = info.grad_year
             form.help_needed.data = info.help_req
         return render_template('edit_profile.html', title='Edit Profile', form=form)
     else:
@@ -530,6 +543,7 @@ def edit_profile():
             current_user.set_id()
             info.first_name = form.first_name.data
             info.last_name = form.last_name.data
+            info.headline = form.headline.data
             info.about = form.about.data
             info.company = form.company_name.data
             info.university = dict(form.university.choices).get(form.university.data)
@@ -546,6 +560,7 @@ def edit_profile():
         elif request.method == 'GET':
             form.first_name.data = info.first_name
             form.last_name.data = info.last_name
+            form.headline.data = info.headline
             form.about.data = info.about
             form.university.data = info.university
             form.major.data = info.major

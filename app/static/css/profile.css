@@ -27,50 +27,118 @@
     color: #ffffff;
 }
 
+.header-container{
+    width: 100vw;
+    height: 15vw;
+}
+
+.header-pic{
+    width: 100%;
+    height: 100%;
+}
+
+.profile-pic-container{
+    position: absolute;
+    top: 20vh;
+    left: 15%;
+    width: 17.5vw;
+    border: 7px solid #FFF;
+}
+
+.profile-pic{
+    width: 100%;
+}
+
 .profile-container{
-    display: flex;
+    /*display: flex;*/
     /*position: absolute;*/
     overflow-x: hidden;
     left: 20%;
     margin: auto;
     padding: 0 !important;
-    width: 55%;
+    width: 70%;
+}
+
+.profile-top-container{
+    position: relative;
+    width: 100%;
+    /*height: 20%;*/
+    padding-left: 19vw;
+}
+
+.profile-info-container{
+    display: flex;
+    position: relative;
+    width: 100%;
 }
 
 .profile-left-container{
-    margin: 0;
+    margin-top: 2%;
+    margin-left: 1vw;
     position: relative;
     float: left;
-    width: 30%;
-    text-align: center;
-    background-color: #f5f6f7;
+    width: 60%;
 }
 
 .profile-right-container{
     position: relative;
+    /*display: block;*/
     padding-left: 3vw;
     padding-right: 3vw;
     float: right;
-    width: 70%;
+    width: 40%;
 }
 
 .profile-right-top-container{
-    padding-top: 4vh;
+    position: relative;
+    padding: 2vh 2vw;
+    background-color: #e5e9f1;
+}
+
+.profile-right-top-left-container{
+    position: relative;
+    width: 20%;
+    margin: 2vh 0.75vw 0.75vw;
+    float: left;
+}
+
+.profile-right-top-right-container{
+    position: relative;
+    width: 80%;
+    margin-top: 2vh;
+    margin-left: 2vw;
+    float: right;
+}
+
+.profile-education-container{
+    position: relative;
+    display: flex;
+    width: 100%;
+}
+
+.profile-work-container{
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin-top: 5vh;
+}
+
+.profile-contact-container{
+    position: relative;
+    display: flex;
+    width: 100%;
+    margin-top: 5vh;
+}
+
+.profile-edit-container{
+    width: 100%;
+    margin-top: 5vh;
 }
 
 .profile-right-middle-container{
 }
 
 .profile-right-bottom-container{
-}
-
-.profile-pic{
-    margin-top: 13.5vh;
-    margin-bottom: 2vh;
-    max-width: 70%;
-    zoom: 0.6;
-    text-align: center;
-    border-radius: 50%;
 }
 
 .divider{
@@ -88,27 +156,38 @@
     line-height: 1.21;
     letter-spacing: normal;
     text-align: left;
-    color: #707070;
+    color: #000000;
 }
 
-.link-text{
+.about-me{
+    margin-top: 4vh;
+    padding: 5%;
+    background-color: #e5e9f1;
     text-align: center;
 }
 
-.linkedin{
-    margin-top: 5vh;
+.about-me-span{
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
 }
 
 .edit-profile-text{
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 3vh;
-    margin-left: 6.5vw;
+    position: relative;
+    margin-top: 6vh;
+    text-align: center;
 }
 
 .name-text{
     margin-top: 3vh;
     line-height: 1.19;
+    font-weight: bold;
+}
+
+.header-text{
+    /*margin-top: 5vh;*/
+    line-height: 0.25;
+    font-weight: bold;
 }
 
 .label-text{
@@ -164,10 +243,12 @@
 
 .skills-bubble{
     display: inline-block;
-    padding: 2%;
+    padding: 1%;
     margin: 1%;
+    margin-top: 3vh;
     border-radius: 20px;
-    background-color: #e5e9f1;
+    background-color: #ffffff;
+    border: 3px solid #33cc33;
 }
 
 .mentor-container{
@@ -189,3 +270,14 @@
     /*box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);*/
 }
 
+.education-icon{
+    zoom: 0.45;
+}
+
+.work-icon{
+    zoom: 0.45;
+}
+
+.contact-icon{
+    zoom: 0.45;
+}

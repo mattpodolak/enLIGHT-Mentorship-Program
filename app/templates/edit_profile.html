@@ -3,13 +3,22 @@
 
 {% block app_content %}
     <div class="background-container">
-        <h1 class="title-text">My Profile</h1>
+        <div class="header-container">
+            <img src="../static/header.jpg" class="header-pic"/>
+        </div>
         <form action="" method="post">
             {{ form.hidden_tag() }}
+            <div class="profile-pic-container">
+                <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentor.jpg" class="profile-pic"/>
+            </div>
             <div class="edit-border profile-container">
+                <div class="profile-top-container">
+                    {{ form.first_name.label(class="text label-text") }}
+                    {{ form.first_name(class="input-profile text") }}
+                    {{ form.last_name.label(class="text label-text") }}
+                    {{ form.last_name(class="input-profile text") }}
+                </div>
                 <div class="profile-left-container">
-                    <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentor.jpg" class="profile-pic"/>
-
                     <a href="../static/components/edit_picture_modal.html" data-target="#myModal" data-toggle="modal">
                         <p><small class="text change-picture-text">Change picture</small></p>
                     </a>
@@ -21,11 +30,6 @@
                         </div>
                       </div>
                     </div>
-
-                    {{ form.linkedin.label(class="text label-text") }} <br>
-                    {{ form.linkedin(class="input-contact text") }} <br>
-                    {{ form.twitter.label(class="text label-text") }} <br>
-                    {{ form.twitter(class="input-contact text") }}
 
                     <div class="edit-action-buttons">
                         {{ form.submit(class="save-button") }}
@@ -66,6 +70,8 @@
                             {{ form.first_name(class="input-profile text") }}
                             {{ form.last_name.label(class="text label-text") }}
                             {{ form.last_name(class="input-profile text") }}
+                            {{ form.headline.label(class="text label-text") }}
+                            {{ form.headline(class="input-profile text") }}
                             {{ form.about.label(class="text label-text") }}
                             {{ form.about(class="input-profile text") }}
                             {{ form.company_name.label(class="text label-text") }}
@@ -80,6 +86,10 @@
                             {{ form.industry(class="input-profile text") }}
                             {{ form.email.label(class="text label-text") }}
                             {{ form.email(class="input-profile text") }}
+                            {{ form.linkedin.label(class="text label-text") }}
+                            {{ form.linkedin(class="input-contact text") }}
+                            {{ form.twitter.label(class="text label-text") }}
+                            {{ form.twitter(class="input-contact text") }}
                         {% endif %}
     {#                    {{ wtf.quick_form(form)}}#}
                     </div>
