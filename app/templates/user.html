@@ -15,18 +15,22 @@
             </div>
             <div class="profile-info-container">
                 <div class="profile-left-container">
-                <div>
-                   <h3 class="text header-text">Skillset</h3>
-                    {% for skill in skill_array %}
-                        <div class="skills-bubble">
-                            <label class="text">{{ skill }}</label>
-                        </div>
-                    {% endfor %}
-                </div>
-                <h3 class="text header-text">About</h3>
-                <div class="about-me">
-                    <span class="text about-me-span">{{info.about}}</span>
-                </div>
+                    <div>
+                       <h3 class="text header-text">Skillset</h3>
+                        {% for skill in skill_array %}
+                            <div class="skills-bubble">
+                                <label class="text">{{ skill }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <h3 class="text header-text">About</h3>
+                    <div class="about-me">
+                        {% if user.is_mentor() %}
+                            <span class="text about-me-span">{{info.about_me}}</span>
+                        {% else %}
+                            <span class="text about-me-span">{{info.about}}</span>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="profile-right-container">
                     <div class="profile-right-top-container">

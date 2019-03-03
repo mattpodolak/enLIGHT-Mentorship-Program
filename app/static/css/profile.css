@@ -1,5 +1,5 @@
 .background-container{
-    background-color: #13253b;
+    background-color: #ffffff;
     width: 100vw;
     /*height: 175vh;*/
     position: relative;
@@ -40,7 +40,7 @@
 .profile-pic-container{
     position: absolute;
     top: 20vh;
-    left: 15%;
+    left: 15.5%;
     width: 17.5vw;
     border: 7px solid #FFF;
 }
@@ -57,6 +57,8 @@
     margin: auto;
     padding: 0 !important;
     width: 70%;
+    border: none;
+    outline: none;
 }
 
 .profile-top-container{
@@ -70,6 +72,8 @@
     display: flex;
     position: relative;
     width: 100%;
+    border: none;
+    outline: none;
 }
 
 .profile-left-container{
@@ -139,6 +143,25 @@
 }
 
 .profile-right-bottom-container{
+}
+
+.edit-name-container{
+    position: relative;
+    width: 100%;
+    display: flex;
+    margin-top: 2vh;
+}
+
+.edit-firstname-container{
+    position: relative;
+    width: 50%;
+    float: left;
+}
+
+.edit-lastname-container{
+    position: relative;
+    width: 50%;
+    float: right;
 }
 
 .divider{

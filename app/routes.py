@@ -311,7 +311,7 @@ def register_user(userType):
                                 last_name=form.last_name.data,
                                 email=form.email.data,
                                 headline=form.headline.data,
-                                about_me=form.about_me.data,
+                                about_me=form.about.data,
                                 avail=form.avail.data,
                                 skills=form.skills.data,
                                 industry=dict(form.industry.choices).get(form.industry.data),
@@ -338,6 +338,7 @@ def register_user(userType):
                                 university=dict(form.university.choices).get(form.university.data),
                                 major=dict(form.major.choices).get(form.major.data),
                                 year=dict(form.year.choices).get(form.year.data),
+                                company=form.company.data,
                                 industry=dict(form.industry.choices).get(form.industry.data),
                                 linkedin=form.linkedin.data,
                                 twitter=form.twitter.data)
@@ -477,32 +478,38 @@ def edit_profile():
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
-            info.email = form.email.data
             info.first_name = form.first_name.data
             info.last_name = form.last_name.data
-            info.about_me = form.about_me.data
+            info.email = form.email.data
+            info.about_me = form.about.data
             info.headline = form.headline.data
             info.avail = form.avail.data
             info.skill = form.skill.data
-            info.industry = form.industry.data
-            info.company = form.company.data
+            info.mentor_company = form.company.data
             info.position = form.position.data
+            info.industry = dict(form.industry.choices).get(form.industry.data)
+            info.university = dict(form.university.choices).get(form.university.data)
+            info.major = dict(form.major.choices).get(form.major.data)
+            info.grad_year = form.grad_year.data
             info.linkedin = form.linkedin.data
             info.twitter = form.twitter.data
             db.session.commit()
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
-            form.email.data = current_user.email
             form.first_name.data = info.first_name
             form.last_name.data = info.last_name
+            form.email.data = current_user.email
             form.headline.data = info.headline
-            form.about_me.data = info.about_me
+            form.about.data = info.about_me
             form.avail.data = info.avail
             form.skill.data = info.skills
-            form.industry.data = info.industry
-            form.company.data = info.company
+            form.company.data = info.mentor_company
             form.position.data = info.position
+            form.industry.data = info.industry
+            form.university.data = info.university
+            form.major.data = info.major
+            form.grad_year.data = info.grad_year
             form.linkedin.data = info.linkedin
             form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile', form=form)
@@ -517,9 +524,6 @@ def edit_profile():
             info.company = form.company_name.data
             info.members = form.member_names.data
             info.industry = dict(form.industry.choices).get(form.industry.data)
-            info.university = dict(form.university.choices).get(form.university.data)
-            info.major = dict(form.major.choices).get(form.major.data)
-            info.grad_year = form.grad_year.data
             info.help_req = form.help_needed.data
             db.session.commit()
             flash('Your changes have been saved.')
@@ -539,13 +543,13 @@ def edit_profile():
         info = Mentee.query.filter_by(email=current_user.email).first()
         
         if form.validate_on_submit():
-            current_user.email = form.email.data
+            # current_user.email = form.email.data
             current_user.set_id()
             info.first_name = form.first_name.data
             info.last_name = form.last_name.data
             info.headline = form.headline.data
             info.about = form.about.data
-            info.company = form.company_name.data
+            info.company = form.company.data
             info.university = dict(form.university.choices).get(form.university.data)
             info.major = dict(form.major.choices).get(form.major.data)
             info.year = dict(form.year.choices).get(form.year.data)
@@ -566,7 +570,7 @@ def edit_profile():
             form.major.data = info.major
             form.year.data = info.year
             form.email.data = current_user.email
-            form.company_name.data = info.company
+            form.company.data = info.company
             form.industry.data = info.industry
             form.skill.data = info.skills
             form.linkedin.data = info.linkedin

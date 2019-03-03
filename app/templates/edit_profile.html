@@ -13,10 +13,133 @@
             </div>
             <div class="edit-border profile-container">
                 <div class="profile-top-container">
-                    {{ form.first_name.label(class="text label-text") }}
-                    {{ form.first_name(class="input-profile text") }}
-                    {{ form.last_name.label(class="text label-text") }}
-                    {{ form.last_name(class="input-profile text") }}
+                    <div class="edit-name-container">
+                        <div class="edit-firstname-container">
+                            {{ form.first_name(class="input-profile text") }}
+                        </div>
+                        <div class="edit-lastname-container">
+                            {{ form.last_name(class="input-profile text") }}
+                        </div>
+                    </div>
+                    <div class="edit-name-container">
+                        {{ form.headline(class="input-profile text") }}
+                    </div>
+                </div>
+                <div class="profile-info-container">
+                    <div class="profile-left-container">
+                        <h3 class="text name-text">Skillset</h3>
+{#                            <div class="skills-bubble">#}
+{#                                {{ form.skill.label }}#}
+{#                            </div>#}
+                        {{ form.skill(class="input-profile text") }}
+                        <h3 class="text header-text">About</h3>
+                        <div class="about-me">
+                            {{ form.about(class="input-profile text") }}
+                        </div>
+                    </div>
+                    <div class="profile-right-container">
+                        <div class="profile-right-top-container">
+                            {% if current_user.is_mentor() %}
+                                {{ form.email.label(class="text label-text") }}
+                                {{ form.email(class="input-profile text") }}
+                                {{ form.avail.label(class="text label-text") }}
+                                {{ form.avail(class="input-profile text") }}
+                                {{ form.company.label(class="text label-text") }}
+                                {{ form.company(class="input-profile text") }}
+                                {{ form.position.label(class="text label-text") }}
+                                {{ form.position(class="input-profile text") }}
+                                {{ form.industry.label(class="text label-text") }}
+                                {{ form.industry(class="input-profile text") }}
+                                {{ form.university.label(class="text label-text") }}
+                                {{ form.university(class="input-profile text") }}
+                                {{ form.major.label(class="text label-text") }}
+                                {{ form.major(class="input-profile text") }}
+                                {{ form.grad_year.label(class="text label-text") }}
+                                {{ form.grad_year(class="input-profile text") }}
+                                {{ form.linkedin(class="input-contact text") }}
+                                {{ form.twitter(class="input-contact text") }}
+                            {% elif current_user.is_company() %}
+                                {{ form.company_name.label(class="text label-text") }}
+                                {{ form.company_name(class="input-profile text") }}
+                                {{ form.email.label(class="text label-text") }}
+                                {{ form.email(class="input-profile text") }}
+                                {{ form.founder_names.label(class="text label-text") }}
+                                {{ form.founder_names(class="input-profile text") }}
+                                {{ form.industry.label(class="text label-text") }}
+                                {{ form.industry(class="input-profile text") }}
+                                {{ form.help_needed.label(class="text label-text") }}
+                                {{ form.help_needed(class="input-profile text") }}
+                            {% else %}
+                                <div class="profile-education-container">
+                                    <div class="profile-right-top-left-container">
+                                        <img src="../static/education.png" class="education-icon"/>
+                                    </div>
+                                    <div class="profile-right-top-right-container">
+                                        {{ form.university.label(class="text label-text") }}
+                                        {{ form.university(class="input-profile text") }}
+                                        {{ form.major(class="input-profile text") }}
+                                        {{ form.year(class="input-profile text") }}
+                                    </div>
+                                </div>
+                                <div class="profile-work-container">
+                                    <div class="profile-right-top-left-container">
+                                        <img src="../static/work.png" class="work-icon"/>
+                                    </div>
+                                    <div class="profile-right-top-right-container">
+                                        {{ form.company(class="input-profile text") }}
+                                        {{ form.industry(class="input-profile text") }}
+                                    </div>
+                                </div>
+                                <div class="profile-contact-container">
+                                    <div class="profile-right-top-left-container">
+                                        <img src="../static/contact.png" class="contact-icon"/>
+                                    </div>
+                                    <div class="profile-right-top-right-container">
+                                        {{ form.email(class="input-profile text") }}
+                                        {{ form.linkedin(class="input-contact text") }}
+                                        {{ form.twitter(class="input-contact text") }}
+                                    </div>
+                                </div>
+                            {% endif %}
+        {#                    {{ wtf.quick_form(form)}}#}
+                        </div>
+                        <div class="divider"></div>
+                        <div class="profile-right-bottom-container">
+                            {% if current_user.is_mentor() %}
+                                <h2 class="text name-text">Matched Mentees</h2>
+                                <div class="mentor-container">
+                                    <div>
+                                        <img src="../static/test.png" class="mentor-profile-pic"/>
+                                        <h4 class="text profile-pic-text">Mentee1</h4>
+                                    </div>
+                                    <div>
+                                        <img src="../static/test.png" class="mentor-profile-pic"/>
+                                        <h4 class="text profile-pic-text">Mentee2</h4>
+                                    </div>
+                                    <div>
+                                        <img src="../static/test.png" class="mentor-profile-pic"/>
+                                        <h4 class="text profile-pic-text">Mentee3</h4>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <h2 class="text name-text">Matched Mentors</h2>
+                                <div class="mentor-container">
+                                    <div>
+                                        <img src="../static/test.png" class="mentor-profile-pic"/>
+                                        <h4 class="text profile-pic-text">Mentor1</h4>
+                                    </div>
+                                    <div>
+                                        <img src="../static/test.png" class="mentor-profile-pic"/>
+                                        <h4 class="text profile-pic-text">Mentor2</h4>
+                                    </div>
+                                    <div>
+                                        <img src="../static/test.png" class="mentor-profile-pic"/>
+                                        <h4 class="text profile-pic-text">Mentor3</h4>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
                 <div class="profile-left-container">
                     <a href="../static/components/edit_picture_modal.html" data-target="#myModal" data-toggle="modal">
@@ -35,109 +158,7 @@
                         {{ form.submit(class="save-button") }}
                     </div>
                 </div>
-                <div class="profile-right-container">
-                    <div class="profile-right-top-container">
-                        {% if current_user.is_mentor() %}
-                            {{ form.first_name.label(class="text label-text") }}
-                            {{ form.first_name(class="input-profile text") }}
-                            {{ form.last_name.label(class="text label-text") }}
-                            {{ form.last_name(class="input-profile text") }}
-                            {{ form.email.label(class="text label-text") }}
-                            {{ form.email(class="input-profile text") }}
-                            {{ form.about_me.label(class="text label-text") }}
-                            {{ form.about_me(class="input-profile text") }}
-                            {{ form.avail.label(class="text label-text") }}
-                            {{ form.avail(class="input-profile text") }}
-                            {{ form.industry.label(class="text label-text") }}
-                            {{ form.industry(class="input-profile text") }}
-                            {{ form.company.label(class="text label-text") }}
-                            {{ form.company(class="input-profile text") }}
-                            {{ form.position.label(class="text label-text") }}
-                            {{ form.position(class="input-profile text") }}
-                        {% elif current_user.is_company() %}
-                            {{ form.company_name.label(class="text label-text") }}
-                            {{ form.company_name(class="input-profile text") }}
-                            {{ form.email.label(class="text label-text") }}
-                            {{ form.email(class="input-profile text") }}
-                            {{ form.founder_names.label(class="text label-text") }}
-                            {{ form.founder_names(class="input-profile text") }}
-                            {{ form.industry.label(class="text label-text") }}
-                            {{ form.industry(class="input-profile text") }}
-                            {{ form.help_needed.label(class="text label-text") }}
-                            {{ form.help_needed(class="input-profile text") }}
-                        {% else %}
-                            {{ form.first_name.label(class="text label-text") }}
-                            {{ form.first_name(class="input-profile text") }}
-                            {{ form.last_name.label(class="text label-text") }}
-                            {{ form.last_name(class="input-profile text") }}
-                            {{ form.headline.label(class="text label-text") }}
-                            {{ form.headline(class="input-profile text") }}
-                            {{ form.about.label(class="text label-text") }}
-                            {{ form.about(class="input-profile text") }}
-                            {{ form.company_name.label(class="text label-text") }}
-                            {{ form.company_name(class="input-profile text") }}
-                            {{ form.university.label(class="text label-text") }}
-                            {{ form.university(class="input-profile text") }}
-                            {{ form.major.label(class="text label-text") }}
-                            {{ form.major(class="input-profile text") }}
-                            {{ form.year.label(class="text label-text") }}
-                            {{ form.year(class="input-profile text") }}
-                            {{ form.industry.label(class="text label-text") }}
-                            {{ form.industry(class="input-profile text") }}
-                            {{ form.email.label(class="text label-text") }}
-                            {{ form.email(class="input-profile text") }}
-                            {{ form.linkedin.label(class="text label-text") }}
-                            {{ form.linkedin(class="input-contact text") }}
-                            {{ form.twitter.label(class="text label-text") }}
-                            {{ form.twitter(class="input-contact text") }}
-                        {% endif %}
-    {#                    {{ wtf.quick_form(form)}}#}
-                    </div>
-                    <div class="divider"></div>
-                    <div class="profile-right-middle-container">
-                        <h2 class="text name-text">Skillset</h2>
-{#                            <div class="skills-bubble">#}
-{#                                {{ form.skill.label }}#}
-{#                            </div>#}
-                        {{ form.skill(class="input-profile text") }}
-                    </div>
-                    <div class="divider"></div>
-                    <div class="profile-right-bottom-container">
-                        {% if current_user.is_mentor() %}
-                            <h2 class="text name-text">Matched Mentees</h2>
-                            <div class="mentor-container">
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">Mentee1</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">Mentee2</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">Mentee3</h4>
-                                </div>
-                            </div>
-                        {% else %}
-                            <h2 class="text name-text">Matched Mentors</h2>
-                            <div class="mentor-container">
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">Mentor1</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">Mentor2</h4>
-                                </div>
-                                <div>
-                                    <img src="../static/test.png" class="mentor-profile-pic"/>
-                                    <h4 class="text profile-pic-text">Mentor3</h4>
-                                </div>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
+
             </div>
         </form>
     </div>
