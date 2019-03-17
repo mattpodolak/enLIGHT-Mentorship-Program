@@ -240,17 +240,15 @@ def combined_list():
 def company_list():          
     companyList = Company.query.all()
     for company in companyList:
-        user = User.query.filter_by(email=company.email).first()
-        company.email_hash = user.email_hash
-        company.mentor = user.mentor
-        #if mentor remove empty accts
-        if current_user.is_mentor():
-            if company.company is None:
-                companyList.remove(company)
+        memberList = Mentee.query.filter_by(company_l=company)
+        if memberList:
+            for member in memberList:
+                user = User.query.filter_by(email=member.email).first()
+                member.email_hash = user.email_hash
     mentor = None
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
-    return render_template('companylist.html', title='Mentee List', cohorts=companyList, mentor=mentor)
+    return render_template('companylist.html', title='Company List', companies=companyList, mentor=mentor)
 
 @flapp.route('/mentee_list')
 @login_required
