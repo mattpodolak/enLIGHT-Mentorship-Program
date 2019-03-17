@@ -209,11 +209,11 @@ def mentee_shortlist():
     return render_template('menteeshortlist.html', title='Mentee Shortlist', mentees=menteeList, cohorts=cohortList)
 
 
-@flapp.route('/mentee_list')
+@flapp.route('/combined_list')
 @login_required
-def mentee_list():          
+def combined_list():          
     menteeList = Mentee.query.all()
-    cohortList = Company.query.all()
+    companyList = Company.query.all()
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
@@ -222,18 +222,52 @@ def mentee_list():
         if current_user.is_mentor():
             if mentee.company is None:
                 menteeList.remove(mentee)
-    for cohort in cohortList:
-        user = User.query.filter_by(email=cohort.email).first()
-        cohort.email_hash = user.email_hash
-        cohort.mentor = user.mentor
+    for company in companyList:
+        user = User.query.filter_by(email=company.email).first()
+        company.email_hash = user.email_hash
+        company.mentor = user.mentor
         #if mentor remove empty accts
         if current_user.is_mentor():
-            if cohort.company is None:
-                cohortList.remove(cohort)
+            if company.company is None:
+                companyList.remove(company)
     mentor = None
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
-    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList, mentor=mentor)
+    return render_template('combinedlist.html', title='Mentee List', mentees=menteeList, cohorts=companyList, mentor=mentor)
+
+@flapp.route('/company_list')
+@login_required
+def company_list():          
+    companyList = Company.query.all()
+    for company in companyList:
+        user = User.query.filter_by(email=company.email).first()
+        company.email_hash = user.email_hash
+        company.mentor = user.mentor
+        #if mentor remove empty accts
+        if current_user.is_mentor():
+            if company.company is None:
+                companyList.remove(company)
+    mentor = None
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+    return render_template('companylist.html', title='Mentee List', cohorts=companyList, mentor=mentor)
+
+@flapp.route('/mentee_list')
+@login_required
+def mentee_list():          
+    menteeList = Mentee.query.all()
+    for mentee in menteeList:
+        user = User.query.filter_by(email=mentee.email).first()
+        mentee.email_hash = user.email_hash
+        mentee.mentor = user.mentor
+        #if mentor remove empty accts
+        if current_user.is_mentor():
+            if mentee.company is None:
+                menteeList.remove(mentee)
+    mentor = None
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, mentor=mentor)
 
 @flapp.route('/app_list')
 @login_required

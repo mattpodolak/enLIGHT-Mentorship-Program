@@ -30,29 +30,29 @@
                     <th>Favorite</th>
             </thead>
             <tbody>
-                {% if mentees %}
-                    {% for mentee in mentees %}
+                {% if cohorts %}
+                    {% for cohort in cohorts %}
                         <tr class="expand-row">
                             {% if current_user.is_admin() %}
-                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">CHANGE</a></td>
+                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.id) }}">CHANGE</a></td>
                                 <td>
-                                  {% if mentee.mentor %}
-                                    <b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}
+                                  {% if cohort.mentor %}
+                                    <b>Mentor:</b> {{cohort.mentor.first_name}} {{cohort.mentor.last_name}}
                                   {% endif %}
                                 </td>
-                                <td>{{mentee.email}}</td>
-                                <td>{{mentee.mentor1}}<br> 
-                                    {{mentee.mentor2}}<br> 
-                                    {{mentee.mentor3}}
+                                <td>{{cohort.email}}</td>
+                                <td>{{cohort.mentor1}}<br> 
+                                    {{cohort.mentor2}}<br> 
+                                    {{cohort.mentor3}}
                                 </td>
                             {% endif %}
-                            <td>{{mentee.company}}</td>
-                            <td>{{mentee.industry}}</td>
+                            <td>{{cohort.company}}</td>
+                            <td>{{cohort.industry}}</td>
                             {% if mentor %}
-                                {% if mentee.mentorpref == mentor %}
-                                    <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
+                                {% if cohort.mentorpref == mentor %}
+                                    <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
                                 {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}">Shortlist</a></td>
+                                    <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist</a></td>
                                 {% endif %}
                             {% endif %}
                         </tr>
@@ -60,20 +60,20 @@
                             {% if current_user.is_admin() %}
                                 <td></td>
                                 <td colspan="3">
-                                    <h2><p>{{mentee.company}}</p>
-                                        <p>Founders: {{mentee.founder}}</p>
-                                        <p>Team Skills: {{mentee.skills}}</p>
+                                    <h2><p>{{cohort.company}}</p>
+                                        <p>Founders: {{cohort.founder}}</p>
+                                        <p>Team Skills: {{cohort.skills}}</p>
                                     </h2>
-                                    <h3>{{mentee.help_req}}</h3>
+                                    <h3>{{cohort.help_req}}</h3>
                                 </td>
                                 <td></td>
                             {% else %}
                                 <td colspan="2">
-                                    <h2><p>{{mentee.company}}</p>
-                                        <p>Founders: {{mentee.founder}}</p>
-                                        <p>Team Skills: {{mentee.skills}}</p>
+                                    <h2><p>{{cohort.company}}</p>
+                                        <p>Founders: {{cohort.founder}}</p>
+                                        <p>Team Skills: {{cohort.skills}}</p>
                                     </h2>
-                                    <h3>{{mentee.help_req}}</h3>
+                                    <h3>{{cohort.help_req}}</h3>
                                 </td>
                             {% endif %}
                         </tr>
