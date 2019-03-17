@@ -535,6 +535,30 @@ def user(userId):
     
     return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees, skill_array=skill_array)
 
+@flapp.route('/company_user/<companyId>')
+@login_required
+def company_user(companyId):
+    company = Company.query.filter_by(id=companyId).first()
+    try:
+        # check if user is defined
+        company.email
+    except AttributeError:
+        return render_template('404.html')
+
+    memberList = Mentee.query.filter_by(company_l=company)
+    if memberList:
+        for member in memberList:
+            user = User.query.filter_by(email=member.email).first()
+            member.email_hash = user.email_hash
+
+    user = None
+    # pass mentee info if current user is company
+    if current_user.is_company():
+        user = Mentee.query.filter_by(email=current_user.email)
+      
+    return render_template('company_profile.html', title='Company Profile', company=company, members=memberList, user=user)
+
+
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
