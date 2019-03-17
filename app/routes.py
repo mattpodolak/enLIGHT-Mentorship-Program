@@ -366,11 +366,11 @@ def register_user(userType):
                                 headline=form.headline.data,
                                 about=form.about.data,
                                 skills=form.skills.data,
-                                university=dict(form.university.choices).get(form.university.data),
-                                major=dict(form.major.choices).get(form.major.data),
-                                year=dict(form.year.choices).get(form.year.data),
+                                #university=dict(form.university.choices).get(form.university.data),
+                                #major=dict(form.major.choices).get(form.major.data),
+                                #year=dict(form.year.choices).get(form.year.data),
                                 company=form.company.data,
-                                industry=dict(form.industry.choices).get(form.industry.data),
+                                #industry=dict(form.industry.choices).get(form.industry.data),
                                 linkedin=form.linkedin.data,
                                 twitter=form.twitter.data)
                 # ADD CODE HERE TO CREATE A COMPANY ACCOUNT AND LINK IT TO THIS ACCOUNT IF ACCESSTYPE == 3
@@ -378,12 +378,13 @@ def register_user(userType):
                 db.session.commit()
             flash('Congratulations, you have registered ' + form.email.data)
             return redirect(url_for('login'))
-        if accessType == 1:
-            return render_template('register_mentor.html', title='Register Mentor', form=form)
-        elif accessType == 3:
-            return render_template('register_mentee.html', title='Register Company', form=form)
-        else:
-            return render_template('register_mentee.html', title='Register Mentee', form=form)    
+        elif request.method == 'GET':
+            if accessType == 1:
+                return render_template('register_mentor.html', title='Register Mentor', form=form)
+            elif accessType == 3:
+                return render_template('register_mentee.html', title='Register Company', form=form)
+            else:
+                return render_template('register_mentee.html', title='Register Mentee', form=form)    
     else:
         return render_template('404.html')
 
