@@ -1,14 +1,10 @@
 Dear {{app.company}},
 
-Congratulations!!!! Your application to become a mentee has been accepted. 
+Congratulations!!!! Your application to join the enLIGHT Cohort has been accepted.
 
-We have created a mentee account for you, please reset your password and update your profile.
+We have upgraded the account you've applied with, and the accounts of your members to cohort accounts for you, please and update your profile.
 
-To reset your password click on the following link:
-
-{{ url_for('reset_password', token=token, _external=True) }}
-
-If you have not applied to become a mentee simply ignore this message.
+If you have not applied to join the Cohort simply ignore this message.
 
 Sincerely,
 
