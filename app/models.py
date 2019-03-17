@@ -66,6 +66,9 @@ class Mentee(db.Model):
     #connects to user to help track mentee prefs for mentors
     mentor_pref_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    #tracks what company they work for
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
+
     def __repr__(self):
         return '<Mentee {}>'.format(self.email)
 
@@ -83,6 +86,9 @@ class Company(db.Model):
 
     #connects to mentor to track the mentor prefs of cohort
     prefs = db.relationship('Mentor', backref='company', lazy='dynamic')
+
+    #connects to mentee to track the mentor prefs of cohort
+    members_l = db.relationship('Mentee', backref='company_l', lazy='dynamic')
 
     #connects to user to help track mentee prefs for mentors
     mentor_pref_id = db.Column(db.Integer, db.ForeignKey('user.id'))
