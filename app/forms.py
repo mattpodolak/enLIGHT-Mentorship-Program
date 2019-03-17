@@ -45,18 +45,6 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
-class AdminRegistrationForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Register')
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is not None:
-            raise ValidationError('Please use a different email address.')
-
 class MenteeRegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[Length(min=0, max=64)])
     last_name = StringField('Last Name', validators=[Length(min=0, max=64)])
@@ -71,6 +59,36 @@ class MenteeRegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     linkedin = StringField('LinkedIn Link', validators=[Length(min=0, max=164)])
     twitter = StringField('Twitter Link', validators=[Length(min=0, max=164)])
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different email address.')
+
+class CompanyRegistrationForm(FlaskForm):
+    first_name = StringField('First Name', validators=[Length(min=0, max=64)])
+    last_name = StringField('Last Name', validators=[Length(min=0, max=64)])
+    headline = StringField('Headline', validators=[DataRequired(), Length(min=0, max=100)])
+    about = StringField('About', validators=[Length(min=0, max=280)])
+    university = SelectField(u'University', choices=schoolList, coerce=str)
+    major = SelectField(u'Major', choices=majorList, coerce=str)
+    year = SelectField(u'Year', choices=yearList, coerce=int)
+    skills = StringField('Skillset', validators=[Length(min=0, max=164)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    linkedin = StringField('LinkedIn Link', validators=[Length(min=0, max=164)])
+    twitter = StringField('Twitter Link', validators=[Length(min=0, max=164)])
+    
+    company = StringField('Company', validators=[Length(min=0, max=164)])
+    industry = SelectField(u'Industry', choices=industryList, coerce=str)
+    team_emails = StringField('Emails of Team Members', validators=[DataRequired(), Length(min=0, max=280)])
+    founder_names = StringField('Names of Founders', validators=[DataRequired(), Length(min=0, max=280)])
+    team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
+    help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
+
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])

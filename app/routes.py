@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm, AdminRegistrationForm
+from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm, CompanyRegistrationForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application, Company
@@ -328,11 +328,10 @@ def register_user(userType):
             form = MentorRegistrationForm()
             accessType = 1
         elif (userType == 3):
-            # NEED A COHORT REGISTRATION FORM
-            form = AdminRegistrationForm()
+            form = CompanyRegistrationForm()
             accessType = 3
         else:
-            form = AdminRegistrationForm()
+            form = MenteeRegistrationForm()
             accessType = 0
         if form.validate_on_submit():
             user = User(email=form.email.data, access=accessType)
@@ -366,15 +365,38 @@ def register_user(userType):
                                 headline=form.headline.data,
                                 about=form.about.data,
                                 skills=form.skills.data,
-                                #university=dict(form.university.choices).get(form.university.data),
-                                #major=dict(form.major.choices).get(form.major.data),
-                                #year=dict(form.year.choices).get(form.year.data),
+                                university=dict(form.university.choices).get(form.university.data),
+                                major=dict(form.major.choices).get(form.major.data),
+                                year=dict(form.year.choices).get(form.year.data),
                                 company=form.company.data,
-                                #industry=dict(form.industry.choices).get(form.industry.data),
+                                industry=dict(form.industry.choices).get(form.industry.data),
                                 linkedin=form.linkedin.data,
                                 twitter=form.twitter.data)
-                # ADD CODE HERE TO CREATE A COMPANY ACCOUNT AND LINK IT TO THIS ACCOUNT IF ACCESSTYPE == 3
                 db.session.add(mentee)
+                db.session.commit()
+                # CREATE A COMPANY ACCOUNT AND LINK IT TO THIS ACCOUNT IF ACCESSTYPE == 3
+                if accessType == 3:
+                    # add new user email to company if not added previously
+                    form_emails = form.team_emails.data
+                    if form.email.data not in form_emails:
+                        form_emails = form_emails + ', ' + current_user.email
+                    company = Company(company=form.company.data,
+                        members=form.founder_names.data,
+                        email=form_emails,
+                        industry=form.industry.data,
+                        help_req=form.help_needed.data)
+                    db.session.add(company)
+                    db.session.commit()
+                    email_array = form_emails.split(", ")
+                    # links members listed via email to company
+                    for mem_email in email_array:
+                        user = User.query.filter_by(email=mem_email).first()
+                        # make acct a company having acct
+                        if user:
+                            user.access = 3
+                            mentee = Mentee.query.filter_by(email=mem_email).first()
+                            # link acct to company
+                            mentee.company_l = company
                 db.session.commit()
             flash('Congratulations, you have registered ' + form.email.data)
             return redirect(url_for('login'))
@@ -431,10 +453,11 @@ def acc_app(appId):
             
             user = User.query.filter_by(email=mem_email).first()
             # make acct a company having acct
-            user.access = 3
-            mentee = Mentee.query.filter_by(email=mem_email).first()
-            # link acct to company
-            mentee.company_l = company
+            if user:
+                user.access = 3
+                mentee = Mentee.query.filter_by(email=mem_email).first()
+                # link acct to company
+                mentee.company_l = company
 
         db.session.commit()
         flash('You accepted the application for ' + app.company)
