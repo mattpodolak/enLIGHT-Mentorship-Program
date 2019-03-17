@@ -1,8 +1,8 @@
-"""added twitter to mentor
+"""first migrate
 
-Revision ID: ecb4b2f3dbc1
+Revision ID: 453ac2e500da
 Revises: 
-Create Date: 2019-01-06 19:18:30.057375
+Create Date: 2019-03-16 21:27:09.384422
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ecb4b2f3dbc1'
+revision = '453ac2e500da'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,31 +36,42 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_application_email'), 'application', ['email'], unique=True)
-    op.create_table('cohort',
+    op.create_table('company',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('company', sa.String(length=100), nullable=True),
-    sa.Column('founder', sa.String(length=280), nullable=True),
+    sa.Column('about', sa.String(length=280), nullable=True),
+    sa.Column('members', sa.String(length=280), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('industry', sa.String(length=280), nullable=True),
-    sa.Column('skills', sa.String(length=280), nullable=True),
     sa.Column('help_req', sa.String(length=280), nullable=True),
     sa.Column('mentor1', sa.String(length=128), nullable=True),
     sa.Column('mentor2', sa.String(length=128), nullable=True),
     sa.Column('mentor3', sa.String(length=128), nullable=True),
+    sa.Column('mentor_pref_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['mentor_pref_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_cohort_email'), 'cohort', ['email'], unique=True)
+    op.create_index(op.f('ix_company_email'), 'company', ['email'], unique=True)
     op.create_table('mentee',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('first_name', sa.String(length=64), nullable=True),
+    sa.Column('last_name', sa.String(length=64), nullable=True),
+    sa.Column('headline', sa.String(length=100), nullable=True),
+    sa.Column('about', sa.String(length=280), nullable=True),
     sa.Column('company', sa.String(length=100), nullable=True),
-    sa.Column('founder', sa.String(length=280), nullable=True),
+    sa.Column('university', sa.String(length=280), nullable=True),
+    sa.Column('major', sa.String(length=280), nullable=True),
+    sa.Column('year', sa.String(length=128), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('industry', sa.String(length=280), nullable=True),
     sa.Column('skills', sa.String(length=280), nullable=True),
-    sa.Column('help_req', sa.String(length=280), nullable=True),
     sa.Column('mentor1', sa.String(length=128), nullable=True),
     sa.Column('mentor2', sa.String(length=128), nullable=True),
     sa.Column('mentor3', sa.String(length=128), nullable=True),
+    sa.Column('linkedin', sa.String(length=164), nullable=True),
+    sa.Column('twitter', sa.String(length=164), nullable=True),
+    sa.Column('mentor_pref_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['mentor_pref_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_mentee_email'), 'mentee', ['email'], unique=True)
@@ -69,17 +80,21 @@ def upgrade():
     sa.Column('first_name', sa.String(length=64), nullable=True),
     sa.Column('last_name', sa.String(length=64), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
+    sa.Column('headline', sa.String(length=100), nullable=True),
     sa.Column('about_me', sa.String(length=280), nullable=True),
     sa.Column('avail', sa.String(length=64), nullable=True),
-    sa.Column('skill', sa.String(length=164), nullable=True),
+    sa.Column('skills', sa.String(length=164), nullable=True),
     sa.Column('industry', sa.String(length=164), nullable=True),
-    sa.Column('company', sa.String(length=164), nullable=True),
+    sa.Column('mentor_company', sa.String(length=164), nullable=True),
     sa.Column('position', sa.String(length=164), nullable=True),
-    sa.Column('linked', sa.String(length=164), nullable=True),
+    sa.Column('university', sa.String(length=280), nullable=True),
+    sa.Column('major', sa.String(length=280), nullable=True),
+    sa.Column('grad_year', sa.String(length=128), nullable=True),
+    sa.Column('linkedin', sa.String(length=164), nullable=True),
     sa.Column('twitter', sa.String(length=164), nullable=True),
     sa.Column('mentee_pref_id', sa.Integer(), nullable=True),
-    sa.Column('cohort_pref_id', sa.Integer(), nullable=True),
-    sa.ForeignKeyConstraint(['cohort_pref_id'], ['cohort.id'], ),
+    sa.Column('company_pref_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['company_pref_id'], ['company.id'], ),
     sa.ForeignKeyConstraint(['mentee_pref_id'], ['mentee.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -89,6 +104,7 @@ def upgrade():
     sa.Column('email', sa.String(length=120), nullable=True),
     sa.Column('email_hash', sa.String(length=128), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
+    sa.Column('profile_pic', sa.String(length=188), nullable=True),
     sa.Column('access', sa.Integer(), nullable=True),
     sa.Column('mentor_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['mentor_id'], ['mentor.id'], ),
@@ -106,8 +122,8 @@ def downgrade():
     op.drop_table('mentor')
     op.drop_index(op.f('ix_mentee_email'), table_name='mentee')
     op.drop_table('mentee')
-    op.drop_index(op.f('ix_cohort_email'), table_name='cohort')
-    op.drop_table('cohort')
+    op.drop_index(op.f('ix_company_email'), table_name='company')
+    op.drop_table('company')
     op.drop_index(op.f('ix_application_email'), table_name='application')
     op.drop_table('application')
     # ### end Alembic commands ###
