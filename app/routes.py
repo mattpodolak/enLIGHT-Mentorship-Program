@@ -328,6 +328,7 @@ def register_user(userType):
             form = MentorRegistrationForm()
             accessType = 1
         elif (userType == 3):
+            # NEED A COHORT REGISTRATION FORM
             form = AdminRegistrationForm()
             accessType = 3
         else:
@@ -358,10 +359,6 @@ def register_user(userType):
                                 twitter=form.twitter.data)
                 db.session.add(mentor)
                 db.session.commit()
-            elif accessType == 3:
-                company = Company(email=form.email.data)
-                db.session.add(company)
-                db.session.commit()
             else:
                 mentee = Mentee(first_name=form.first_name.data,
                                 last_name=form.last_name.data,
@@ -376,6 +373,7 @@ def register_user(userType):
                                 industry=dict(form.industry.choices).get(form.industry.data),
                                 linkedin=form.linkedin.data,
                                 twitter=form.twitter.data)
+                # ADD CODE HERE TO CREATE A COMPANY ACCOUNT AND LINK IT TO THIS ACCOUNT IF ACCESSTYPE == 3
                 db.session.add(mentee)
                 db.session.commit()
             flash('Congratulations, you have registered ' + form.email.data)
@@ -408,19 +406,35 @@ def acc_app(appId):
         app = Application.query.filter_by(id=appId).first()
         app.accept = "Accepted"
         db.session.commit()
+        # applying with a mentee account, only requires the creation of a company acct
         # create User and Mentee accounts
-        user = User(email=app.email, access=0)
-        user.set_password(app.company)
-        user.set_id()
-        db.session.add(user)
-        db.session.commit()
-        mentee = Mentee(company=app.company,
-                        founder=app.founder,
+        #user = User(email=app.email, access=0)
+        #user.set_password(app.company)
+        #user.set_id()
+        #db.session.add(user)
+        #db.session.commit()
+
+        # turn all members into cohort accounts
+        email_array = []
+        if app.email is not None:
+            email_array = app.email.split(", ")
+        company = Company(company=app.company,
+                        members=app.founder,
                         email=app.email,
                         industry=app.industry,
-                        skills=app.skills,
                         help_req=app.help_req)
-        db.session.add(mentee)
+        db.session.add(company)
+        # links members listed via email to company
+
+        for mem_email in email_array:
+            
+            user = User.query.filter_by(email=mem_email).first()
+            # make acct a company having acct
+            user.access = 3
+            mentee = Mentee.query.filter_by(email=mem_email).first()
+            # link acct to company
+            mentee.company_l = company
+
         db.session.commit()
         flash('You accepted the application for ' + app.company)
         accept_applicant(user, app)
@@ -615,10 +629,14 @@ def edit_profile():
 def application():
     form = ApplicationForm()
     if form.validate_on_submit():
+        form_emails = form.team_emails.data
+        # make sure to store the email of the user submitting it, so when accepted can change their acct and link them
+        if current_user.email not in form_emails:
+            form_emails = form_emails + ', ' + current_user.email
         apply = Application(accept="Pending",
                             company=form.company_name.data,
                             founder=form.founder_names.data,
-                            email=form.contact_email.data,
+                            email=form_emails,
                             industry=form.industry.data,
                             skills=form.team_skills.data,
                             help_req=form.help_needed.data,
