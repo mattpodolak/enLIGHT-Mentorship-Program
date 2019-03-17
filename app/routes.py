@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm
+from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm, AdminRegistrationForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application, Company
@@ -294,10 +294,10 @@ def register_user(userType):
             form = MentorRegistrationForm()
             accessType = 1
         elif (userType == 3):
-            form = MenteeRegistrationForm()
+            form = AdminRegistrationForm()
             accessType = 3
         else:
-            form = MenteeRegistrationForm()
+            form = AdminRegistrationForm()
             accessType = 0
         if form.validate_on_submit():
             user = User(email=form.email.data, access=accessType)
@@ -305,7 +305,7 @@ def register_user(userType):
             user.set_id()
             db.session.add(user)
             db.session.commit()
-            # create mentor / mentee instance
+            # create mentor
             if accessType == 1:
                 mentor = Mentor(first_name=form.first_name.data,
                                 last_name=form.last_name.data,
@@ -325,8 +325,8 @@ def register_user(userType):
                 db.session.add(mentor)
                 db.session.commit()
             elif accessType == 3:
-                cohort = Company(email=form.email.data)
-                db.session.add(cohort)
+                company = Company(email=form.email.data)
+                db.session.add(company)
                 db.session.commit()
             else:
                 mentee = Mentee(first_name=form.first_name.data,
@@ -349,7 +349,7 @@ def register_user(userType):
         if accessType == 1:
             return render_template('register_mentor.html', title='Register Mentor', form=form)
         elif accessType == 3:
-            return render_template('register_mentee.html', title='Register Cohort', form=form)
+            return render_template('register_mentee.html', title='Register Company', form=form)
         else:
             return render_template('register_mentee.html', title='Register Mentee', form=form)    
     else:

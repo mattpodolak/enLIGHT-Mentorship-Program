@@ -45,6 +45,18 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
+class AdminRegistrationForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is not None:
+            raise ValidationError('Please use a different email address.')
+
 class MenteeRegistrationForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired(), Length(min=0, max=64)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(min=0, max=64)])
