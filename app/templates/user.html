@@ -70,16 +70,6 @@
                                     </a>
                                 </div>
                             </div>
-                        {% elif user.is_company() %}
-                            <h2 class="text name-text">{{info.company}}</h2>
-                            <label class="text label-text">Founders</label>
-                            <p class="text">{{info.founder}}</p>
-                            <label class="text label-text">Industry</label>
-                            <p class="text">{{info.industry}}</p>
-                            <label class="text label-text">Email</label>
-                            <p class="text">{{info.email}}</p>
-                            <label class="text label-text">Help Required</label>
-                            <p class="text">{{info.help_req}}</p>
                         {% else %}
                             <div class="profile-education-container">
                                 <div class="profile-right-top-left-container">
