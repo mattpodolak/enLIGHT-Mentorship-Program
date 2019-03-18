@@ -2,11 +2,61 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3 application-border">
-            <h1 class="form-header">Apply to join the Cohort</h1>
-            <h3 class="form-subheader">Enter your information below to be considered</h3>
-            {{ wtf.quick_form(form)}}
+    <div class="body-content-container-blue">
+        <div class=" application-border" style="padding-left: 50px; padding-right: 50px; width: 50%; margin: 0 auto">
+            <br>
+            <h1 class="form-header align-center border-header-font">Cohort Application</h1>
+            {% if app.accept == "Pending" %}
+                <h3 class="form-subheader align-center border-header-font">Application Pending</h3>
+            {% else %}
+                <h3 class="form-subheader align-center">Please enter your information below to be considered</h3>
+                {# {{ wtf.quick_form(form)}} #}
+                <br>
+                <br>
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+
+                    {{ form.company_name.label(class="form-label-text") }} <br>
+                    {{ form.company_name(class="form-control text-input-style text-input-center text-input-bottom-spacing")}}
+
+                    {{ form.founder_names.label(class="form-label-text") }} <br>
+                    {{ form.founder_names(class="form-control text-input-style text-input-bottom-spacing")}}
+
+                    {{ form.industry.label(class="form-label-text") }} <br>
+                    {{ form.industry(class="form-control text-input-style text-input-bottom-spacing")}}
+
+                    {{ form.team_skills.label(class="form-label-text") }} <br>
+                    {{ form.team_skills(class="form-control text-input-style text-input-bottom-spacing", cols="35", rows="4")}}
+
+                    {{ form.help_needed.label(class="form-label-text") }} <br>
+                    {{ form.help_needed(class="form-control text-input-style text-input-bottom-spacing")}}
+
+                    {{ form.interest.label(class="form-label-text") }} <br>
+                    {{ form.interest(class="form-control text-input-style text-input-bottom-spacing", cols="35", rows="6")}}
+
+                    {{ form.gain.label(class="form-label-text") }} <br>
+                    {{ form.gain(class="form-control text-input-style text-input-bottom-spacing", cols="35", rows="6")}}
+
+                    {{ form.stage.label(class="form-label-text") }} <br>
+                    {{ form.stage(class="form-control text-input-style text-input-center text-input-bottom-spacing")}}
+
+                    {{ form.relation.label(class="form-label-text") }} <br>
+                    {{ form.relation(class="form-control text-input-style text-input-center text-input-bottom-spacing")}}
+
+                    {{ form.website.label(class="form-label-text") }} <br>
+                    {{ form.website(class="form-control text-input-style text-input-center text-input-bottom-spacing")}}
+
+                    {{ form.business_docs.label(class="form-label-text") }} <br>
+                    {{ form.business_docs(class="form-control text-input-style text-input-center text-input-bottom-spacing")}}
+
+                    <div style="width: 100%; text-align: center">
+                        {{ form.submit(class="btn btn-primary top-margin submit-button submit-button-style") }}
+                    </div>
+
+                    <br>
+                    <br>
+                </form>
+            {% endif %}
         </div>
     </div>
 

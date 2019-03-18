@@ -1,6 +1,7 @@
 {% extends "dashboard.html" %}
 {% block dash_content %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <!-- script
     <script type=text/javascript>
         $(function() {
             $(".expand-row").click(function () {
@@ -8,78 +9,108 @@
             });  
         });
     </script>
-    <div class="mentor_intro_content">
-        <div class="mentor_intro">
-            <h1>Innovators of today</h1>
-            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eros magna, iaculis non porta eu, dapibus ut tellus. Sed eget venenatis eros. Nam nec efficitur urna. Praesent aliquam tristique suscipit. Mauris porttitor, arcu vitae tincidunt fringilla, tortor diam facilisis enim, ac volutpat lacus tellus eget metus. Sed elementum sapien est, sed ornare ex dapibus eu. Ut id auctor lacus. Curabitur aliquet molestie purus, ut viverra neque aliquam eget. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse luctus, dui at convallis efficitur, nisl nulla bibendum est, in molestie ligula metus a ligula. Fusce eros ex, varius in nibh eget, accumsan bibendum arcu.</h2>
-        </div>
-    </div>
+    -->
+    <div class="body-content-container-white">
+        <div class="mentor_intro_content">
+            <div class="mentor_intro">
+                <h1>Innovators of today</h1>
+                <h2 style="margin-left:20%; margin-right: 20%">
+                    As modern society advances at an exponential rate, innovation has become an increasingly bigger
+                    driving force to its success. At enLIGHT we aim to ensure that innovators get all the help they need
+                    in order to make their ideas come to life. As a mentor, you will have the unique opportunity in growing
+                    an idea into something that can potentially revolutionize the world. You will be able to meet with
+                    them both virtually as well as in person, depending on both parties’ availabilities.
 
+                </h2>
+            </div>
+        </div>
 
     <div class="mentor_list_container">
-        <table class="mentor_rtable">               
+        <table width="100%" class="mentor_rtable">               
             <thead>
                 {% if current_user.is_admin() %}
-                    <th>MODIFY</th>
-                    <th>Mentor</th>
-                    <th>Contact</th>
-                    <th>Preferences</th>
+                    <th width="12.5%">MODIFY</th>
+                    <th width="12.5%">Delete</th>
+                    <th width="12.5%">Mentor</th>
+                    <th width="12.5%">Contact</th>
+                    <th width="12.5%">Preferences</th>
+                    <th width="12.5%">Company</th>
+                    <th width="12.5%">Industry</th>
+                    <th width="12.5%">Favorite</th>
+                {% else %}
+                    <th width="40%" colspan="3">Company</th>
+                    <th width="40%" colspan="3">Industry</th>
+                    <th width="20%">Favorite</th>
                 {% endif %}
-                    <th>Company</th>
-                    <th>Industry</th>
-                    <th>Favorite</th>
             </thead>
             <tbody>
                 {% if mentees %}
-                    {% for mentee in mentees %}
-                        <tr class="expand-row">
-                            {% if current_user.is_admin() %}
-                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.id) }}">CHANGE</a></td>
-                                <td>
-                                  {% if mentee.mentor %}
-                                    <b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}
-                                  {% endif %}
-                                </td>
-                                <td>{{mentee.email}}</td>
-                                <td>{{mentee.mentor1}}<br> 
-                                    {{mentee.mentor2}}<br> 
-                                    {{mentee.mentor3}}
-                                </td>
-                            {% endif %}
-                            <td>{{mentee.company}}</td>
-                            <td>{{mentee.industry}}</td>
-                            {% if mentor %}
-                                {% if mentee.mentorpref == mentor %}
-                                    <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
+                        {% for mentee in mentees %}
+                            <tr class="expand-row">
+                                {% if current_user.is_admin() %}
+                                    <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=mentee.email_hash) }}">CHANGE</a></td>
+                                    <td><a href="{{ url_for('del_user', userId=mentee.email_hash) }}">Delete Acct</a></td>
+                                    <td>
+                                      {% if mentee.mentor %}
+                                        <b>Mentor:</b> {{mentee.mentor.first_name}} {{mentee.mentor.last_name}}
+                                      {% endif %}
+                                    </td>
+                                    <td>{{mentee.email}}</td>
+                                    <td>{{mentee.mentor1}}<br>
+                                        {{mentee.mentor2}}<br>
+                                        {{mentee.mentor3}}
+                                    </td>
+                                    <td>{{mentee.company}}</td>
+                                    <td>{{mentee.industry}}</td>
+                                    <td></td>
                                 {% else %}
-                                    <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}">Shortlist</a></td>
+                                <td colspan="3">{{mentee.company}}</td>
+                                <td colspan="3">{{mentee.industry}}</td>
                                 {% endif %}
-                            {% endif %}
-                        </tr>
-                        <tr style="display: none; background-color: #F4F7F9" >
+                                {% if mentor %}
+                                    {% if mentee.mentorpref == mentor %}
+                                        <td><a href="{{ url_for('del_menteepref', menteeId=mentee.email_hash) }}">Remove Shortlist</a></td>
+                                    {% else %}
+                                        <td><a href="{{ url_for('acc_menteepref', menteeId=mentee.email_hash) }}"><img src="../static/heart_icon.png"></a></td>
+                                    {% endif %}
+                                {% endif %}
+                            </tr>
+                            <tr style="display: none; background-color: #F4F7F9;">
                             {% if current_user.is_admin() %}
-                                <td></td>
-                                <td colspan="3">
+                                <td colspan="7" style="padding: 14px 20%;">
                                     <h2><p>{{mentee.company}}</p>
                                         <p>Founders: {{mentee.founder}}</p>
-                                        <p>Team Skills: {{mentee.skills}}</p>
                                     </h2>
-                                    <h3>{{mentee.help_req}}</h3>
+                                    {% if mentee.skills %}
+                                        {% set skill_list = mentee.skills.split(',')%}
+                                        {% for skills in skill_list %}
+                                            <div class="skills-bubble">
+                                                <label class="text">{{ skills }}</label>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <br>{{mentee.help_req}}
                                 </td>
-                                <td></td>
                             {% else %}
-                                <td colspan="2">
+                                <td colspan="7" style="padding: 14px 20%;">
                                     <h2><p>{{mentee.company}}</p>
                                         <p>Founders: {{mentee.founder}}</p>
-                                        <p>Team Skills: {{mentee.skills}}</p>
                                     </h2>
-                                    <h3>{{mentee.help_req}}</h3>
+                                    {% set skill_list = mentee.skills.split(',')%}
+                                    {% for skills in skill_list %}
+                                        <div class="skills-bubble">
+                                            <label class="text">{{ skills }}</label>
+                                        </div>
+                                    {% endfor %}
+                                    <br>{{mentee.help_req}}
                                 </td>
                             {% endif %}
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-            </tbody>
-        </table>
+                          </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
 {% endblock %}

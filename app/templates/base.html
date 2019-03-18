@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/faq_page.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/contact_page.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login_page.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_picture.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cohort_application.css') }}">
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="{{ url_for('static', filename='js/faq_page.js') }}"></script>
 {% endblock %}
@@ -38,11 +40,22 @@
                     {% if current_user.is_anonymous %}
                     <li><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
                     <!--<li><a class="nav-link" href="{{ url_for('application') }}">Apply Now</a></li>-->
-                    {% else %}
+                    {% elif current_user.is_cohort() %}
                     <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
-                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Postings</a></li>
                     <li><a class="nav-link" href="{{ url_for('shortlist') }}">Shortlist</a></li>
                     <li><a class="nav-link" href="{{ url_for('cohort_faq') }}">FAQ</a></li>
+                    <li><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
+                    {% elif current_user.is_admin() or current_user.is_mentor()%}
+                    <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Postings</a></li>
+                    <li><a class="nav-link" href="{{ url_for('shortlist') }}">Shortlist</a></li>
+                    <li><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
+                    {% else %}
+                    <li><a class="nav-link" href="{{ url_for('homepage') }}">Home</a></li>
+                    <li><a class="nav-link" href="{{ url_for('application') }}">Cohort Application</a></li>
+                    <li><a class="nav-link" href="{{ url_for('dashboard') }}">Postings</a></li>
+                    <li><a class="nav-link" href="{{ url_for('shortlist') }}">Shortlist</a></li>
                     <li><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
                     {% endif %}
                 </ul>
@@ -68,7 +81,7 @@
         {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
+            <div class="alert alert-info full-screen-alert" role="alert">{{ message }}</div>
             {% endfor %}
         {% endif %}
         {% endwith %}
@@ -87,14 +100,14 @@
             </div>
             <div class="footer_item"> 
                 <h2>Follow Us</h2>
-                <p>facebook</p>
-                <p>linkedin</p>
-                <p>insta</p>
+                <a class="footer_social" href="https://www.facebook.com/enLIGHTCanada"><img src="../static/fb_icon.png"></a>
+                <a class="footer_social" href="https://www.linkedin.com/company/enlight-canada/"><img src="../static/linkedin_icon.png"></a>
+                <a class="footer_social" href="https://www.instagram.com/enlightcanada/"><img src="../static/insta_icon.png"></a>
             </div>
             <div class="footer_item"> 
                 <h2>Contact Us</h2>
-                <p>Kingston, Ontario</p>
-                <p>hello@enlightme.ca</p>
+                <p><a><img style="margin:6px" src="../static/map_icon.png"></a>Kingston, Ontario</p>
+                <p><a href="mailto:hello@enlightme.ca"><img style="margin:6px" src="../static/email_icon.png"></a>hello@enlightme.ca</p>
             </div>
         </footer>
     </div>

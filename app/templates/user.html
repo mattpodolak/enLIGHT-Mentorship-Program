@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+    <script>
+        $(document).ready(function()
+        {
+            $(".profile-pic").on("error", function(){
+                $(this).attr('src', '../static/test.png');
+            });
+            $(".mentor-profile-pic").on("error", function(){
+                $(this).attr('src', '../static/test.png');
+            });
+            
+        });
+    </script>
     <div class="background-container">
         <div class="header-container">
             <img src="../static/header.jpg" class="header-pic"/>
@@ -209,7 +221,7 @@
                     </div>
                 </div>
             </div>
-            {% if user == current_user %}
+            <!--{% if user == current_user %}
                 {% if mentees %}
                     <li><b>Mentees: </b>
                         {% for mentee in mentees %}
@@ -217,7 +229,7 @@
                         {% endfor %}
                     </li>
                 {% endif %}
-            {% endif %}
+            {% endif %}-->
             <br>
         </div>
     </div>

@@ -1,0 +1,41 @@
+.form-label-text{
+    font-family: Segoe UI;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.21;
+    letter-spacing: normal;
+    text-align: left;
+    color: #707070;
+    font-size: 1.2em;
+}
+
+.align-center{
+    text-align: center;
+}
+
+.text-input-bottom-spacing{
+    margin-bottom: 40px;
+}
+
+.submit-button-style{
+    background-color: #33CC33;
+    border-color: #33CC33;
+}
+
+.submit-button-style:hover{
+    background-color: #33CC33;
+    border-color: #33CC33;
+}
+
+.submit-button-style.active.focus, .submit-button-style.active:focus, .submit-button-style.focus, .submit-button-style:active.focus,
+.submit-button-style:active:focus, .submit-button-style:focus {
+    background-color: #33CC33;
+    border-color: #33CC33;
+    outline: None;
+}
+
+.submit-button-style{
+    border-radius: 25px;
+    padding: 2% 5%;
+}

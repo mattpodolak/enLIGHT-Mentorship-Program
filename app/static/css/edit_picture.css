@@ -1,0 +1,47 @@
+.form-container{
+    /*display: flex;*/
+    overflow-x: hidden;
+    left: 20%;
+    margin: auto;
+    padding: 3%;
+    width: 40%;
+    /*text-align: center;*/
+    background-color: #f5f6f7;
+}
+
+.form-left-container{
+    margin: 0;
+    position: relative;
+    float: left;
+    width: 30%;
+    text-align: center;
+}
+
+.form-right-container{
+    position: relative;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    float: right;
+    width: 70%;
+}
+
+.edit-profile-pic{
+    margin: 0;
+    max-width: 70%;
+    zoom: 0.6;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.file-select{
+    margin-bottom: 10%;
+}
+
+.edit-profile-button{
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    max-width: 70%;
+    background-color: #33cc33;
+    color: #ffffff;
+}

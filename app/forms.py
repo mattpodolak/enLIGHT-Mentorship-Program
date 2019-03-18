@@ -197,6 +197,12 @@ class EditCohortProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError('Please use a different email address.')
 
+class ContactForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired(), Length(min=0, max=100)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    subject = StringField('Subject', validators=[DataRequired(), Length(min=0, max=100)])
+    message = TextAreaField('Message', validators=[DataRequired(), Length(min=0, max=500)])
+    submit = SubmitField('Send')
 
 class ApplicationForm(FlaskForm):
     company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])
@@ -205,7 +211,7 @@ class ApplicationForm(FlaskForm):
     industry = StringField('Industry', validators=[DataRequired(), Length(min=0, max=280)])
     team_skills = TextAreaField('Founder Skillsets', validators=[DataRequired(), Length(min=0, max=280)])
     help_needed = StringField('What type of help are you looking for?', validators=[DataRequired(), Length(min=0, max=280)])
-    interest = TextAreaField('Why are you interested in the mentorship program?', validators=[DataRequired(), Length(min=0, max=500)])
+    interest = TextAreaField('Why are you interested in the cohort program?', validators=[DataRequired(), Length(min=0, max=500)])
     gain = TextAreaField('What do you hope to gain by the end of the program?', validators=[DataRequired(), Length(min=0, max=500)])
     stage = StringField('What stage is your startup at?', validators=[DataRequired(), Length(min=0, max=100)])
     relation = StringField('What type of mentorship relationship are you looking for (i.e. longterm)?', validators=[DataRequired(), Length(min=0, max=280)])
