@@ -534,6 +534,19 @@ def user(userId):
             return render_template('404.html')
     
     return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees, skill_array=skill_array)
+@flapp.route('/company')
+@login_required
+def company():
+    mentee = Mentee.query.filter_by(email=current_user.email).first()
+    company = mentee.company_l
+
+    if company is None:
+        return redirect(url_for('user', userId=current_user.email_hash))
+    else:
+        return redirect(url_for('company_user', companyId=company.id))
+
+
+
 
 @flapp.route('/company_user/<companyId>')
 @login_required

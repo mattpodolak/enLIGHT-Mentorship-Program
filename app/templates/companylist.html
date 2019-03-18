@@ -47,7 +47,7 @@
                                     {{cohort.mentor3}}
                                 </td>
                             {% endif %}
-                            <td>{{cohort.company}}</td>
+                            <td><a href="{{ url_for('company_user', companyId=cohort.id) }}">{{cohort.company}}</a></td>
                             <td>{{cohort.industry}}</td>
                             {% if mentor %}
                                 {% if cohort.mentorpref == mentor %}
