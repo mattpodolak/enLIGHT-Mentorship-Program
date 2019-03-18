@@ -1,11 +1,10 @@
 Dear {{app.company}},
 
-Your application to become a member of the enLIGHT Cohort has been accepted.
+Congratulations!!!! Your application to join the enLIGHT Cohort has been accepted.
 
-We have upgraded your general member account for you, please login to view your new profile.
+We have upgraded the account you've applied with, and the accounts of your members to cohort accounts for you, please and update your profile.
 
-
-If you have not applied to join our Cohort simply ignore this message.
+If you have not applied to join the Cohort simply ignore this message.
 
 Sincerely,
 

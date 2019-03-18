@@ -27,7 +27,7 @@ def send_password_reset_email(user):
 def accept_applicant(user, app):
     send_email("[enLIGHT Mentorship] Congratulations!",
                sender=flapp.config['ADMINS'][0],
-               recipients=[user.email],
+               recipients=[app.email],
                text_body=render_template('email/accept_applicant.txt',
                                          user=user, app=app),
                html_body=render_template('email/accept_applicant.html',

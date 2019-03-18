@@ -1,8 +1,8 @@
 from app import flapp, db
-from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm, ContactForm
+from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm, CompanyRegistrationForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Mentor, Mentee, Application, Cohort
+from app.models import User, Mentor, Mentee, Application, Company
 from werkzeug.urls import url_parse
 import sys
 import os, json, boto3
@@ -18,7 +18,7 @@ def index():
 @flapp.route('/cohort_faq')
 @login_required
 def cohort_faq():
-    if current_user.is_cohort():
+    if current_user.is_company():
         return render_template('faq.html', title='FAQ')
     else:
         return render_template('404.html')
@@ -30,7 +30,7 @@ def homepage():
         return render_template('home_mentor.html', title='Home')
     elif current_user.is_mentor():
         return render_template('home_mentor.html', title='Home')
-    elif current_user.is_cohort():
+    elif current_user.is_company():
         return render_template('home_cohort.html', title='Home')
     else:
         app = Application.query.filter_by(email=current_user.email).first()
@@ -50,7 +50,7 @@ def dashboard():
 @flapp.route('/shortlist')
 @login_required
 def shortlist():
-    if current_user.is_cohort():
+    if current_user.is_company():
         return redirect(url_for('mentor_shortlist'))
     elif current_user.is_admin():
         flash('Feature not available for admin.')
@@ -76,8 +76,8 @@ def mentor_list():
         for m in mentor.users:
             mentee = Mentee.query.filter_by(email=m.email).first()
             mentor.mentees.append(mentee)
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    if current_user.is_company():
+        cohort = Company.query.filter_by(email=current_user.email).first()
     elif current_user.is_admin():
         print('no data to grab')
     elif current_user.is_mentor():
@@ -91,8 +91,8 @@ def mentor_list():
 def del_mentorpref(mentorId):
     user = User.query.filter_by(email_hash=mentorId).first()
     mentor = Mentor.query.filter_by(email=user.email).first()
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    if current_user.is_company():
+        cohort = Company.query.filter_by(email=current_user.email).first()
         mentor.cohort = None
         db.session.commit()
         flash('Removed from shortlist.')
@@ -112,8 +112,8 @@ def del_mentorpref(mentorId):
 def acc_mentorpref(mentorId):
     user = User.query.filter_by(email_hash=mentorId).first()
     mentor = Mentor.query.filter_by(email=user.email).first()
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    if current_user.is_company():
+        cohort = Company.query.filter_by(email=current_user.email).first()
         mentor.cohort = cohort
         db.session.commit()
         flash('Shortlist has been updated.')
@@ -134,8 +134,8 @@ def del_menteepref(menteeId):
     user = User.query.filter_by(email_hash=menteeId).first()
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
-        if user.is_cohort():
-            cohort = Cohort.query.filter_by(email=user.email).first()
+        if user.is_company():
+            cohort = Company.query.filter_by(email=user.email).first()
             cohort.mentorpref = None
         else:
             mentee = Mentee.query.filter_by(email=user.email).first()
@@ -248,8 +248,9 @@ def acc_menteepref(menteeId):
     user = User.query.filter_by(email_hash=menteeId).first()
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
-        if user.is_cohort():
-            cohort = Cohort.query.filter_by(email=user.email).first()
+        if user.is_company():
+            cohort = Company.query.filter_by(email=user.email).first()
+            print('2', mentor)
             cohort.mentorpref = mentor
         else:
             mentee = Mentee.query.filter_by(email=user.email).first()
@@ -263,8 +264,8 @@ def acc_menteepref(menteeId):
 @flapp.route('/mentor_shortlist')
 @login_required
 def mentor_shortlist():
-    if current_user.is_cohort():
-        cohort = Cohort.query.filter_by(email=current_user.email).first()
+    if current_user.is_company():
+        cohort = Company.query.filter_by(email=current_user.email).first()
         mentors = Mentor.query.filter_by(cohort=cohort)
         prefMentors = [cohort.mentor1, cohort.mentor2, cohort.mentor3]
     elif current_user.is_admin():
@@ -292,11 +293,12 @@ def mentor_shortlist():
 @login_required
 def mentee_shortlist():
     if current_user.is_mentor():
-        c_user = User.query.filter_by(email=current_user.email).first()
-        mentees = Mentee.query.filter_by(mentorpref=c_user)
+        user = User.query.filter_by(email=current_user.email).first()
+        mentees = Mentee.query.filter_by(mentorpref=user)
         menteeList = []
-        cohorts = Cohort.query.filter_by(mentorpref=c_user)
+        cohorts = Company.query.filter_by(mentorpref=user)
         cohortList = []
+              
         # preferred mentees
         mentor = Mentor.query.filter_by(email=current_user.email).first()
         prefMentees = [mentor.mentee1, mentor.mentee2, mentor.mentee3]
@@ -317,15 +319,11 @@ def mentee_shortlist():
     return render_template('menteeshortlist.html', title='Mentee Shortlist', mentees=menteeList, cohorts=cohortList, prefMentees=prefMentees)
 
 
-@flapp.route('/mentee_list')
+@flapp.route('/combined_list')
 @login_required
-def mentee_list():          
+def combined_list():          
     menteeList = Mentee.query.all()
-    cohortList = Cohort.query.all()
-    removeMentee = []
-    removeCohort = []
-    mentor = None
-    
+    companyList = Company.query.all()
     for mentee in menteeList:
         user = User.query.filter_by(email=mentee.email).first()
         mentee.email_hash = user.email_hash
@@ -333,28 +331,51 @@ def mentee_list():
         # if mentor mark empty accts for removal
         if current_user.is_mentor():
             if mentee.company is None:
-                removeMentee.append(mentee)
-    
-    for cohort in cohortList:
-        user = User.query.filter_by(email=cohort.email).first()
-        cohort.email_hash = user.email_hash
-        cohort.mentor = user.mentor
-        # if mentor mark empty accts for removal
+                menteeList.remove(mentee)
+    for company in companyList:
+        user = User.query.filter_by(email=company.email).first()
+        company.email_hash = user.email_hash
+        company.mentor = user.mentor
+        #if mentor remove empty accts
         if current_user.is_mentor():
-            if cohort.company is None:
-                removeCohort.append(cohort)
-    
-    # remove marked accounts
-    if current_user.is_mentor():
-        for mentee in removeMentee:
-            menteeList.remove(mentee)
-        
-        for cohort in removeCohort:
-            cohortList.remove(cohort)
-        
+            if company.company is None:
+                companyList.remove(company)
+    mentor = None
     if current_user.is_mentor():
         mentor = User.query.filter_by(email=current_user.email).first()
-    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, cohorts=cohortList, mentor=mentor)
+    return render_template('combinedlist.html', title='Mentee List', mentees=menteeList, cohorts=companyList, mentor=mentor)
+
+@flapp.route('/company_list')
+@login_required
+def company_list():          
+    companyList = Company.query.all()
+    for company in companyList:
+        memberList = Mentee.query.filter_by(company_l=company)
+        if memberList:
+            for member in memberList:
+                user = User.query.filter_by(email=member.email).first()
+                member.email_hash = user.email_hash
+    mentor = None
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+    return render_template('companylist.html', title='Company List', companies=companyList, mentor=mentor)
+
+@flapp.route('/mentee_list')
+@login_required
+def mentee_list():          
+    menteeList = Mentee.query.all()
+    for mentee in menteeList:
+        user = User.query.filter_by(email=mentee.email).first()
+        mentee.email_hash = user.email_hash
+        mentee.mentor = user.mentor
+        #if mentor remove empty accts
+        if current_user.is_mentor():
+            if mentee.company is None:
+                menteeList.remove(mentee)
+    mentor = None
+    if current_user.is_mentor():
+        mentor = User.query.filter_by(email=current_user.email).first()
+    return render_template('menteelist.html', title='Mentee List', mentees=menteeList, mentor=mentor)
 
 @flapp.route('/app_list')
 @login_required
@@ -416,7 +437,7 @@ def register_user(userType):
             form = MentorRegistrationForm()
             accessType = 1
         elif (userType == 3):
-            form = MenteeRegistrationForm()
+            form = CompanyRegistrationForm()
             accessType = 3
         else:
             form = MenteeRegistrationForm()
@@ -427,27 +448,74 @@ def register_user(userType):
             user.set_id()
             db.session.add(user)
             db.session.commit()
-            # create mentor / mentee instance
+            # create mentor
             if accessType == 1:
-                mentor = Mentor(first_name=form.first_name.data, last_name=form.last_name.data, email=form.email.data, about_me=form.about_me.data, avail=form.avail.data, skill=form.skill.data , industry=form.industry.data, company=form.company.data, position=form.position.data, linked=form.linked.data, twitter=form.twitter.data)
+                mentor = Mentor(first_name=form.first_name.data,
+                                last_name=form.last_name.data,
+                                email=form.email.data,
+                                headline=form.headline.data,
+                                about_me=form.about.data,
+                                avail=form.avail.data,
+                                skills=form.skills.data,
+                                industry=dict(form.industry.choices).get(form.industry.data),
+                                mentor_company=form.company.data,
+                                position=form.position.data,
+                                university=dict(form.university.choices).get(form.university.data),
+                                major=dict(form.major.choices).get(form.major.data),
+                                grad_year=form.grad_year.data,
+                                linkedin=form.linkedin.data,
+                                twitter=form.twitter.data)
                 db.session.add(mentor)
                 db.session.commit()
-            elif accessType == 3:
-                cohort = Cohort(email=form.email.data)
-                db.session.add(cohort)
-                db.session.commit()
             else:
-                mentee = Mentee(email=form.email.data)
+                mentee = Mentee(first_name=form.first_name.data,
+                                last_name=form.last_name.data,
+                                email=form.email.data,
+                                headline=form.headline.data,
+                                about=form.about.data,
+                                skills=form.skills.data,
+                                university=dict(form.university.choices).get(form.university.data),
+                                major=dict(form.major.choices).get(form.major.data),
+                                year=dict(form.year.choices).get(form.year.data),
+                                company=form.company.data,
+                                industry=dict(form.industry.choices).get(form.industry.data),
+                                linkedin=form.linkedin.data,
+                                twitter=form.twitter.data)
                 db.session.add(mentee)
+                db.session.commit()
+                # CREATE A COMPANY ACCOUNT AND LINK IT TO THIS ACCOUNT IF ACCESSTYPE == 3
+                if accessType == 3:
+                    # add new user email to company if not added previously
+                    form_emails = form.team_emails.data
+                    if form.email.data not in form_emails:
+                        form_emails = form_emails + ', ' + current_user.email
+                    company = Company(company=form.company.data,
+                        members=form.founder_names.data,
+                        email=form_emails,
+                        industry=form.industry.data,
+                        help_req=form.help_needed.data)
+                    db.session.add(company)
+                    db.session.commit()
+                    email_array = form_emails.split(", ")
+                    # links members listed via email to company
+                    for mem_email in email_array:
+                        user = User.query.filter_by(email=mem_email).first()
+                        # make acct a company having acct
+                        if user:
+                            user.access = 3
+                            mentee = Mentee.query.filter_by(email=mem_email).first()
+                            # link acct to company
+                            mentee.company_l = company
                 db.session.commit()
             flash('Congratulations, you have registered ' + form.email.data)
             return redirect(url_for('login'))
-        if accessType == 1:
-            return render_template('register_mentor.html', title='Register Mentor', form=form)
-        elif accessType == 3:
-            return render_template('register_mentee.html', title='Register Cohort', form=form)
-        else:
-            return render_template('register_mentee.html', title='Register Mentee', form=form)    
+        elif request.method == 'GET':
+            if accessType == 1:
+                return render_template('register_mentor.html', title='Register Mentor', form=form)
+            elif accessType == 3:
+                return render_template('register_mentee.html', title='Register Company', form=form)
+            else:
+                return render_template('register_mentee.html', title='Register Mentee', form=form)    
     else:
         return render_template('404.html')
 
@@ -472,17 +540,35 @@ def acc_app(appId):
         user = User.query.filter_by(email=app.email).first()
         app.accept = "Accepted"
         db.session.commit()
-        # change user access, create Cohort account
-        user.access = 3
-        cohort = Cohort(company=app.company, founder=app.founder, email=app.email, industry=app.industry, skills=app.skills, help_req=app.help_req, mentor1=mentee.mentor1, mentor2=mentee.mentor2, mentor3=mentee.mentor3, mentorpref=mentee.mentorpref)
-        db.session.add(cohort)
-        # adjust mentor prefs for new acct
-        mentors = Mentor.query.filter_by(mentee=mentee)
-        for mentor in mentors:
-            mentor.mentee = None
-            mentor.cohort = cohort
-        # delete old mentee account
-        db.session.delete(mentee)
+        # applying with a mentee account, only requires the creation of a company acct
+        # create User and Mentee accounts
+        #user = User(email=app.email, access=0)
+        #user.set_password(app.company)
+        #user.set_id()
+        #db.session.add(user)
+        #db.session.commit()
+
+        # turn all members into cohort accounts
+        email_array = []
+        if app.email is not None:
+            email_array = app.email.split(", ")
+        company = Company(company=app.company,
+                        members=app.founder,
+                        email=app.email,
+                        industry=app.industry,
+                        help_req=app.help_req)
+        db.session.add(company)
+        # links members listed via email to company
+
+        for mem_email in email_array:
+            
+            user = User.query.filter_by(email=mem_email).first()
+            # make acct a company having acct
+            if user:
+                user.access = 3
+                mentee = Mentee.query.filter_by(email=mem_email).first()
+                # link acct to company
+                mentee.company_l = company
         db.session.commit()
         flash('You accepted the application for ' + app.company)
         accept_applicant(user, app)
@@ -541,9 +627,8 @@ def user(userId):
             return render_template('404.html')
         elif current_user.is_mentor():
             info = Mentor.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'mentors/' + str(current_user.email_hash) + '-profile-pic.png'
-            if info.skill is not None:
-                skill_array = info.skill.split(", ")
+            if info.skills is not None:
+                skill_array = info.skills.split(", ")
             for m in info.users:
                 if m.is_cohort():
                     mentee = Cohort.query.filter_by(email=m.email).first()
@@ -552,52 +637,6 @@ def user(userId):
                 user_m = User.query.filter_by(email=mentee.email).first()
                 mentee.email_hash = user_m.email_hash
                 mentees.append(mentee)
-            
-            # find preferred mentees
-            tempList = []
-            if info.mentee1 is not None:
-                user_p1 = User.query.filter_by(email_hash=info.mentee1).first()
-                tempList.append(user_p1)
-            if info.mentee2 is not None:
-                user_p2 = User.query.filter_by(email_hash=info.mentee2).first()
-                tempList.append(user_p2)
-            if info.mentee3 is not None:
-                user_p3 = User.query.filter_by(email_hash=info.mentee3).first()
-                tempList.append(user_p3)
-
-            for tempu in tempList:
-                if tempu.is_cohort():
-                    mentee = Cohort.query.filter_by(email=tempu.email).first()
-                else:
-                    mentee = Mentee.query.filter_by(email=tempu.email).first()
-                user_m = User.query.filter_by(email=mentee.email).first()
-                mentee.email_hash = user_m.email_hash
-                prefs.append(mentee)
-
-        elif current_user.is_cohort():
-            info = Cohort.query.filter_by(email=user.email).first()
-            profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
-            if info.skills is not None:
-                skill_array = info.skills.split(", ")
-
-            # find preferred mentors
-            tempList = []
-            if info.mentor1 is not None:
-                user_p1 = User.query.filter_by(email_hash=info.mentor1).first()
-                tempList.append(user_p1)
-            if info.mentor2 is not None:
-                user_p2 = User.query.filter_by(email_hash=info.mentor2).first()
-                tempList.append(user_p2)
-            if info.mentor3 is not None:
-                user_p3 = User.query.filter_by(email_hash=info.mentor3).first()
-                tempList.append(user_p3)
-
-            for tempu in tempList:
-                mentor = Mentor.query.filter_by(email=tempu.email).first()
-                user_m = User.query.filter_by(email=mentor.email).first()
-                mentor.email_hash = user_m.email_hash
-                prefs.append(mentor)
-
         else:
             info = Mentee.query.filter_by(email=user.email).first()
             profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
@@ -672,15 +711,41 @@ def user(userId):
             user.email = None
         else:
             return render_template('404.html')
-    
-    mentor = user.mentor
-    if user.mentor is not None:
-        user_m = User.query.filter_by(email=user.mentor.email).first()
-        mentor.email_hash = user_m.email_hash
+    return render_template('user.html', title='Profile', user=user, info=info, mentor=user.mentor, mentees=mentees, skill_array=skill_array)
+  
+@flapp.route('/company')
+@login_required
+def company():
+    mentee = Mentee.query.filter_by(email=current_user.email).first()
+    company = mentee.company_l
 
-    return render_template('user.html', title='Profile', user=user, info=info, mentor=mentor, mentees=mentees,
-                           skill_array=skill_array, profile_pic_filepath=profile_pic_filepath, prefs=prefs)
+    if company is None:
+        return redirect(url_for('user', userId=current_user.email_hash))
+    else:
+        return redirect(url_for('company_user', companyId=company.id))
 
+@flapp.route('/company_user/<companyId>')
+@login_required
+def company_user(companyId):
+    company = Company.query.filter_by(id=companyId).first()
+    try:
+        # check if user is defined
+        company.email
+    except AttributeError:
+        return render_template('404.html')
+
+    memberList = Mentee.query.filter_by(company_l=company)
+    if memberList:
+        for member in memberList:
+            user = User.query.filter_by(email=member.email).first()
+            member.email_hash = user.email_hash
+
+    user = None
+    # pass mentee info if current user is company
+    if current_user.is_company():
+        user = Mentee.query.filter_by(email=current_user.email).first()
+      
+    return render_template('company_profile.html', title='Company Profile', company=company, members=memberList, user=user)
 
 @flapp.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -696,47 +761,52 @@ def edit_profile():
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
-            info.email = form.email.data
             info.first_name = form.first_name.data
             info.last_name = form.last_name.data
-            info.about_me = form.about_me.data
+            info.email = form.email.data
+            info.about_me = form.about.data
+            info.headline = form.headline.data
             info.avail = form.avail.data
             info.skill = form.skill.data
-            info.industry = form.industry.data
-            info.company = form.company.data
+            info.mentor_company = form.company.data
             info.position = form.position.data
-            info.linked = form.linked.data
+            info.industry = dict(form.industry.choices).get(form.industry.data)
+            info.university = dict(form.university.choices).get(form.university.data)
+            info.major = dict(form.major.choices).get(form.major.data)
+            info.grad_year = form.grad_year.data
+            info.linkedin = form.linkedin.data
             info.twitter = form.twitter.data
             db.session.commit()
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
-            form.email.data = current_user.email
             form.first_name.data = info.first_name
             form.last_name.data = info.last_name
-            form.about_me.data = info.about_me
+            form.email.data = current_user.email
+            form.headline.data = info.headline
+            form.about.data = info.about_me
             form.avail.data = info.avail
-            form.skill.data = info.skill
-            form.industry.data = info.industry
-            form.company.data = info.company
+            form.skill.data = info.skills
+            form.company.data = info.mentor_company
             form.position.data = info.position
-            form.linked.data = info.linked
+            form.industry.data = info.industry
+            form.university.data = info.university
+            form.major.data = info.major
+            form.grad_year.data = info.grad_year
+            form.linkedin.data = info.linkedin
             form.twitter.data = info.twitter
-        return render_template('edit_profile.html', title='Edit Profile',
-                            form=form, profile_pic_filepath=profile_pic_filepath)
-    elif current_user.is_cohort():
+        return render_template('edit_profile.html', title='Edit Profile', form=form)
+    elif current_user.is_company():
         form = EditCohortProfileForm(current_user.email)
-        info = Cohort.query.filter_by(email=current_user.email).first()
-        profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
+        info = Company.query.filter_by(email=current_user.email).first()
 
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
             info.email = form.email.data
             info.company = form.company_name.data
-            info.founder = form.founder_names.data
-            info.industry = form.industry.data
-            info.skills = form.team_skills.data
+            info.members = form.member_names.data
+            info.industry = dict(form.industry.choices).get(form.industry.data)
             info.help_req = form.help_needed.data
             db.session.commit()
             flash('Your changes have been saved.')
@@ -744,38 +814,52 @@ def edit_profile():
         elif request.method == 'GET':
             form.email.data = current_user.email
             form.company_name.data = info.company
-            form.founder_names.data = info.founder
+            form.member_names.data = info.members
             form.industry.data = info.industry
-            form.team_skills.data = info.skills
+            form.university.data = info.university
+            form.major.data = info.major
+            form.grad_year.data = info.grad_year
             form.help_needed.data = info.help_req
-        return render_template('edit_profile.html', title='Edit Profile',
-                               form=form, profile_pic_filepath=profile_pic_filepath)
+        return render_template('edit_profile.html', title='Edit Profile', form=form)
     else:
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
         profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
 
         if form.validate_on_submit():
-            current_user.email = form.email.data
+            # current_user.email = form.email.data
             current_user.set_id()
+            info.first_name = form.first_name.data
+            info.last_name = form.last_name.data
+            info.headline = form.headline.data
+            info.about = form.about.data
+            info.company = form.company.data
+            info.university = dict(form.university.choices).get(form.university.data)
+            info.major = dict(form.major.choices).get(form.major.data)
+            info.year = dict(form.year.choices).get(form.year.data)
+            info.industry = dict(form.industry.choices).get(form.industry.data)
             info.email = form.email.data
-            info.company = form.company_name.data
-            info.founder = form.founder_names.data
-            info.industry = form.industry.data
-            info.skills = form.team_skills.data
-            info.help_req = form.help_needed.data
+            info.skills = form.skill.data
+            info.linkedin = form.linkedin.data
+            info.twitter = form.twitter.data
             db.session.commit()
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
+            form.first_name.data = info.first_name
+            form.last_name.data = info.last_name
+            form.headline.data = info.headline
+            form.about.data = info.about
+            form.university.data = info.university
+            form.major.data = info.major
+            form.year.data = info.year
             form.email.data = current_user.email
-            form.company_name.data = info.company
-            form.founder_names.data = info.founder
+            form.company.data = info.company
             form.industry.data = info.industry
-            form.team_skills.data = info.skills
-            form.help_needed.data = info.help_req
-        return render_template('edit_profile.html', title='Edit Profile',
-                            form=form, profile_pic_filepath=profile_pic_filepath)
+            form.skill.data = info.skills
+            form.linkedin.data = info.linkedin
+            form.twitter.data = info.twitter
+        return render_template('edit_profile.html', title='Edit Profile', form=form)
 
 
 @flapp.route('/application', methods=['GET', 'POST'])
@@ -783,7 +867,23 @@ def edit_profile():
 def application():
     form = ApplicationForm()
     if form.validate_on_submit():
-        apply = Application(accept="Pending", company=form.company_name.data, founder=form.founder_names.data, email=current_user.email, industry=form.industry.data, skills=form.team_skills.data, help_req=form.help_needed.data, interest=form.interest.data, gain=form.gain.data, stage=form.stage.data, relation=form.relation.data, web=form.website.data, links=form.business_docs.data)
+        form_emails = form.team_emails.data
+        # make sure to store the email of the user submitting it, so when accepted can change their acct and link them
+        if current_user.email not in form_emails:
+            form_emails = form_emails + ', ' + current_user.email
+        apply = Application(accept="Pending",
+                            company=form.company_name.data,
+                            founder=form.founder_names.data,
+                            email=form_emails,
+                            industry=form.industry.data,
+                            skills=form.team_skills.data,
+                            help_req=form.help_needed.data,
+                            interest=form.interest.data,
+                            gain=form.gain.data,
+                            stage=form.stage.data,
+                            relation=form.relation.data,
+                            web=form.website.data,
+                            links=form.business_docs.data)
         db.session.add(apply)
         db.session.commit()
         flash('Congratulations, you applied successfully!')

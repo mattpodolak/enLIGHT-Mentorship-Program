@@ -1,0 +1,86 @@
+{% extends "dashboard.html" %}
+{% block dash_content %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type=text/javascript>
+        $(function() {
+            $(".expand-row").click(function () {
+                $(this).next("tr").slideToggle(1000);
+            });  
+        });
+    </script>
+    <div class="mentor_intro_content">
+        <div class="mentor_intro">
+            <h1>Innovators of today</h1>
+            <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eros magna, iaculis non porta eu, dapibus ut tellus. Sed eget venenatis eros. Nam nec efficitur urna. Praesent aliquam tristique suscipit. Mauris porttitor, arcu vitae tincidunt fringilla, tortor diam facilisis enim, ac volutpat lacus tellus eget metus. Sed elementum sapien est, sed ornare ex dapibus eu. Ut id auctor lacus. Curabitur aliquet molestie purus, ut viverra neque aliquam eget. Nulla facilisi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse luctus, dui at convallis efficitur, nisl nulla bibendum est, in molestie ligula metus a ligula. Fusce eros ex, varius in nibh eget, accumsan bibendum arcu.</h2>
+        </div>
+    </div>
+
+
+    <div class="mentor_list_container">
+        <table class="mentor_rtable">               
+            <thead>
+                {% if current_user.is_admin() %}
+                    <th>MODIFY</th>
+                    <th>Mentor</th>
+                    <th>Contact</th>
+                    <th>Preferences</th>
+                {% endif %}
+                    <th>Company</th>
+                    <th>Industry</th>
+                    <th>Favorite</th>
+            </thead>
+            <tbody>
+                {% if companies %}
+                    {% for cohort in companies %}
+                        <tr class="expand-row">
+                            {% if current_user.is_admin() %}
+                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.id) }}">CHANGE</a></td>
+                                <td>
+                                    <!--NEED TO ADD A WAY TO LOAD MENTORS-->
+                                  {% if cohort.mentor %}
+                                    <b>Mentor:</b> {{cohort.mentor.first_name}} {{cohort.mentor.last_name}}
+                                  {% endif %}
+                                </td>
+                                <td>{{cohort.email}}</td>
+                                <td>{{cohort.mentor1}}<br> 
+                                    {{cohort.mentor2}}<br> 
+                                    {{cohort.mentor3}}
+                                </td>
+                            {% endif %}
+                            <td><a href="{{ url_for('company_user', companyId=cohort.id) }}">{{cohort.company}}</a></td>
+                            <td>{{cohort.industry}}</td>
+                            {% if mentor %}
+                                {% if cohort.mentorpref == mentor %}
+                                    <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
+                                {% else %}
+                                    <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}">Shortlist</a></td>
+                                {% endif %}
+                            {% endif %}
+                        </tr>
+                        <!--<tr style="display: none; background-color: #F4F7F9" >
+                            {% if current_user.is_admin() %}
+                                <td></td>
+                                <td colspan="3">
+                                    <h2><p>{{cohort.company}}</p>
+                                        <p>Founders: {{cohort.founder}}</p>
+                                        <p>Team Skills: {{cohort.skills}}</p>
+                                    </h2>
+                                    <h3>{{cohort.help_req}}</h3>
+                                </td>
+                                <td></td>
+                            {% else %}
+                                <td colspan="2">
+                                    <h2><p>{{cohort.company}}</p>
+                                        <p>Founders: {{cohort.founder}}</p>
+                                        <p>Team Skills: {{cohort.skills}}</p>
+                                    </h2>
+                                    <h3>{{cohort.help_req}}</h3>
+                                </td>
+                            {% endif %}
+                        </tr>-->
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -44,60 +44,6 @@
                 {% endif %}
             </thead>
             <tbody>
-                {% if cohorts %}
-                    {% for cohort in cohorts %}
-                        <tr class="expand-row">
-                            {% if current_user.is_admin() %}
-                                <td><a class="a-profile" href="{{ url_for('add_mentor', menteeId=cohort.email_hash) }}">CHANGE</a></td>
-                                <td><a href="{{ url_for('del_user', userId=cohort.email_hash) }}">Delete Acct</a></td>
-                                <td>
-                                  {% if cohort.mentor %}
-                                    <b>Mentor:</b> {{cohort.mentor.first_name}} {{cohort.mentor.last_name}}
-                                  {% endif %}
-                                </td>
-                                <td>{{cohort.email}}</td>
-                                <td>{{cohort.mentor1}}<br> 
-                                    {{cohort.mentor2}}<br> 
-                                    {{cohort.mentor3}}
-                                </td>
-                                <td>{{cohort.company}}</td>
-                                <td>{{cohort.industry}}</td>
-                                <td></td>
-                            {% else %}
-                            <td colspan="3">{{cohort.company}}</td>
-                            <td colspan="3">{{cohort.industry}}</td>
-                            {% endif %}
-                                {% if mentor %}
-                                    {% if cohort.mentorpref == mentor %}
-                                        <td><a href="{{ url_for('del_menteepref', menteeId=cohort.email_hash) }}">Remove Shortlist</a></td>
-                                    {% else %}
-                                        <td><a href="{{ url_for('acc_menteepref', menteeId=cohort.email_hash) }}"><img src="../static/heart_icon.png"></a></td>
-                                    {% endif %}
-                                {% endif %}
-                            </tr>
-                        <tr style="display: none; background-color: #F4F7F9" >
-                            {% if current_user.is_admin() %}
-                                <td colspan="7">
-                                    <h2><p>{{cohort.company}}</p>
-                                        <p>Founders: {{cohort.founder}}</p>
-                                        <p>Team Skills: {{cohort.skills}}</p>
-                                    </h2>
-                                    <h3>{{cohort.help_req}}</h3>
-                                </td>
-                            {% else %}
-                                <td></td>
-                                <td colspan="3">
-                                    <h2><p>{{cohort.company}}</p>
-                                        <p>Founders: {{cohort.founder}}</p>
-                                        <p>Team Skills: {{cohort.skills}}</p>
-                                    </h2>
-                                    <h3>{{cohort.help_req}}</h3>
-                                </td>
-                                <td></td>
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                {% endif %}
                 {% if mentees %}
                         {% for mentee in mentees %}
                             <tr class="expand-row">
