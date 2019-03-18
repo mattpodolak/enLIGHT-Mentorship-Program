@@ -567,7 +567,7 @@ def company_user(companyId):
     user = None
     # pass mentee info if current user is company
     if current_user.is_company():
-        user = Mentee.query.filter_by(email=current_user.email)
+        user = Mentee.query.filter_by(email=current_user.email).first()
       
     return render_template('company_profile.html', title='Company Profile', company=company, members=memberList, user=user)
 
