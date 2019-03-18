@@ -164,7 +164,7 @@ def save_pref(Id):
            flash('You already have 3 preferred mentees') 
         db.session.commit()   
         return redirect(url_for('mentee_shortlist'))
-    elif current_user.is_cohort():
+    elif current_user.is_company():
         cohort = Cohort.query.filter_by(email=current_user.email).first()
         if not cohort.mentor1 and cohort.mentor1 != Id:
             cohort.mentor1 = Id
@@ -213,7 +213,7 @@ def del_pref(Id):
             flash('Removed from preferred mentees') 
         db.session.commit()   
         return redirect(url_for('mentee_shortlist'))
-    elif current_user.is_cohort():
+    elif current_user.is_company():
         cohort = Cohort.query.filter_by(email=current_user.email).first()
         if cohort.mentor1 == Id:
             cohort.mentor1 = None
@@ -488,7 +488,7 @@ def register_user(userType):
                     # add new user email to company if not added previously
                     form_emails = form.team_emails.data
                     if form.email.data not in form_emails:
-                        form_emails = form_emails + ', ' + current_user.email
+                        form_emails = form_emails + ', ' + form.email.data
                     company = Company(company=form.company.data,
                         members=form.founder_names.data,
                         email=form_emails,
@@ -505,7 +505,9 @@ def register_user(userType):
                             user.access = 3
                             mentee = Mentee.query.filter_by(email=mem_email).first()
                             # link acct to company
-                            mentee.company_l = company
+                            print(mem_email)
+                            if mentee:
+                                mentee.company_l = company
                 db.session.commit()
             flash('Congratulations, you have registered ' + form.email.data)
             return redirect(url_for('login'))
@@ -592,7 +594,7 @@ def del_user(userId):
         if user.is_mentor():
             mentor = Mentor.query.filter_by(email=user.email).first()
             db.session.delete(mentor)
-        elif user.is_cohort():
+        elif user.is_company():
             cohort = Cohort.query.filter_by(email=user.email).first()
             db.session.delete(cohort)
         else:
@@ -630,7 +632,7 @@ def user(userId):
             if info.skills is not None:
                 skill_array = info.skills.split(", ")
             for m in info.users:
-                if m.is_cohort():
+                if m.is_company():
                     mentee = Cohort.query.filter_by(email=m.email).first()
                 else:
                     mentee = Mentee.query.filter_by(email=m.email).first()
@@ -670,7 +672,7 @@ def user(userId):
             profile_pic_filepath += 'mentors/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skill is not None:
                 skill_array = info.skill.split(", ")
-        elif current_user.is_cohort():
+        elif current_user.is_company():
             info = Cohort.query.filter_by(email=user.email).first()
             profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skills is not None:
@@ -686,7 +688,7 @@ def user(userId):
             return render_template('404.html')
         elif user.is_mentor():
             return render_template('404.html')
-        elif user.is_cohort():
+        elif user.is_company():
             info = Cohort.query.filter_by(email=user.email).first()
             profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
             if info.skills is not None:
@@ -971,7 +973,7 @@ def update_mentor():
 def add_mentor(menteeId):
     if current_user.is_admin():
         user = User.query.filter_by(email_hash=menteeId).first()
-        if user.is_cohort():
+        if user.is_company():
             mentee = Cohort.query.filter_by(email=user.email).first()
         else:
             mentee = Mentee.query.filter_by(email=user.email).first()
@@ -1021,7 +1023,7 @@ def edit_picture():
     profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
     if current_user.is_mentor():
         profile_pic_filepath += 'mentors/' + str(current_user.email_hash) + '-profile-pic.png'
-    elif current_user.is_cohort():
+    elif current_user.is_company():
         profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
     else:
         profile_pic_filepath += 'mentees/' + str(current_user.email_hash) + '-profile-pic.png'
@@ -1046,7 +1048,7 @@ def upload():
         form.position.data = info.position
         form.linked.data = info.linked
         form.twitter.data = info.twitter
-    elif current_user.is_cohort():
+    elif current_user.is_company():
         s3.Bucket('enlight-hub-profile-pictures').put_object(Key='mentees/' + s3_filename, Body=request.files['myfile'])
         form = EditCohortProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()

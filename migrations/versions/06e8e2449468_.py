@@ -1,8 +1,8 @@
-"""first migrate
+"""empty message
 
-Revision ID: 453ac2e500da
+Revision ID: 06e8e2449468
 Revises: 
-Create Date: 2019-03-16 21:27:09.384422
+Create Date: 2019-03-17 22:24:18.822339
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '453ac2e500da'
+revision = '06e8e2449468'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,7 +23,7 @@ def upgrade():
     sa.Column('accept', sa.String(length=100), nullable=True),
     sa.Column('company', sa.String(length=100), nullable=True),
     sa.Column('founder', sa.String(length=280), nullable=True),
-    sa.Column('email', sa.String(length=120), nullable=True),
+    sa.Column('email', sa.String(length=340), nullable=True),
     sa.Column('industry', sa.String(length=280), nullable=True),
     sa.Column('skills', sa.String(length=280), nullable=True),
     sa.Column('help_req', sa.String(length=280), nullable=True),
@@ -35,13 +35,12 @@ def upgrade():
     sa.Column('links', sa.String(length=380), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_application_email'), 'application', ['email'], unique=True)
     op.create_table('company',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('company', sa.String(length=100), nullable=True),
     sa.Column('about', sa.String(length=280), nullable=True),
     sa.Column('members', sa.String(length=280), nullable=True),
-    sa.Column('email', sa.String(length=120), nullable=True),
+    sa.Column('email', sa.String(length=340), nullable=True),
     sa.Column('industry', sa.String(length=280), nullable=True),
     sa.Column('help_req', sa.String(length=280), nullable=True),
     sa.Column('mentor1', sa.String(length=128), nullable=True),
@@ -51,7 +50,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['mentor_pref_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_company_email'), 'company', ['email'], unique=True)
     op.create_table('mentee',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('first_name', sa.String(length=64), nullable=True),
@@ -71,6 +69,8 @@ def upgrade():
     sa.Column('linkedin', sa.String(length=164), nullable=True),
     sa.Column('twitter', sa.String(length=164), nullable=True),
     sa.Column('mentor_pref_id', sa.Integer(), nullable=True),
+    sa.Column('company_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['company_id'], ['company.id'], ),
     sa.ForeignKeyConstraint(['mentor_pref_id'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -92,6 +92,9 @@ def upgrade():
     sa.Column('grad_year', sa.String(length=128), nullable=True),
     sa.Column('linkedin', sa.String(length=164), nullable=True),
     sa.Column('twitter', sa.String(length=164), nullable=True),
+    sa.Column('mentee1', sa.String(length=128), nullable=True),
+    sa.Column('mentee2', sa.String(length=128), nullable=True),
+    sa.Column('mentee3', sa.String(length=128), nullable=True),
     sa.Column('mentee_pref_id', sa.Integer(), nullable=True),
     sa.Column('company_pref_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['company_pref_id'], ['company.id'], ),
@@ -122,8 +125,6 @@ def downgrade():
     op.drop_table('mentor')
     op.drop_index(op.f('ix_mentee_email'), table_name='mentee')
     op.drop_table('mentee')
-    op.drop_index(op.f('ix_company_email'), table_name='company')
     op.drop_table('company')
-    op.drop_index(op.f('ix_application_email'), table_name='application')
     op.drop_table('application')
     # ### end Alembic commands ###
