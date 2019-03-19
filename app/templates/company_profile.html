@@ -2,23 +2,22 @@
 
 {% block app_content %}
     <div class="background-container">
-        <h1 class="title-text">Company Profile</h1>
+        <div class="header-container">
+            <img src="../static/header.jpg" class="header-pic"/>
+        </div>
+        <div class="profile-pic-container">
+            <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentor.jpg" class="profile-pic"/>
+        </div>
         <div class="user-border profile-container">
+            <div class="profile-top-container">
+                <h2 class="text name-text">{{ company.company }}</h2>
+                <p>{{ company.headline }}</p>
+            </div>
             <div class="profile-left-container">
-                <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/enLIGHT-Logo.png" class="profile-pic"/>
-                
-                <!--Load edit profile, if user is a member of the company-->
-                {% if user in members %}
-                    <div class="edit-profile-text">
-                        <a href="{{ url_for('edit_profile') }}">
-                            <p class="text link-text">Edit company profile</p>
-                        </a>
-                    </div>
-                {% endif %}
+
             </div>
             <div class="profile-right-container">
                 <div class="profile-right-top-container">
-                        <h2 class="text name-text">{{company.company}}</h2>
                         <label class="text label-text">Founders</label>
                         <p class="text">
                             {% if members %}
@@ -31,8 +30,15 @@
                         <p class="text">{{company.industry}}</p>
                         <label class="text label-text">Help Required</label>
                         <p class="text">{{company.help_req}}</p>
+                    <!--Load edit profile, if user is a member of the company-->
+                {% if user in members %}
+                    <div class="edit-profile-text">
+                        <a href="{{ url_for('edit_profile') }}">
+                            <p class="text link-text">Edit company profile</p>
+                        </a>
+                    </div>
+                {% endif %}
                 </div>
-                <div class="divider"></div>
                 <div class="profile-right-bottom-container">
                     <h2 class="text name-text">Mentor Preferences</h2>
                     <div class="mentor-container">

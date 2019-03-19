@@ -801,8 +801,7 @@ def edit_profile():
         return render_template('edit_profile.html', title='Edit Profile', form=form)
     elif current_user.is_company():
         form = EditCohortProfileForm(current_user.email)
-        info = Company.query.filter_by(email=current_user.email).first()
-
+        info = Mentee.query.filter_by(email=current_user.email).first().company_l
         if form.validate_on_submit():
             current_user.email = form.email.data
             current_user.set_id()
@@ -815,15 +814,13 @@ def edit_profile():
             flash('Your changes have been saved.')
             return redirect(url_for('user', userId=current_user.email_hash))
         elif request.method == 'GET':
+            print("TEST")
             form.email.data = current_user.email
             form.company_name.data = info.company
             form.member_names.data = info.members
             form.industry.data = info.industry
-            form.university.data = info.university
-            form.major.data = info.major
-            form.grad_year.data = info.grad_year
             form.help_needed.data = info.help_req
-        return render_template('edit_profile.html', title='Edit Profile', form=form)
+        return render_template('edit_company_profile.html', title='Edit Company Profile', form=form)
     else:
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
