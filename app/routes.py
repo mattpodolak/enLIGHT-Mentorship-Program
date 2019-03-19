@@ -551,26 +551,27 @@ def acc_app(appId):
         #db.session.commit()
 
         # turn all members into cohort accounts
-        email_array = []
-        if app.email is not None:
-            email_array = app.email.split(", ")
+        #email_array = []
+        #if app.email is not None:
+        #    email_array = app.email.split(", ")
         company = Company(company=app.company,
                         members=app.founder,
                         email=app.email,
                         industry=app.industry,
                         help_req=app.help_req)
         db.session.add(company)
-        # links members listed via email to company
-
-        for mem_email in email_array:
+        # links member listed via email to company
+        mentee = Mentee.query.filter_by(email=app.email).first()
+        mentee.company_l = company
+        #for mem_email in email_array:
             
-            user = User.query.filter_by(email=mem_email).first()
+            #user = User.query.filter_by(email=mem_email).first()
             # make acct a company having acct
-            if user:
-                user.access = 3
-                mentee = Mentee.query.filter_by(email=mem_email).first()
+            #if user:
+            #    user.access = 3
+                #mentee = Mentee.query.filter_by(email=mem_email).first()
                 # link acct to company
-                mentee.company_l = company
+                #mentee.company_l = company
         db.session.commit()
         flash('You accepted the application for ' + app.company)
         accept_applicant(user, app)
@@ -868,15 +869,12 @@ def edit_profile():
 @login_required
 def application():
     form = ApplicationForm()
+    app = None
     if form.validate_on_submit():
-        form_emails = form.team_emails.data
-        # make sure to store the email of the user submitting it, so when accepted can change their acct and link them
-        if current_user.email not in form_emails:
-            form_emails = form_emails + ', ' + current_user.email
         apply = Application(accept="Pending",
                             company=form.company_name.data,
                             founder=form.founder_names.data,
-                            email=form_emails,
+                            email=current_user.email,
                             industry=form.industry.data,
                             skills=form.team_skills.data,
                             help_req=form.help_needed.data,
@@ -892,12 +890,7 @@ def application():
         return redirect(url_for('index'))
     elif request.method == 'GET':
         info = Mentee.query.filter_by(email=current_user.email).first()
-        #form.contact_email.data = current_user.email
         form.company_name.data = info.company
-        form.founder_names.data = info.founder
-        form.industry.data = info.industry
-        form.team_skills.data = info.skills
-        form.help_needed.data = info.help_req
         app = Application.query.filter_by(email=current_user.email).first()
     return render_template('application.html', title='Cohort Application Form',
                            form=form, app=app)
