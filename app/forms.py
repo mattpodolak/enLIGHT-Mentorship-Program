@@ -179,16 +179,17 @@ class EditMenteeProfileForm(FlaskForm):
                 raise ValidationError('Please use a different email address.')
 
 
-class EditCohortProfileForm(FlaskForm):
+class EditCompanyProfileForm(FlaskForm):
     company_name = StringField('Company Name', validators=[DataRequired(), Length(min=0, max=100)])
     email = StringField('Contact Email', validators=[DataRequired(), Email()])
+    about = StringField('About', validators=[DataRequired(), Length(min=0, max=280)])
     member_names = StringField('Names of Members', validators=[DataRequired(), Length(min=0, max=280)])
     industry = SelectField(u'Industry', choices=industryList, coerce=str)
     help_needed = StringField('What type of help are you looking for?',validators=[DataRequired(), Length(min=0, max=280)])
     submit = SubmitField('Save Profile')
 
     def __init__(self, original_email, *args, **kwargs):
-        super(EditCohortProfileForm, self).__init__(*args, **kwargs)
+        super(EditCompanyProfileForm, self).__init__(*args, **kwargs)
         self.original_email = original_email
 
     def validate_email(self, email):

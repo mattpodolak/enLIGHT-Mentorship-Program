@@ -13,46 +13,65 @@
                 <h2 class="text name-text">{{ company.company }}</h2>
                 <p>{{ company.headline }}</p>
             </div>
-            <div class="profile-left-container">
-
-            </div>
-            <div class="profile-right-container">
-                <div class="profile-right-top-container">
-                        <label class="text label-text">Founders</label>
-                        <p class="text">
-                            {% if members %}
-                                {% for member in members %}
-                                    <a href="{{ url_for('user', userId=member.email_hash) }}">{{member.first_name}} {{member.last_name}}</a><br>
-                                {% endfor %}
-                            {% endif %}
-                        </p>
-                        <label class="text label-text">Industry</label>
-                        <p class="text">{{company.industry}}</p>
-                        <label class="text label-text">Help Required</label>
-                        <p class="text">{{company.help_req}}</p>
-                    <!--Load edit profile, if user is a member of the company-->
-                {% if user in members %}
-                    <div class="edit-profile-text">
-                        <a href="{{ url_for('edit_profile') }}">
-                            <p class="text link-text">Edit company profile</p>
-                        </a>
+            <div class="profile-info-container">
+                <div class="profile-left-container">
+                    <h3 class="text header-text">About</h3>
+                    <div class="about-me">
+                        <span class="text about-me-span">{{company.about}}</span>
                     </div>
-                {% endif %}
                 </div>
-                <div class="profile-right-bottom-container">
-                    <h2 class="text name-text">Mentor Preferences</h2>
-                    <div class="mentor-container">
-                        <div>
-                            <img src="../static/test.png" class="mentor-profile-pic"/>
-                            <h4 class="text profile-pic-text">{{ company.mentor1 }}</h4>
+                <div class="profile-right-container">
+                    <div class="profile-right-top-container">
+                        <div class="profile-education-container">
+                            <div class="profile-right-top-left-container">
+                                <img src="../static/contact.png" class="education-icon"/>
+                            </div>
+                            <div class="profile-right-top-right-container">
+{#                                <label class="text label-text">Founders</label>#}
+                                <p class="text">
+                                    {% if members %}
+                                        {% for member in members %}
+                                            <a href="{{ url_for('user', userId=member.email_hash) }}">{{member.first_name}} {{member.last_name}}</a><br>
+                                        {% endfor %}
+                                    {% endif %}
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <img src="../static/test.png" class="mentor-profile-pic"/>
-                            <h4 class="text profile-pic-text">{{ company.mentor2 }}</h4>
+                        <div class="profile-work-container">
+                            <div class="profile-right-top-left-container">
+                                <img src="../static/work.png" class="work-icon"/>
+                            </div>
+                            <div class="profile-right-top-right-container">
+                                <label class="text label-text">Industry</label>
+                                <p class="text">{{company.industry}}</p>
+                                <label class="text label-text">Help Required</label>
+                                <p class="text">{{company.help_req}}</p>
+                            </div>
                         </div>
-                        <div>
-                            <img src="../static/test.png" class="mentor-profile-pic"/>
-                            <h4 class="text profile-pic-text">{{ company.mentor3 }}</h4>
+                        <!--Load edit profile, if user is a member of the company-->
+                    {% if user in members %}
+                        <div class="edit-profile-text">
+                            <a href="{{ url_for('edit_company_profile') }}">
+                                <p class="text link-text">Edit company profile</p>
+                            </a>
+                        </div>
+                    {% endif %}
+                    </div>
+                    <div class="profile-right-bottom-container">
+                        <h2 class="text name-text">Mentor Preferences</h2>
+                        <div class="mentor-container">
+                            <div>
+                                <img src="../static/test.png" class="mentor-profile-pic"/>
+                                <h4 class="text profile-pic-text">{{ company.mentor1 }}</h4>
+                            </div>
+                            <div>
+                                <img src="../static/test.png" class="mentor-profile-pic"/>
+                                <h4 class="text profile-pic-text">{{ company.mentor2 }}</h4>
+                            </div>
+                            <div>
+                                <img src="../static/test.png" class="mentor-profile-pic"/>
+                                <h4 class="text profile-pic-text">{{ company.mentor3 }}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>

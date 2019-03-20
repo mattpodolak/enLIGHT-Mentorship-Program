@@ -58,17 +58,6 @@
                                 {{ form.grad_year(class="input-profile text") }}
                                 {{ form.linkedin(class="input-contact text") }}
                                 {{ form.twitter(class="input-contact text") }}
-                            {% elif current_user.is_company() %}
-                                {{ form.company_name.label(class="text label-text") }}
-                                {{ form.company_name(class="input-profile text") }}
-                                {{ form.email.label(class="text label-text") }}
-                                {{ form.email(class="input-profile text") }}
-                                {{ form.founder_names.label(class="text label-text") }}
-                                {{ form.founder_names(class="input-profile text") }}
-                                {{ form.industry.label(class="text label-text") }}
-                                {{ form.industry(class="input-profile text") }}
-                                {{ form.help_needed.label(class="text label-text") }}
-                                {{ form.help_needed(class="input-profile text") }}
                             {% else %}
                                 <div class="profile-education-container">
                                     <div class="profile-right-top-left-container">

@@ -8,21 +8,31 @@
         </div>
         <form action="" method="post">
             {{ form.hidden_tag() }}
+            <div class="profile-pic-container">
+                <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/mentor.jpg" class="profile-pic"/>
+            </div>
             <div class="edit-border profile-container">
-                <div class="profile-left-container">
-                    <img src="https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/enLIGHT-Logo.png" class="profile-pic"/>
-
-                    <a href="../static/components/edit_picture_modal.html" data-target="#myModal" data-toggle="modal">
-                        <p><small class="text change-picture-text">Change picture</small></p>
-                    </a>
-
-                    <!-- Modal -->
-                    <div id="myModal" class="modal fade text-center">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                        </div>
-                      </div>
+                <div class="profile-top-container">
+                    <div class="edit-name-container">
+                        {{ form.company_name(class="input-profile text") }}
                     </div>
+                </div>
+                <div class="profile-info-container">
+                    <div class="profile-left-container">
+                        <h3 class="text header-text">About</h3>
+                        <div class="about-me">
+                            {{ form.about(class="input-profile text") }}
+                        </div>
+                        <a href="../static/components/edit_picture_modal.html" data-target="#myModal" data-toggle="modal">
+                            <p><small class="text change-picture-text">Change picture</small></p>
+                        </a>
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade text-center">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                            </div>
+                          </div>
+                        </div>
 
 {#                    {{ form.linkedin.label(class="text label-text") }} <br>#}
 {#                    {{ form.linkedin(class="input-contact text") }} <br>#}
@@ -32,36 +42,35 @@
                     <div class="edit-action-buttons">
                         {{ form.submit(class="save-button") }}
                     </div>
-                </div>
-                <div class="profile-right-container">
-                    <div class="profile-right-top-container">
-                            {{ form.company_name.label(class="text label-text") }}
-                            {{ form.company_name(class="input-profile text") }}
-                            {{ form.email.label(class="text label-text") }}
-                            {{ form.email(class="input-profile text") }}
-                            {{ form.member_names.label(class="text label-text") }}
-                            {{ form.member_names(class="input-profile text") }}
-                            {{ form.industry.label(class="text label-text") }}
-                            {{ form.industry(class="input-profile text") }}
-                            {{ form.help_needed.label(class="text label-text") }}
-                            {{ form.help_needed(class="input-profile text") }}
-    {#                    {{ wtf.quick_form(form)}}#}
                     </div>
-                    <div class="divider"></div>
-                    <div class="profile-right-bottom-container">
-                        <h2 class="text name-text">Matched Mentors</h2>
-                        <div class="mentor-container">
-                            <div>
-                                <img src="../static/test.png" class="mentor-profile-pic"/>
-                                <h4 class="text profile-pic-text">Mentor1</h4>
-                            </div>
-                            <div>
-                                <img src="../static/test.png" class="mentor-profile-pic"/>
-                                <h4 class="text profile-pic-text">Mentor2</h4>
-                            </div>
-                            <div>
-                                <img src="../static/test.png" class="mentor-profile-pic"/>
-                                <h4 class="text profile-pic-text">Mentor3</h4>
+                    <div class="profile-right-container">
+                        <div class="profile-right-top-container">
+                                {{ form.email.label(class="text label-text") }}
+                                {{ form.email(class="input-profile text") }}
+                                {{ form.member_names.label(class="text label-text") }}
+                                {{ form.member_names(class="input-profile text") }}
+                                {{ form.industry.label(class="text label-text") }}
+                                {{ form.industry(class="input-profile text") }}
+                                {{ form.help_needed.label(class="text label-text") }}
+                                {{ form.help_needed(class="input-profile text") }}
+        {#                    {{ wtf.quick_form(form)}}#}
+                        </div>
+                        <div class="divider"></div>
+                        <div class="profile-right-bottom-container">
+                            <h2 class="text name-text">Matched Mentors</h2>
+                            <div class="mentor-container">
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">Mentor1</h4>
+                                </div>
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">Mentor2</h4>
+                                </div>
+                                <div>
+                                    <img src="../static/test.png" class="mentor-profile-pic"/>
+                                    <h4 class="text profile-pic-text">Mentor3</h4>
+                                </div>
                             </div>
                         </div>
                     </div>

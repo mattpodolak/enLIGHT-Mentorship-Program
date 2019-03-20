@@ -1,5 +1,5 @@
 from app import flapp, db
-from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCohortProfileForm, CompanyRegistrationForm
+from app.forms import MenteeMatchForm, MentorSelectForm, LoginForm, ResetPasswordRequestForm, ResetPasswordForm, MentorRegistrationForm, MenteeRegistrationForm, EditMenteeProfileForm, ApplicationForm, EditMentorProfileForm, EditCompanyProfileForm, CompanyRegistrationForm
 from flask import render_template, flash, redirect, request, url_for
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Mentor, Mentee, Application, Company
@@ -799,28 +799,6 @@ def edit_profile():
             form.linkedin.data = info.linkedin
             form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile', form=form)
-    elif current_user.is_company():
-        form = EditCohortProfileForm(current_user.email)
-        info = Mentee.query.filter_by(email=current_user.email).first().company_l
-        if form.validate_on_submit():
-            current_user.email = form.email.data
-            current_user.set_id()
-            info.email = form.email.data
-            info.company = form.company_name.data
-            info.members = form.member_names.data
-            info.industry = dict(form.industry.choices).get(form.industry.data)
-            info.help_req = form.help_needed.data
-            db.session.commit()
-            flash('Your changes have been saved.')
-            return redirect(url_for('user', userId=current_user.email_hash))
-        elif request.method == 'GET':
-            print("TEST")
-            form.email.data = current_user.email
-            form.company_name.data = info.company
-            form.member_names.data = info.members
-            form.industry.data = info.industry
-            form.help_needed.data = info.help_req
-        return render_template('edit_company_profile.html', title='Edit Company Profile', form=form)
     else:
         form = EditMenteeProfileForm(current_user.email)
         info = Mentee.query.filter_by(email=current_user.email).first()
@@ -861,6 +839,35 @@ def edit_profile():
             form.twitter.data = info.twitter
         return render_template('edit_profile.html', title='Edit Profile', form=form)
 
+@flapp.route('/edit_company_profile', methods=['GET', 'POST'])
+@login_required
+def edit_company_profile():
+    profile_pic_filepath = 'https://s3.ca-central-1.amazonaws.com/enlight-hub-profile-pictures/'
+    if current_user.is_admin():
+        return render_template('404.html')
+    elif current_user.is_company():
+        form = EditCompanyProfileForm(current_user.email)
+        info = Mentee.query.filter_by(email=current_user.email).first().company_l
+        if form.validate_on_submit():
+            current_user.email = form.email.data
+            current_user.set_id()
+            info.email = form.email.data
+            info.company = form.company_name.data
+            info.about = form.about.data
+            info.members = form.member_names.data
+            info.industry = dict(form.industry.choices).get(form.industry.data)
+            info.help_req = form.help_needed.data
+            db.session.commit()
+            flash('Your changes have been saved.')
+            return redirect(url_for('company', userId=current_user.email_hash))
+        elif request.method == 'GET':
+            form.email.data = current_user.email
+            form.company_name.data = info.company
+            form.about.data = info.about
+            form.member_names.data = info.members
+            form.industry.data = info.industry
+            form.help_needed.data = info.help_req
+        return render_template('edit_company_profile.html', title='Edit Company Profile', form=form)
 
 @flapp.route('/application', methods=['GET', 'POST'])
 @login_required
@@ -1040,7 +1047,7 @@ def upload():
         form.twitter.data = info.twitter
     elif current_user.is_company():
         s3.Bucket('enlight-hub-profile-pictures').put_object(Key='mentees/' + s3_filename, Body=request.files['myfile'])
-        form = EditCohortProfileForm(current_user.email)
+        form = EditCompanyProfileForm(current_user.email)
         info = Cohort.query.filter_by(email=current_user.email).first()
         form.email.data = current_user.email
         form.company_name.data = info.company
